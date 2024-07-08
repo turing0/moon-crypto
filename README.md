@@ -65,7 +65,20 @@ pnpm run dev
 >
 > Use this command for update your project: `ncu -i --format group`
 
+
+
+### 同步数据库
+
+```bash
+npx prisma db push
+```
+
+
+
+
+
 ## Roadmap
+
 - [ ] Upgrade eslint to v9
 - [ ] Add resend for success subscriptions
 
