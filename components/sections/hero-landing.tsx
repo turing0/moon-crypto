@@ -27,22 +27,25 @@ export default async function HeroLanding() {
     <section className="space-y-6 py-12 sm:py-20 lg:py-20">
       <div className="container flex max-w-5xl flex-col items-center gap-5 text-center">
         {/* Want animations? Check here: https://github.com/mickasmt/next-saas-stripe-starter/blob/76eb9f2b70b29c7a734ff0e5b047796ed2dac28d/app/(marketing)/page.tsx */}
-        <Link
+        {/* <Link
           href="https://twitter.com/miickasmt/status/1719892161095745801"
           className={cn(
             buttonVariants({ variant: "outline", size: "sm", rounded: "full" }),
-            "px-4",
+            "px-4 animate-fade-up opacity-0",
           )}
+          style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           target="_blank"
         >
           <span className="mr-3">🎉</span> Introducing on{" "}
           <Icons.twitter className="ml-2 size-3.5" />
-        </Link>
+        </Link> */}
 
-        <h1 className="text-balance font-urban text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-[66px]">
-          Kick off with a bang with{" "}
+        <h1 className="animate-fade-up text-balance font-urban text-4xl font-extrabold tracking-tight opacity-0 sm:text-5xl md:text-6xl lg:text-[66px]"
+          style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
+        >
+          Invest Alongside the{" "}
           <span className="text-gradient_indigo-purple font-extrabold">
-            SaaS Starter
+            Best Crypto Traders
           </span>
         </h1>
 
@@ -50,8 +53,8 @@ export default async function HeroLanding() {
           className="max-w-2xl text-balance leading-normal text-muted-foreground sm:text-xl sm:leading-8"
           style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
         >
-          Build your next project using Next.js 14, Prisma, Neon, Auth.js
-          v5, Resend, React Email, Shadcn/ui, Stripe.
+          Unlock the power of copy trading with our cutting-edge platform. 
+          Leverage the expertise of top traders and watch your portfolio grow.
         </p>
 
         <div
@@ -66,10 +69,10 @@ export default async function HeroLanding() {
               "gap-2",
             )}
           >
-            <span>Go Pricing</span>
+            <span>Start Trading</span>
             <Icons.arrowRight className="size-4" />
           </Link>
-          <Link
+          {/* <Link
             href={siteConfig.links.github}
             target="_blank"
             rel="noreferrer"
@@ -87,7 +90,7 @@ export default async function HeroLanding() {
               <span className="hidden sm:inline-block">Star on</span> GitHub{" "}
               <span className="font-semibold">{nFormatter(stars)}</span>
             </p>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </section>
