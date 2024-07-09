@@ -61,6 +61,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  exchangeAccounts   ExchangeAccount[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -68,6 +69,23 @@ model User {
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 
   @@map(name: "users")
+}
+
+model ExchangeAccount {
+  id                String   @id @default(cuid())
+  userId            String
+  exchangeName      String
+  apiKey            String
+  secretKey         String
+  passphrase        String?
+  description       String?
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "exchange_accounts")
 }
 
 model VerificationToken {

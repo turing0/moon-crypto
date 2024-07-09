@@ -26,24 +26,24 @@ export const infos: InfoLdg[] = [
     ],
   },
   {
-    title: "Seamless Integration",
+    title: "Trader Data Analysis",
     description:
-      "Integrate our open-source SaaS seamlessly into your existing workflows. Effortlessly connect with your favorite tools and services for a streamlined experience.",
+      "Gain deep insights into trader performance, risk, and portfolio diversification to make informed trading decisions.",
     image: "/_static/illustrations/work-from-home.jpg",
     list: [
       {
-        title: "Flexible",
+        title: "Performance Tracking",
         description:
           "Customize your integrations to fit your unique requirements.",
         icon: "laptop",
       },
       {
-        title: "Efficient",
+        title: "Risk Analysis",
         description: "Streamline your processes and reducing manual effort.",
         icon: "search",
       },
       {
-        title: "Reliable",
+        title: "Portfolio Diversification",
         description:
           "Rely on our robust infrastructure and comprehensive documentation.",
         icon: "settings",
@@ -54,40 +54,40 @@ export const infos: InfoLdg[] = [
 
 export const features = [
   {
-    title: "Feature 1",
+    title: "Consistent Profits",
     description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+      "Leverage the expertise of successful traders and enjoy consistent returns on your investments.",
     link: "/",
   },
   {
-    title: "Feature 2",
+    title: "Save Time",
     description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+      "Automate your trading process and free up your time to focus on other aspects of your life.",
     link: "/",
   },
   {
-    title: "Feature 3",
+    title: "Secure Trading",
     description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+      "Our platform prioritizes security, ensuring your funds and personal information are protected.",
     link: "/",
   },
-  {
-    title: "Feature 4",
-    description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-    link: "/",
-  },
-  {
-    title: "Feature 5",
-    description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-  },
-  {
-    title: "Feature 6",
-    description:
-      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-    link: "/",
-  },
+  // {
+  //   title: "Feature 4",
+  //   description:
+  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  //   link: "/",
+  // },
+  // {
+  //   title: "Feature 5",
+  //   description:
+  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  // },
+  // {
+  //   title: "Feature 6",
+  //   description:
+  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  //   link: "/",
+  // },
 ];
 
 export const testimonials = [
