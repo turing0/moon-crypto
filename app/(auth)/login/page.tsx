@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/forms/user-auth-form";
 import { Icons } from "@/components/shared/icons";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -15,6 +16,16 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
+      <div className="mb-4">
+        <Alert className="!pl-14">
+          <Icons.warning />
+          <AlertTitle>Please use Google sign in.</AlertTitle>
+          <AlertDescription>
+            Currently not support email login.{" "}
+          </AlertDescription>
+        </Alert>
+      </div>
+      
       <Link
         href="/"
         className={cn(
