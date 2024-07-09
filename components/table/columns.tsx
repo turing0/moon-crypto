@@ -15,8 +15,8 @@ import Link from "next/link"
 import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(marketing)/analysis/page"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
-import { UpdateExchangeApiSheet } from "./update-exchange-sheet"
-import { DeleteExchangeApiDialog } from "./delete-exchange-dialog"
+import { UpdateExchangeApiSheet } from "../exchange/update-exchange-sheet"
+import { DeleteExchangeApiDialog } from "../exchange/delete-exchange-dialog"
 import { BitgetTrader } from "@/app/(protected)/traders/page"
 
 // export const orderColumns: ColumnDef<Payment>[] = [

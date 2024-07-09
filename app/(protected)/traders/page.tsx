@@ -1,10 +1,10 @@
 "use client"
 
 import { OkxHistoryOrder } from "@/app/(marketing)/analysis/page";
-import { bitgetTraderColumns, okxOrderColumns } from "@/app/_components/columns";
-import { DataTable } from "@/app/_components/data-table";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
+import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

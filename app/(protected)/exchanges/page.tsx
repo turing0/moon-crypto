@@ -1,9 +1,9 @@
 import { getExchangeAPI } from "@/actions/exchange";
-import { exchangeApiInfoColumns } from "@/app/_components/columns";
-import { CreateExchangeDialog } from "@/app/_components/create-exchange-dialog";
-import { DataTable } from "@/app/_components/data-table";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
+import { CreateExchangeDialog } from "@/components/exchange/create-exchange-dialog";
+import { exchangeApiInfoColumns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/data-table";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 
