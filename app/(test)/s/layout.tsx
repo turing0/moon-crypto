@@ -15,18 +15,19 @@ interface ProtectedLayoutProps {
 export default async function ProtectedLayout({
   children,
 }: ProtectedLayoutProps) {
-  const user = await getCurrentUser();
+  // const user = await getCurrentUser();
 
-  if (!user) redirect("/login");
+  // if (!user) redirect("/login");
 
   return (
     <div className="grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
       <aside className="hidden w-[200px] flex-col md:flex">
         <DashboardNav
           items={
-            user.role === "ADMIN"
-              ? adminConfig.sidebarNav
-              : settingConfig
+            // user.role === "ADMIN"
+            //   ? adminConfig.sidebarNav
+            //   : dashboardConfig.sidebarNav
+            settingConfig
           }
         />
       </aside>

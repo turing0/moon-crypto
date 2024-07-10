@@ -1,4 +1,4 @@
-import { DashboardConfig } from "types"
+import { DashboardConfig, SidebarNavItem } from "types"
 
 export const dashboardConfig: DashboardConfig = {
   mainNav: [
@@ -50,3 +50,21 @@ export const dashboardConfig: DashboardConfig = {
     },
   ],
 }
+
+export const settingConfig: SidebarNavItem[] = [
+    {
+      title: "Account",
+      href: "/settings",
+      icon: "post",
+    },
+    {
+      title: "Billing",
+      href: "/dashboard/billing",
+      icon: "billing",
+    },
+    {
+      title: "Settings",
+      href: "/settings",
+      icon: "settings",
+    },
+  ]

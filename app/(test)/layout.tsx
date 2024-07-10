@@ -16,9 +16,9 @@ interface ProtectedLayoutProps {
 export default async function ProtectedLayout({
   children,
 }: ProtectedLayoutProps) {
-  const user = await getCurrentUser();
+  // const user = await getCurrentUser();
 
-  if (!user) redirect("/login");
+  // if (!user) redirect("/login");
 
   return (
     <div className="flex min-h-screen flex-col space-y-6">
