@@ -7,7 +7,7 @@ export default function DashboardLoading() {
     <DashboardShell>
       <DashboardHeader
         heading="Panel"
-        text="Current Role :"
+        // text="Current Role :"
       />
       <div className="divide-border-200 divide-y rounded-md border">
         <Skeleton className="h-[400px] w-full rounded-lg" />

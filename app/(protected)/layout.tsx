@@ -24,7 +24,7 @@ export default async function ProtectedLayout({
     <div className="flex min-h-screen flex-col space-y-6">
       <NavBar />
       <MaxWidthWrapper className="min-h-svh">
-        <div className="grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+        {/* <div className="grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
           <aside className="hidden w-[200px] flex-col md:flex">
             <DashboardNav
               items={
@@ -37,7 +37,10 @@ export default async function ProtectedLayout({
           <main className="flex w-full flex-1 flex-col overflow-hidden">
             {children}
           </main>
-        </div>
+        </div> */}
+        <main className="flex w-full flex-1 flex-col overflow-hidden">
+            {children}
+          </main>
       </MaxWidthWrapper>
       <SiteFooter className="border-t" />
     </div>
