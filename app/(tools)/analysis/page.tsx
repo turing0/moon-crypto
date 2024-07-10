@@ -10,8 +10,8 @@ import { usePathname, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/table/data-table"
 import { okxOrderColumns, orderColumns } from "@/components/table/columns"
-import MaxWidthWrapper from "@/components/shared/max-width-wrapper"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { DashboardHeader } from "@/components/dashboard/header"
 
 export type BitGetHistoryOrder = {
   trackingNo: string;
@@ -219,10 +219,12 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   };
   
   return (
-    <>
-    <MaxWidthWrapper className="min-h-svh">
     <DashboardShell>
-      <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <DashboardHeader
+        heading="Analysis"
+      />
+      <div>
+      {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue={defaultTabValue} className="space-y-4">
         {/* <Tabs defaultValue="bitget" className="space-y-4"> */}
           <TabsList>
@@ -278,9 +280,8 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
 
         <Separator/>
         
-      </div>
+      {/* </div> */}
+    </div>
     </DashboardShell>
-    </MaxWidthWrapper>
-    </>
   )
 }
