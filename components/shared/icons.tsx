@@ -29,6 +29,7 @@ import {
   Trash,
   User,
   X,
+  ArrowRightLeft,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -37,6 +38,7 @@ export const Icons = {
   add: Plus,
   arrowRight: ArrowRight,
   arrowUpRight: ArrowUpRight,
+  arrowRightLeft: ArrowRightLeft,
   billing: CreditCard,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,

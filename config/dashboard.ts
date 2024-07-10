@@ -55,7 +55,7 @@ export const settingConfig: SidebarNavItem[] = [
     {
       title: "Account",
       href: "/settings",
-      icon: "post",
+      icon: "user",
     },
     {
       title: "Billing",
@@ -63,8 +63,8 @@ export const settingConfig: SidebarNavItem[] = [
       icon: "billing",
     },
     {
-      title: "Settings",
-      href: "/settings",
-      icon: "settings",
+      title: "Exchanges",
+      href: "/exchanges",
+      icon: "arrowRightLeft",
     },
   ]
