@@ -99,7 +99,7 @@ export function UserAccountNav({ user }: { user: ExtendedUser }) {
 
               <li className="rounded-lg text-foreground hover:bg-muted">
                 <Link
-                  href="/dashboard/settings"
+                  href="/settings"
                   onClick={closeDrawer}
                   className="flex w-full items-center gap-3 px-2.5 py-2"
                 >
@@ -179,7 +179,7 @@ export function UserAccountNav({ user }: { user: ExtendedUser }) {
 
         <DropdownMenuItem asChild>
           <Link
-            href="/dashboard/settings"
+            href="/settings"
             className="flex items-center space-x-2.5"
           >
             <Settings className="size-4" />

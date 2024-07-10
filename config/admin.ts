@@ -15,7 +15,7 @@ export const adminConfig: DashboardConfig = {
     },
     {
       title: "Settings",
-      href: "/dashboard/settings",
+      href: "/settings",
       icon: "settings",
     },
   ],
