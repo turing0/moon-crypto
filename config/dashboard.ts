@@ -40,7 +40,7 @@ export const dashboardConfig: DashboardConfig = {
     },
     {
       title: "Billing",
-      href: "/dashboard/billing",
+      href: "/billing",
       icon: "billing",
     },
     {
@@ -59,7 +59,7 @@ export const settingConfig: SidebarNavItem[] = [
     },
     {
       title: "Billing",
-      href: "/dashboard/billing",
+      href: "/billing",
       icon: "billing",
     },
     {
