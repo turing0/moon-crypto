@@ -17,7 +17,7 @@ export default {
     }),
     Resend({
       apiKey: env.RESEND_API_KEY,
-      from: "SaaS Starter App <onboarding@resend.dev>",
+      from: "Moon Crypto <onboarding@resend.dev>",
     }),
   ],
 } satisfies NextAuthConfig;

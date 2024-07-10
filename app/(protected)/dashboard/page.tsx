@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 
 export const metadata = constructMetadata({
-  title: "Panel – SaaS Starter",
+  title: "Panel – Moon Crypto",
   description: "Create and manage content.",
 });
 

@@ -36,7 +36,7 @@ export async function generateMetadata({
   const { title, description, image } = post;
 
   return constructMetadata({
-    title: `${title} – SaaS Starter`,
+    title: `${title} – Moon Crypto`,
     description: description,
     image,
   });

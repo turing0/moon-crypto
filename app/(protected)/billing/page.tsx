@@ -10,7 +10,7 @@ import { BillingInfo } from "@/components/pricing/billing-info";
 import { Icons } from "@/components/shared/icons";
 
 export const metadata = constructMetadata({
-  title: "Billing – SaaS Starter",
+  title: "Billing – Moon Crypto",
   description: "Manage billing and your subscription plan.",
 });
 

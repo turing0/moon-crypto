@@ -1,10 +1,10 @@
 <a href="https://next-saas-stripe-starter.vercel.app">
-  <img alt="SaaS Starter" src="public/_static/og.jpg">
+  <img alt="Moon Crypto" src="public/_static/og.jpg">
   <h1 align="center">Next SaaS Stripe Starter</h1>
 </a>
 
 <p align="center">
-  Start at full speed with SaaS Starter !
+  Start at full speed with Moon Crypto !
 </p>
 
 <p align="center">

@@ -5,8 +5,8 @@ import { BlogPosts } from "@/components/content/blog-posts";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Blog – SaaS Starter",
-  description: "Latest news and updates from Next SaaS Starter.",
+  title: "Blog – Moon Crypto",
+  description: "Latest news and updates from Moon Crypto.",
 });
 
 export default async function BlogPage() {
