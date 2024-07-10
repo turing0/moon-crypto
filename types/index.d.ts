@@ -118,6 +118,19 @@ export interface DataTableFilterOption<TData> {
 //   | SQL<unknown>
 //   | ((aliases: T) => SQL<T> | undefined)
 //   | undefined
+export type FeatureLdg = {
+  title: string;
+  description: string;
+  link: string;
+  icon: keyof typeof Icons;
+};
+
+export type TestimonialType = {
+  name: string;
+  job: string;
+  image: string;
+  review: string;
+};
 
 // compare plans
 export type ColumnType = string | boolean | null;
