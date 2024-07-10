@@ -127,19 +127,20 @@ export function NavBar({ scroll = false }: NavBarProps) {
                   <UserAccountNav user={session.user} />
                 </div>
               ) : (
-                <Link
-                  href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
-                  className="hidden md:block"
-                >
-                  <Button
-                    className="gap-2 px-4"
-                    variant="default"
-                    size="sm"
-                    rounded="full"
-                  >
-                    <span>Dashboard</span>
-                  </Button>
-                </Link>
+                // <Link
+                //   href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
+                //   className="hidden md:block"
+                // >
+                //   <Button
+                //     className="gap-2 px-4"
+                //     variant="default"
+                //     size="sm"
+                //     rounded="full"
+                //   >
+                //     <span>Dashboard</span>
+                //   </Button>
+                // </Link>
+                <UserAccountNav user={session.user} />
               )}
             </>
           ) : status === "unauthenticated" ? (
