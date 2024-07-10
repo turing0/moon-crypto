@@ -40,8 +40,8 @@ export default async function ProtectedLayout({
         </div> */}
         {/* <main className="flex w-full flex-1 flex-col overflow-hidden"> */}
         <main>
-            {children}
-          </main>
+          {children}
+        </main>
       </MaxWidthWrapper>
       <SiteFooter className="border-t" />
     </div>
