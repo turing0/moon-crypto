@@ -35,7 +35,7 @@ export default async function ExchangePage() {
   if (!user) {
     redirect("/login");
   }
-  const {data, status} = await fetchExchangeAPIs("clxiz8v0z00004iggqdpyuyv3");
+  const {data, status} = await fetchExchangeAPIs(user.id!);
 
   return (
     <DashboardShell>

@@ -42,7 +42,8 @@ export function NavBar({ scroll = false }: NavBarProps) {
   };
 
   const links =
-    (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
+    // (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
+    (selectedLayout && configMap[selectedLayout]) || (session ? dashboardConfig.mainNav : marketingConfig.mainNav);
 
   return (
     <header
@@ -94,7 +95,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
               <div className="flex lg:hidden">
                 <Icons.search className="size-6 text-muted-foreground" />
               </div>
-              <div className="flex space-x-4">
+              {/* <div className="flex space-x-4">
                 <Link
                   href={siteConfig.links.github}
                   target="_blank"
@@ -103,7 +104,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
                   <Icons.gitHub className="size-7" />
                   <span className="sr-only">GitHub</span>
                 </Link>
-              </div>
+              </div> */}
             </div>
           ) : null}
 
