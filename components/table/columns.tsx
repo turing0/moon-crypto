@@ -360,7 +360,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
   // },
   {
     accessorKey: "traderName",
-    header: "traderName",
+    header: "TraderName",
     cell: ({ row }) => (
       <div>{row.getValue("traderName")}</div>
     ),
