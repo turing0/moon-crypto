@@ -28,7 +28,7 @@ export default async function HeroLanding() {
       <div className="container flex max-w-5xl flex-col items-center gap-5 text-center">
         {/* Want animations? Check here: https://github.com/mickasmt/next-saas-stripe-starter/blob/76eb9f2b70b29c7a734ff0e5b047796ed2dac28d/app/(marketing)/page.tsx */}
         {/* <Link
-          href="https://twitter.com/miickasmt/status/1719892161095745801"
+          href="https://twitter.com/miickasmt/status/1810465801649938857"
           className={cn(
             buttonVariants({ variant: "outline", size: "sm", rounded: "full" }),
             "px-4 animate-fade-up opacity-0",
@@ -36,7 +36,7 @@ export default async function HeroLanding() {
           style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
           target="_blank"
         >
-          <span className="mr-3">🎉</span> Introducing on{" "}
+          <span className="mr-3">🎉</span> Introducing Next Auth Roles Template on{" "}
           <Icons.twitter className="ml-2 size-3.5" />
         </Link> */}
 

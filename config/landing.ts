@@ -1,4 +1,4 @@
-import { InfoLdg } from "types";
+import { FeatureLdg, InfoLdg, TestimonialType } from "types";
 
 export const infos: InfoLdg[] = [
   {
@@ -52,45 +52,52 @@ export const infos: InfoLdg[] = [
   },
 ];
 
-export const features = [
+export const features: FeatureLdg[] = [
   {
     title: "Consistent Profits",
     description:
       "Leverage the expertise of successful traders and enjoy consistent returns on your investments.",
     link: "/",
+    icon: "circleDollarSign",
   },
   {
     title: "Save Time",
     description:
       "Automate your trading process and free up your time to focus on other aspects of your life.",
     link: "/",
+    icon: "clock",
   },
   {
     title: "Secure Trading",
     description:
       "Our platform prioritizes security, ensuring your funds and personal information are protected.",
     link: "/",
+    icon: "shield",
   },
   // {
   //   title: "Feature 4",
   //   description:
   //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
   //   link: "/",
+  //   icon: "laptop",
   // },
   // {
   //   title: "Feature 5",
   //   description:
   //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  //   link: "/",
+  //   icon: "user",
   // },
   // {
   //   title: "Feature 6",
   //   description:
   //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
   //   link: "/",
+  //   icon: "copy",
   // },
 ];
 
-export const testimonials = [
+export const testimonials: TestimonialType[] = [
   {
     name: "John Doe",
     job: "Full Stack Developer",
