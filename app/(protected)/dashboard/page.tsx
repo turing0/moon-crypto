@@ -17,7 +17,7 @@ export default async function DashboardPage() {
     <DashboardShell>
       <DashboardHeader
         heading="Panel"
-        text={`Current Role : ${user?.role} — Change your role in settings.`}
+        // text={`Current Role : ${user?.role} — Change your role in settings.`}
       />
       <div>
         <EmptyPlaceholder>
