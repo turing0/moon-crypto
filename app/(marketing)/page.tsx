@@ -20,7 +20,7 @@ export default function IndexPage() {
       {/* <InfoLanding data={infos[1]} /> */}
       <InfoLanding data={infos[1]} />
       <Features />
-      <Testimonials />
+      {/* <Testimonials /> */}
     </>
   );
 }
