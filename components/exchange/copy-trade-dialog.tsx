@@ -1,5 +1,5 @@
-import { createExchangeApiSchema, CreateExchangeApiSchema } from "@/lib/validations/exchange"
-import React from "react"
+import { createCopyTradingSchema, CreateCopyTradingSchema } from "@/lib/validations/exchange"
+import React, { useEffect } from "react"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
 import {
@@ -33,21 +33,24 @@ import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createExchangeAPI } from "@/actions/exchange"
+import { createCopyTradingAPI } from "@/actions/exchange"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 
 
 
-export function CopyTradeDialog({traderId}) {
+export function CopyTradeDialog({traderId, name}) {
     const [open, setOpen] = React.useState(false)
+    const [activeTab, setActiveTab] = React.useState('fixed');
     const [isCreatePending, startCreateTransition] = React.useTransition()
   
-    const form = useForm<CreateExchangeApiSchema>({
-      resolver: zodResolver(createExchangeApiSchema),
+    const form = useForm<CreateCopyTradingSchema>({
+      resolver: zodResolver(createCopyTradingSchema),
     })
+    // const { control, watch } = form;
   
-    function onSubmit(input: CreateExchangeApiSchema) {
+    function onSubmit(input: CreateCopyTradingSchema) {
       startCreateTransition(async () => {
-        const { error } = await createExchangeAPI(traderId, input)
+        const { error } = await createCopyTradingAPI(traderId, input)
   
         if (error) {
           toast.error(error)
@@ -59,7 +62,20 @@ export function CopyTradeDialog({traderId}) {
         toast.success("Exchange API added")
       })
     }
-  
+
+    // 监控输入值
+    // const fixedAmount = watch('fixedAmount', '');
+    // const multiplierAmount = watch('multiplierAmount', '');
+    
+    useEffect(() => {
+      // Clear the form fields when the tab changes
+      form.reset({
+        fixedAmount: '',
+        multiplierAmount: '',
+      });
+    }, [activeTab, form]);
+
+    
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
@@ -72,7 +88,7 @@ export function CopyTradeDialog({traderId}) {
           <DialogHeader>
             <DialogTitle>Start Copy Trading</DialogTitle>
             <DialogDescription>
-              Fill in the details below to start a new copy trading.
+              Trader: {name}
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -129,55 +145,152 @@ export function CopyTradeDialog({traderId}) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="secret"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>API Secret</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter API secret"
-                        {...field}
+
+              <Tabs defaultValue="fixed" className="space-y-4" onValueChange={setActiveTab}>
+                <TabsList>
+                  <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
+                  <TabsTrigger value="multiplier">Multiplier</TabsTrigger>
+                </TabsList>
+                <TabsContent value="fixed" className="space-y-4">
+                  {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"> */}
+                  <div className="grid gap-4">
+                    <div className="relative">
+                    <FormField
+                      control={form.control}
+                      name="fixedAmount"
+                      render={({ field }) => (
+                        <FormItem>
+                          {/* <FormLabel>API Key</FormLabel> */}
+                          <FormControl>
+                            <div>
+                              <Input
+                                placeholder="Limit: 5 - 20000"
+                                {...field}
+                              />
+                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                                USDT
+                              </span>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    </div>
+                    <span className="text-gray-500 text-[14px] ">
+                      Fixed investment: -- USDT margin
+                    </span>
+                    {/* <Card>
+                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          className="h-4 w-4 text-muted-foreground"
+                        >
+                          <rect width="20" height="14" x="2" y="5" rx="2" />
+                          <path d="M2 10h20" />
+                        </svg>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-2xl font-bold">+12,234</div>
+                        <p className="text-xs text-muted-foreground">
+                          +19% from last month
+                        </p>
+                      </CardContent>
+                    </Card> */}
+                  </div>
+                </TabsContent>
+                <TabsContent value="multiplier" className="space-y-4">
+                  <div className="grid gap-4">
+                    <div className="relative">
+                      <FormField
+                        control={form.control}
+                        name="multiplierAmount"
+                        render={({ field }) => (
+                          <FormItem>
+                            {/* <FormLabel>API Key</FormLabel> */}
+                            <FormControl>
+                              <div>
+                                <Input
+                                  placeholder="Limit: 0.01 - 100"
+                                  {...field}
+                                />
+                                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                                  X
+                                </span>
+                              </div>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
+                    </div>
+                    <span className="text-gray-500 text-[14px] ">
+                      Copy traders place -- times the size of the orders of the elite trader.
+                    </span>
+                  </div>
+                </TabsContent>
+              </Tabs>
+
+              {/* <FormField
                 control={form.control}
                 name="passphrase"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Passphrase</FormLabel>
+                    <FormLabel>Copy trade settings</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Enter passphrase"
-                        {...field}
-                      />
+                      <Tabs defaultValue="fixed" className="space-y-4">
+                        <TabsList>
+                          <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
+                          <TabsTrigger value="multiplier">Multiplier</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="fixed" className="space-y-4">
+                          <div className="grid gap-4">
+                            <div className="relative">
+                              <Input
+                                placeholder="Limit: 5 - 20000"
+                                {...field}
+                                name="fixedAmount2"
+                              />
+                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                                USDT
+                              </span>
+                            </div>
+                            <span className="text-gray-500 text-[14px] ">
+                              Fixed investment: -- USDT margin
+                            </span>
+                          </div>
+                        </TabsContent>
+                        <TabsContent value="multiplier" className="space-y-4">
+                          <div className="grid gap-4">
+                            <div className="relative">
+                              <Input
+                                placeholder="Limit: 0.01 - 100"
+                                {...field}
+                                name="multiplierAmount2"
+                              />
+                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                                X
+                              </span>
+                            </div>
+                            <span className="text-gray-500 text-[14px] ">
+                              Copy traders place -- times the size of the orders of the elite trader.
+                            </span>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Description"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              /> */}
+              
               <DialogFooter className="gap-2 pt-2 sm:space-x-0">
                 <DialogClose asChild>
                   <Button type="button" variant="outline">

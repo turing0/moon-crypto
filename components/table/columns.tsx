@@ -483,7 +483,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
           {/* <Button className="h-7 px-2">
             Copy Trade
           </Button> */}
-          <CopyTradeDialog traderId={datarow.traderId} />
+          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
