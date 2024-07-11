@@ -6,12 +6,12 @@ import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 
 export const metadata = constructMetadata({
-  title: "Panel – Moon Crypto",
+  title: "Dashboard – Moon Crypto",
   description: "Create and manage content.",
 });
 
 export default async function DashboardPage() {
-  const user = await getCurrentUser();
+  // const user = await getCurrentUser();
 
   return (
     <DashboardShell>

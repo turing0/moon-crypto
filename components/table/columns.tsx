@@ -47,14 +47,14 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   // },
   {
     accessorKey: "symbol",
-    header: "仓位",
+    header: "Position",
     cell: ({ row }) => (
       <div>{row.getValue("symbol")}</div>
     ),
   },
   {
     accessorKey: "posSide",
-    header: "方向",
+    header: "Side",
     cell: ({ row }) => (
       <div>{row.getValue("posSide")}</div>
     ),
@@ -62,7 +62,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   {
     accessorKey: "openSize",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="数量" />
+      <DataTableColumnHeader column={column} title="Size" />
     ),
     // header: ({ column }) => {
     //   return (
@@ -81,21 +81,21 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   },
   {
     accessorKey: "openPriceAvg",
-    header: "持仓均价",
+    header: "OpenPriceAvg",
     cell: ({ row }) => (
       <div>{row.getValue("openPriceAvg")} USDT</div>
     ),
   },
   {
     accessorKey: "closePriceAvg",
-    header: "平仓价",
+    header: "ClosePriceAvg",
     cell: ({ row }) => (
       <div>{row.getValue("closePriceAvg")} USDT</div>
     ),
   },
   {
     accessorKey: "margin",
-    header: "已实现盈亏",
+    header: "Margin",
     cell: ({ row }) => {
       const margin2 = row.getValue("closePriceAvg") as number;
       const margin1 = row.getValue("openPriceAvg") as number;
@@ -127,7 +127,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          订单编号
+          TrackingNo
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )

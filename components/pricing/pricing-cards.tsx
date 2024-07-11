@@ -177,9 +177,9 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
           Email{" "}
           <a
             className="font-medium text-primary hover:underline"
-            href="mailto:support@saas-starter.com"
+            href="mailto:support@mooncryp.to"
           >
-            support@saas-starter.com
+            support@mooncryp.to
           </a>{" "}
           for to contact our support team.
           <br />
