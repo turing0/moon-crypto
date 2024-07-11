@@ -30,6 +30,7 @@ import {
   User,
   X,
   ArrowRightLeft,
+  FileBarChart,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -48,6 +49,7 @@ export const Icons = {
   copy: Copy,
   clock: Clock,
   ellipsis: MoreVertical,
+  fileBarChart: FileBarChart,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

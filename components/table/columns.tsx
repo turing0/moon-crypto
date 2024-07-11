@@ -18,6 +18,7 @@ import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
 import { UpdateExchangeApiSheet } from "../exchange/update-exchange-sheet"
 import { DeleteExchangeApiDialog } from "../exchange/delete-exchange-dialog"
 import { BitgetTrader } from "@/app/(protected)/traders/page"
+import { Icons } from "../shared/icons"
 
 // export const orderColumns: ColumnDef<Payment>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -474,12 +475,14 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
 
       return (
         <>
-        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(payment.traderId)}`}>
-          Analysis
-        </Link>
-        <Button className="h-7 px-2">
-          Copy Trade
-        </Button>
+        <div className="flex items-center">
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(payment.traderId)}`}>
+            <Icons.fileBarChart />
+          </Link>
+          <Button className="h-7 px-2">
+            Copy Trade
+          </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -507,6 +510,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
             {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
         </>
       )
     },
