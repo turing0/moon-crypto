@@ -93,7 +93,7 @@ export default function BentoGrid() {
                   Easy
                 </h2>
                 <p className="text-muted-foreground">
-                  The easiest way to profit from crypto markets if you do not have time to monitor the markets yourself. Follow professional traders and enjoy the benefits of being in the driver's seat of every trade.
+                  The easiest way to profit from crypto markets if you do not have time to monitor the markets yourself is to follow professional traders and enjoy the benefits of every trade.
                 </p>
               </div>
             </div>
