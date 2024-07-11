@@ -19,8 +19,9 @@ import { UpdateExchangeApiSheet } from "../exchange/update-exchange-sheet"
 import { DeleteExchangeApiDialog } from "../exchange/delete-exchange-dialog"
 import { BitgetTrader } from "@/app/(protected)/traders/page"
 import { Icons } from "../shared/icons"
+import { CopyTradeDialog } from "../exchange/copy-trade-dialog"
 
-// export const orderColumns: ColumnDef<Payment>[] = [
+// export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   // {
   //   id: "select",
@@ -171,7 +172,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const datarow = row.original
 
       return (
         <DropdownMenu>
@@ -184,13 +185,13 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.trackingNo)}
+              onClick={() => navigator.clipboard.writeText(datarow.trackingNo)}
             >
               Copy TrackingNo
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -307,7 +308,7 @@ export const okxOrderColumns: ColumnDef<OkxHistoryOrder>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const datarow = row.original
 
       return (
         <DropdownMenu>
@@ -320,13 +321,13 @@ export const okxOrderColumns: ColumnDef<OkxHistoryOrder>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.subPosId)}
+              onClick={() => navigator.clipboard.writeText(datarow.subPosId)}
             >
               Copy SubPosId
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -471,17 +472,18 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const datarow = row.original
 
       return (
         <>
         <div className="flex items-center">
-          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(payment.traderId)}`}>
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} className="px-1">
             <Icons.fileBarChart />
           </Link>
-          <Button className="h-7 px-2">
+          {/* <Button className="h-7 px-2">
             Copy Trade
-          </Button>
+          </Button> */}
+          <CopyTradeDialog traderId={datarow.traderId} />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -493,7 +495,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
           <DropdownMenuContent align="end">
             {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
             <Link
-                href={`/analysis?bitgetTraderId=${encodeURIComponent(payment.traderId)}`}
+                href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`}
                 target="_blank"
               >
               <DropdownMenuItem>
@@ -501,13 +503,13 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.traderId)}
+              onClick={() => navigator.clipboard.writeText(datarow.traderId)}
             >
               Copy TraderId
             </DropdownMenuItem>
             {/* <DropdownMenuSeparator /> */}
             {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
         </div>
@@ -592,7 +594,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
     enableHiding: false,
     // cell: ({ row }) => {
     cell: function Cell({ row }) {
-      const payment = row.original
+      const datarow = row.original
       const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false)
       const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false)
 
@@ -623,7 +625,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.apiKey)}
+              onClick={() => navigator.clipboard.writeText(datarow.apiKey)}
             >
               Copy ApiKey
             </DropdownMenuItem>
