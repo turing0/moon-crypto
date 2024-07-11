@@ -151,18 +151,18 @@ export function PricingCards({ userId, subscriptionPlan }: PricingCardsProps) {
             className="h-9 overflow-hidden rounded-full border bg-background p-1 *:h-7 *:text-muted-foreground"
           >
             <ToggleGroupItem
-              value="yearly"
-              className="rounded-full px-5 data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
-              aria-label="Toggle yearly billing"
-            >
-              Yearly (-20%)
-            </ToggleGroupItem>
-            <ToggleGroupItem
               value="monthly"
               className="rounded-full px-5 data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
               aria-label="Toggle monthly billing"
             >
               Monthly
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="yearly"
+              className="rounded-full px-5 data-[state=on]:!bg-primary data-[state=on]:!text-primary-foreground"
+              aria-label="Toggle yearly billing"
+            >
+              Yearly (-20%)
             </ToggleGroupItem>
           </ToggleGroup>
         </div>
