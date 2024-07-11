@@ -39,7 +39,10 @@ export function NavMobile() {
   }, [open]);
 
   const { data: session } = useSession();
-
+  if (session) {
+    return null;
+  }
+  
   return (
     <>
       <button
@@ -77,7 +80,7 @@ export function NavMobile() {
 
           {session ? (
             <>
-              {session.user.role === "ADMIN" ? (
+              {/* {session.user.role === "ADMIN" ? (
                 <li className="py-3">
                   <Link
                     href="/admin"
@@ -87,7 +90,7 @@ export function NavMobile() {
                     Admin
                   </Link>
                 </li>
-              ) : null}
+              ) : null} */}
 
               <li className="py-3">
                 <Link
