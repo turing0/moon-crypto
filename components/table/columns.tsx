@@ -474,6 +474,9 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
 
       return (
         <>
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(payment.traderId)}`}>
+          Analysis
+        </Link>
         <Button className="h-7 px-2">
           Copy Trade
         </Button>
