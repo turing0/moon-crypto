@@ -130,19 +130,19 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
 
 
 
-export async function createCopyTradingAPI(userId: string, input: CreateCopyTradingSchema) {
+export async function createCopyTradingAPI(traderId: string, input: CreateCopyTradingSchema) {
   // noStore()
   try {
     const session = await auth()
     
-    if (!session?.user || session?.user.id !== userId) {
+    if (!session?.user || session?.user.id !== traderId) {
       throw new Error("Unauthorized");
     }
 
     // creat 
     await prisma.exchangeAccount.create({
       data: {
-        userId: userId,
+        userId: traderId,
         exchangeName: input.exchange,
         apiKey: input.api,
         secretKey: input.api,

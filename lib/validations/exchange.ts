@@ -21,6 +21,8 @@ export const updateExchangeApiSchema = z.object({
 export type UpdateExchangeApiSchema = z.infer<typeof updateExchangeApiSchema>
 
 export const createCopyTradingSchema = z.object({
+  exchangeName: z.string(),
+  traderId: z.string(),
   exchange: z.string(),
   api: z.string(),
   fixedAmount: z.string().optional(),

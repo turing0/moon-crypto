@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { Input } from "../ui/input"
-import { Textarea } from "../ui/textarea"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createCopyTradingAPI } from "@/actions/exchange"
@@ -167,8 +166,7 @@ export function CopyTradeDialog({traderId, name}) {
                                 placeholder="Limit: 5 - 20000"
                                 {...field}
                               />
-                              {/* <span className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"> */}
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500">
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                                 USDT
                               </span>
                             </div>
@@ -222,7 +220,7 @@ export function CopyTradeDialog({traderId, name}) {
                                   placeholder="Limit: 0.01 - 100"
                                   {...field}
                                 />
-                                <span className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500">
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                                   X
                                 </span>
                               </div>
