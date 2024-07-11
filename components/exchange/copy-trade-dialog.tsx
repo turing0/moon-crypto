@@ -167,7 +167,8 @@ export function CopyTradeDialog({traderId, name}) {
                                 placeholder="Limit: 5 - 20000"
                                 {...field}
                               />
-                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              {/* <span className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"> */}
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500">
                                 USDT
                               </span>
                             </div>
@@ -177,7 +178,7 @@ export function CopyTradeDialog({traderId, name}) {
                       )}
                     />
                     </div>
-                    <span className="text-gray-500 text-[14px] ">
+                    <span className="text-[14px] text-gray-500 ">
                       Fixed investment: -- USDT margin
                     </span>
                     {/* <Card>
@@ -221,7 +222,7 @@ export function CopyTradeDialog({traderId, name}) {
                                   placeholder="Limit: 0.01 - 100"
                                   {...field}
                                 />
-                                <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-500">
                                   X
                                 </span>
                               </div>
@@ -231,7 +232,7 @@ export function CopyTradeDialog({traderId, name}) {
                         )}
                       />
                     </div>
-                    <span className="text-gray-500 text-[14px] ">
+                    <span className=" text-[14px] text-gray-500">
                       Copy traders place -- times the size of the orders of the elite trader.
                     </span>
                   </div>
