@@ -90,11 +90,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10 mt-8 space-y-1.5 text-center">
                 <h2 className="text-lg font-medium text-foreground">
-                  Secure by default
+                  Easy
                 </h2>
                 <p className="text-muted-foreground">
-                  Provident fugit and vero voluptate. magnam magni doloribus
-                  dolores voluptates a sapiente nisi.
+                  The easiest way to profit from crypto markets if you do not have time to monitor the markets yourself. Follow professional traders and enjoy the benefits of being in the driver's seat of every trade.
                 </p>
               </div>
             </div>
@@ -187,11 +186,10 @@ export default function BentoGrid() {
               </div>
               <div className="relative z-10 mt-8 space-y-1.5 text-center">
                 <h2 className="text-lg font-medium text-foreground">
-                  Faster than light
+                  Transparent
                 </h2>
                 <p className="text-muted-foreground">
-                  Provident fugit vero voluptate. magnam magni doloribus dolores
-                  voluptates inventore nisi.
+                  All traders have fully transparent trade records. You can analyse all the trades, statistics and metrics of every trader that is available in the marketplace and select the one that is right for your risk/reward appetite.
                 </p>
               </div>
             </div>
@@ -219,11 +217,10 @@ export default function BentoGrid() {
                 </div>
                 <div className="space-y-2">
                   <h2 className="text-lg font-medium text-foreground">
-                    Faster than light
+                    Smart Trading
                   </h2>
                   <p className="text-muted-foreground">
-                    Provident fugit vero voluptate. Voluptates a sapiente
-                    inventore nisi.
+                    Adding and updating orders in a flexible manner for smart trading Any order can have Take Profit, Stop Loss, and Trailing Stops.
                   </p>
                 </div>
               </div>
@@ -304,11 +301,10 @@ export default function BentoGrid() {
                 </div>
                 <div className="space-y-2">
                   <h2 className="text-lg font-medium text-foreground">
-                    Keep your loved ones safe
+                    Safe
                   </h2>
                   <p className="text-muted-foreground">
-                    Voluptate. magnam magni doloribus dolores voluptates a
-                    sapiente.
+                    All the trading activity happens through API, which allows the trader to execute the trades without the option of withdrawing any funds.
                   </p>
                 </div>
               </div>
