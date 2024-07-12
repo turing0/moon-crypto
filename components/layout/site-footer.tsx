@@ -8,10 +8,10 @@ import { ModeToggle } from "@/components/layout/mode-toggle";
 import { NewsletterForm } from "../forms/newsletter-form";
 import { Icons } from "../shared/icons";
 
-export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
+export function SiteFooter({ className, showLinks = false }: React.HTMLAttributes<HTMLElement >& { showLinks?: boolean }) {
   return (
     <footer className={cn("border-t", className)}>
-      <div className="container grid max-w-6xl grid-cols-1 gap-6 py-14 sm:grid-cols-2 md:grid-cols-5">
+      {showLinks && (<div className="container grid max-w-6xl grid-cols-1 gap-6 py-14 sm:grid-cols-2 md:grid-cols-5">
         {footerLinks.map((section) => (
           <div key={section.title}>
             <span className="text-sm font-medium text-foreground">
@@ -34,7 +34,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
         <div className="flex flex-col  items-end md:col-span-2">
           <NewsletterForm />
         </div>
-      </div>
+      </div>)}
 
       <div className="border-t py-4">
         <div className="container flex max-w-6xl items-center justify-between">
