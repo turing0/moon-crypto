@@ -109,6 +109,8 @@ export default function TradersPage() {
     fetchBitgetData();
   }, []);
 
+  const {data:session} = useSession();
+  
   useEffect(() => {
     async function fetchUserApiData() {
       try {
@@ -117,7 +119,7 @@ export default function TradersPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ userId: "clyd0tn8l00006iyf02pppphd" }), // 根据实际需要传入正确的 userId
+          body: JSON.stringify({ userId: session?.user.id }),
         });
         if (response.ok) {
           const data = await response.json();
@@ -134,7 +136,6 @@ export default function TradersPage() {
     fetchUserApiData();
   }, []);
 
-  // const {data:session} = useSession();
   // const user = await getCurrentUser();
   // if (!user) {
   //   redirect("/login");
