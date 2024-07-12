@@ -7,7 +7,6 @@ import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns
 import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getCurrentUser } from "@/lib/session";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -134,7 +133,7 @@ export default function TradersPage() {
     }
 
     fetchUserApiData();
-  }, []);
+  }, [session]);
 
   // const user = await getCurrentUser();
   // if (!user) {
