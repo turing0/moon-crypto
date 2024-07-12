@@ -80,6 +80,7 @@ model ExchangeAccount {
   secretKey         String
   passphrase        String?
   description       String?
+  enable            Boolean  @default(true)
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
 

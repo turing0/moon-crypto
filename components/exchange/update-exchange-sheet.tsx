@@ -77,6 +77,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
     startUpdateTransition(async () => {
       const updateData: any = {
         id: task.id,
+        accountName: input.accountName,
         api: input.api,
         description: input.description,
       };
