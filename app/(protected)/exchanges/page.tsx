@@ -16,6 +16,7 @@ export type ExchangeApiInfo = {
   // secretKey: string;
   // passphrase: string | null;
   description: string | null;
+  enabled: boolean;
   // createdAt: string;
   // updatedAt: string;
 };

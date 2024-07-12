@@ -590,10 +590,10 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },
   {
-    accessorKey: "enable",
-    header: "Enable",
+    accessorKey: "enabled",
+    header: "Enabled",
     cell: ({ row }) => (
-      <div>{row.getValue("enable")}</div>
+      <div>{row.getValue("enabled")}</div>
     ),
   },
   // {
