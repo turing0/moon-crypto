@@ -110,7 +110,7 @@ export default function TradersPage() {
   }, []);
 
   const {data:session} = useSession();
-  
+  console.log("session?.user.id:", session?.user.id)
   useEffect(() => {
     async function fetchUserApiData() {
       try {
