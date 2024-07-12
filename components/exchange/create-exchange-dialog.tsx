@@ -182,7 +182,7 @@ export function CreateExchangeDialog({userid}) {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -198,7 +198,7 @@ export function CreateExchangeDialog({userid}) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <DialogFooter className="gap-2 pt-2 sm:space-x-0">
               <DialogClose asChild>
                 <Button type="button" variant="outline">

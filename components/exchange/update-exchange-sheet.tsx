@@ -173,7 +173,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -189,7 +189,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <SheetFooter className="gap-2 pt-2 sm:space-x-0">
               <SheetClose asChild>
                 <Button type="button" variant="outline">
