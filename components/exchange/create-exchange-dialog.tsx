@@ -120,6 +120,22 @@ export function CreateExchangeDialog({userid}) {
             />
             <FormField
               control={form.control}
+              name="accountName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter account name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="api"
               render={({ field }) => (
                 <FormItem>
