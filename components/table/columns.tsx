@@ -20,6 +20,7 @@ import { DeleteExchangeApiDialog } from "../exchange/delete-exchange-dialog"
 import { BitgetTrader } from "@/app/(protected)/traders/page"
 import { Icons } from "../shared/icons"
 import { CopyTradeDialog } from "../exchange/copy-trade-dialog"
+import { Switch } from "../ui/switch"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -593,7 +594,11 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
     accessorKey: "enabled",
     header: "Enabled",
     cell: ({ row }) => (
-      <div>{row.getValue("enabled")}</div>
+      <div>
+        <div className="flex items-center space-x-2">
+          <Switch id="api-enabled" defaultChecked={row.getValue("enabled")} />
+        </div>
+      </div>
     ),
   },
   // {

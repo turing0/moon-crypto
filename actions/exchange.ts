@@ -69,6 +69,7 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
   // noStore()
   try {
     const updateData: any = {
+      accountName: input.accountName,
       apiKey: input.api,
       description: input.description,
     };
