@@ -6,9 +6,9 @@ import { DashboardShell } from "@/components/dashboard/shell";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GetServerSideProps } from "next";
+import { getCurrentUser } from "@/lib/session";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -90,7 +90,8 @@ export default function TradersPage() {
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
   const [traderId, setTraderId] = useState<string>('');
   const [okxOraderId, setOkxTraderId] = useState<string>('');
-  
+  const [userApiData, setUserApiData] = useState(null);
+
   const handleOKXSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
@@ -107,6 +108,37 @@ export default function TradersPage() {
 
     fetchBitgetData();
   }, []);
+
+  useEffect(() => {
+    async function fetchUserApiData() {
+      try {
+        const response = await fetch('/api/userApi', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId: "clyd0tn8l00006iyf02pppphd" }), // 根据实际需要传入正确的 userId
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log("response data:", data)
+          setUserApiData(data);
+        } else {
+          console.error('Failed to fetch user data:', response.status);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    }
+
+    fetchUserApiData();
+  }, []);
+
+  // const {data:session} = useSession();
+  // const user = await getCurrentUser();
+  // if (!user) {
+  //   redirect("/login");
+  // }
   
   return (
     <DashboardShell>

@@ -32,10 +32,26 @@ import { useForm } from "react-hook-form"
 import { Input } from "../ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createCopyTradingAPI } from "@/actions/exchange"
+import { createCopyTradingAPI, getExchangeAPI } from "@/actions/exchange"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Checkbox } from "../ui/checkbox"
+import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
+import { redirect } from "next/navigation"
+import { useSession } from "next-auth/react"
+
+async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInfo[]; status: string }> {
+  try {
+    const exchangeAPIs = await getExchangeAPI(userId);
+    console.log('Exchange APIs:', exchangeAPIs);
+    return {data: exchangeAPIs, status: 'success'};
+  } catch (error) {
+    console.error(error);
+    return { data: [], status: 'error' }
+  }
+}
 
 
+const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 
 export function CopyTradeDialog({traderId, name}) {
     const [open, setOpen] = React.useState(false)
@@ -62,6 +78,9 @@ export function CopyTradeDialog({traderId, name}) {
       })
     }
 
+    const {data:session} = useSession();
+    // const {data, status} = fetchExchangeAPIs(session?.user?.id!);
+    
     // 监控输入值
     // const fixedAmount = watch('fixedAmount', '');
     // const multiplierAmount = watch('multiplierAmount', '');
@@ -112,7 +131,7 @@ export function CopyTradeDialog({traderId, name}) {
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          {/* {exchanges.map((item) => (
+                          {exchanges.map((item) => (
                             <SelectItem
                               key={item}
                               value={item}
@@ -120,7 +139,7 @@ export function CopyTradeDialog({traderId, name}) {
                             >
                               {item}
                             </SelectItem>
-                          ))} */}
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -130,15 +149,21 @@ export function CopyTradeDialog({traderId, name}) {
               />
               <FormField
                 control={form.control}
-                name="api"
+                name="api"  // TODO
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>API Key</FormLabel>
+                    <FormLabel>Choose your exchange account</FormLabel>
                     <FormControl>
-                      <Input
+                      {/* <Input
                         placeholder="Enter API key"
                         {...field}
+                      /> */}
+                      <div>
+                      <Checkbox
+                        // checked={}
+                        // onCheckedChange={ }
                       />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
