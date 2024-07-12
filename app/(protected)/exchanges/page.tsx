@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 export type ExchangeApiInfo = {
   id: string;
   userId: string
+  accountName: string;
   exchangeName: string;
   apiKey: string;
   // secretKey: string;

@@ -552,6 +552,13 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },
   {
+    accessorKey: "accountName",
+    header: "AccountName",
+    cell: ({ row }) => (
+      <div>{row.getValue("accountName")}</div>
+    ),
+  },
+  {
     accessorKey: "exchangeName",
     header: "Exchange",
     cell: ({ row }) => (
@@ -583,12 +590,20 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "enable",
+    header: "Enable",
     cell: ({ row }) => (
-      <div>{row.getValue("description")}</div>
+      // <div>{row.getValue("enable")}</div>
+      <div></div>
     ),
   },
+  // {
+  //   accessorKey: "description",
+  //   header: "Description",
+  //   cell: ({ row }) => (
+  //     <div>{row.getValue("description")}</div>
+  //   ),
+  // },
   {
     id: "actions",
     enableHiding: false,

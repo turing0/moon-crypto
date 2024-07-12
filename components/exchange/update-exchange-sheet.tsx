@@ -64,6 +64,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
     resolver: zodResolver(updateExchangeApiSchema),
     defaultValues: {
       // title: task.title ?? "",
+      accountName: task.accountName,
       api: task.apiKey,
       secret: "",
       passphrase: "",
@@ -119,6 +120,22 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
+            <FormField
+              control={form.control}
+              name="accountName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter account name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="api"
