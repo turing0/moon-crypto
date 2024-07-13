@@ -20,14 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { useForm } from "react-hook-form"
 import { Input } from "../ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
@@ -36,8 +28,6 @@ import { createCopyTradingAPI, getExchangeAPI } from "@/actions/exchange"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
-import { redirect } from "next/navigation"
-import { useSession } from "next-auth/react"
 
 async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInfo[]; status: string }> {
   try {
@@ -51,8 +41,6 @@ async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInf
 }
 
 
-const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
-
 export function CopyTradeDialog({traderId, name, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [activeTab, setActiveTab] = React.useState('fixed');
@@ -64,21 +52,22 @@ export function CopyTradeDialog({traderId, name, userApi}) {
     // const { control, watch } = form;
     console.log("CopyTradeDialog userApi:", userApi)
     function onSubmit(input: CreateCopyTradingSchema) {
-      startCreateTransition(async () => {
-        const { error } = await createCopyTradingAPI(traderId, input)
+      console.log("input:", input)
+      // startCreateTransition(async () => {
+      //   const { error } = await createCopyTradingAPI(traderId, input)
   
-        if (error) {
-          toast.error(error)
-          return
-        }
+      //   if (error) {
+      //     toast.error(error)
+      //     return
+      //   }
   
-        form.reset()
-        setOpen(false)
-        toast.success("Exchange API added")
-      })
+      //   form.reset()
+      //   setOpen(false)
+      //   toast.success("Exchange API added")
+      // })
     }
 
-    const {data:session} = useSession();
+    // const {data:session} = useSession();
     // const {data, status} = fetchExchangeAPIs(session?.user?.id!);
     
     // 监控输入值
@@ -88,8 +77,9 @@ export function CopyTradeDialog({traderId, name, userApi}) {
     useEffect(() => {
       // Clear the form fields when the tab changes
       form.reset({
-        fixedAmount: '',
-        multiplierAmount: '',
+        apis: form.getValues('apis'), // Retain the current value of apis
+        fixedAmount: "",
+        multiplierAmount: "",
       });
     }, [activeTab, form]);
 
@@ -116,60 +106,90 @@ export function CopyTradeDialog({traderId, name, userApi}) {
             >
               <FormField
                 control={form.control}
-                name="exchange"
-                render={({ field }) => (
+                name="apis"
+                render={() => (
                   <FormItem>
-                    <FormLabel>Exchange</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="capitalize">
-                          <SelectValue placeholder="Select exchange" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectGroup>
-                          {exchanges.map((item) => (
-                            <SelectItem
-                              key={item}
-                              value={item}
-                              className="capitalize"
+                    <div className="mb-4">
+                      <FormLabel className="text-base">Choose your exchange account</FormLabel>
+                    </div>
+                    {userApi.map((item) => (
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name="apis"
+                        render={({ field }) => {
+                          const value = field.value || [];
+                          return (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0"
                             >
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="api"  // TODO
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Choose your exchange account</FormLabel>
-                    <FormControl>
-                      {/* <Input
-                        placeholder="Enter API key"
-                        {...field}
-                      /> */}
-                      <div>
-                      <Checkbox
-                        // checked={}
-                        // onCheckedChange={ }
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...value, item.id])
+                                      : field.onChange(
+                                          value?.filter(
+                                            (v) => v !== item.id
+                                          )
+                                        )
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {item.accountName}
+                              </FormLabel>
+                            </FormItem>
+                          )
+                        }}
                       />
-                      </div>
-                    </FormControl>
+                    ))}
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
+              {/* <div>
+                <FormLabel>Choose your exchange account</FormLabel>
+                <div className="flex flex-wrap space-x-4 py-1">
+                {userApi.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="apis"
+                    render={({ field }) => {
+                      const value = field.value || [];
+                      return (
+                        <FormItem
+                          key={item.id}
+                          className="flex flex-row items-start space-x-2 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...value, item.id])
+                                  : field.onChange(
+                                      value?.filter(
+                                        (v) => v !== item.id
+                                      )
+                                    )
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {item.accountName}
+                          </FormLabel>
+                        </FormItem>
+                      )
+                    }}
+                  />
+                ))}
+                </div>
+              </div> */}
+              
               <Tabs defaultValue="fixed" className="space-y-4" onValueChange={setActiveTab}>
                 <TabsList>
                   <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
@@ -186,10 +206,16 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                         <FormItem>
                           {/* <FormLabel>API Key</FormLabel> */}
                           <FormControl>
-                            <div>
+                            <div className="relative">
                               <Input
                                 placeholder="Limit: 5 - 20000"
                                 {...field}
+                                onChange={(e) => {
+                                  // 仅允许数字输入
+                                  const value = e.target.value.replace(/[^0-9]/g, '');
+                                  const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                  field.onChange(String(numericValue));  // 更新字段值
+                                }}
                               />
                               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                                 USDT
@@ -240,10 +266,32 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                           <FormItem>
                             {/* <FormLabel>API Key</FormLabel> */}
                             <FormControl>
-                              <div>
+                              <div className="relative">
                                 <Input
                                   placeholder="Limit: 0.01 - 100"
                                   {...field}
+                                  onChange={(e) => {
+                                    let value = e.target.value.replace(/[^0-9.]/g, '');  // 移除除数字和点之外的所有字符
+                                    if (value.includes('.')) {
+                                      // 如果存在小数点，拆分整数部分和小数部分
+                                      let parts = value.split('.');
+                                      // 只保留小数点后的前两位数字
+                                      if (parts[1].length > 2) {
+                                        parts[1] = parts[1].substring(0, 2);
+                                      }
+                                      // 重新组合整数和小数部分
+                                      value = parts[0] + '.' + parts[1];
+                                    }
+                                    field.onChange(value);
+                                  }}
+                                  // onBlur={(e) => {
+                                  //   // 当用户离开输入框时，对数值进行最终的范围限制
+                                  //   let value = parseFloat(e.target.value);
+                                  //   if (!isNaN(value)) {
+                                  //     value = Math.max(0.01, Math.min(100, value));
+                                  //     field.onChange(value.toFixed(2));
+                                  //   }
+                                  // }}
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                                   X

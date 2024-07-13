@@ -23,12 +23,22 @@ export const updateExchangeApiSchema = z.object({
 export type UpdateExchangeApiSchema = z.infer<typeof updateExchangeApiSchema>
 
 export const createCopyTradingSchema = z.object({
-  exchangeName: z.string(),
-  traderId: z.string(),
-  exchange: z.string(),
-  api: z.string(),
+  // exchangeName: z.string(),
+  // traderId: z.string(),
+  // exchange: z.string(),
+  apis: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
   fixedAmount: z.string().optional(),
   multiplierAmount: z.string().optional(),
 })
+.refine(data => data.fixedAmount || data.multiplierAmount, {
+  message: "You must fill at least one of fixedAmount or multiplierAmount.",
+  path: ["fixedAmount"], // This makes the error appear on both fields
+})
+.refine(data => data.fixedAmount || data.multiplierAmount, {
+  message: "You must fill at least one of fixedAmount or multiplierAmount.",
+  path: ["multiplierAmount"], // This makes the error appear on both fields
+});
 
 export type CreateCopyTradingSchema = z.infer<typeof createCopyTradingSchema>

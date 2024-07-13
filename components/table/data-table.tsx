@@ -20,10 +20,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DataTableToolbar } from "./data-table-toolbar"
 import { DataTablePagination } from "./data-table-pagination"
 
-// 创建 UserApiContext
-const UserApiContext = React.createContext<any[]>([]);
-export const useUserApi = () => React.useContext(UserApiContext);
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -76,7 +72,6 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <UserApiContext.Provider value={userApi}>
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
@@ -133,6 +128,5 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
     </div>
-    </UserApiContext.Provider>
   )
 }

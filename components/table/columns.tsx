@@ -366,6 +366,9 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
     header: "TraderName",
     cell: ({ row }) => (
       <div>{row.getValue("traderName")}</div>
+      // <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(row.getValue("traderId"))}`}>
+      //   {row.getValue("traderName")}
+      // </Link>
     ),
   },
   {
