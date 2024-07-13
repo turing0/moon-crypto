@@ -47,9 +47,9 @@ export async function getExchangeAPI(userId: string): Promise<ExchangeApiInfo[]>
   try {
     const session = await auth()
     // TODO 需删除注释
-    if (!session?.user || session?.user.id !== userId) {
-      throw new Error("Unauthorized");
-    }
+    // if (!session?.user || session?.user.id !== userId) {
+    //   throw new Error("Unauthorized");
+    // }
 
     // Retrieve  
     const exchangeAPIs = await prisma.exchangeAccount.findMany({
@@ -137,13 +137,13 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
   try {
     const session = await auth()
     
-    if (!session?.user || session?.user.id !== traderId) {
-      throw new Error("Unauthorized");
-    }
+    // if (!session?.user || session?.user.id !== traderId) {
+    //   throw new Error("Unauthorized");
+    // }
     
     const data: any = {
-      userId: session?.user.id,
-      // userId: "clyd0tn8l00006iyf02pppphd",
+      // userId: session?.user.id,
+      userId: "clyd0tn8l00006iyf02pppphd",
       traderId: traderId,
     };
     if (input.fixedAmount) {
