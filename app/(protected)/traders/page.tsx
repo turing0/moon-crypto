@@ -109,8 +109,11 @@ export default function TradersPage() {
   }, []);
 
   const {data:session} = useSession();
-  console.log("session?.user.id:", session?.user.id)
   useEffect(() => {
+    if (!session?.user?.id) {
+      // console.log('Session not loaded yet or user ID not available');
+      return;
+    }
     async function fetchUserApiData() {
       try {
         const response = await fetch('/api/userApi', {
@@ -166,7 +169,7 @@ export default function TradersPage() {
                 </div>
               </form>
             </div> */}
-            <DataTable data={bitgetTrader} columns={bitgetTraderColumns} />
+            <DataTable data={bitgetTrader} columns={bitgetTraderColumns} userApi={userApiData!} />
           </TabsContent>
           <TabsContent value="binance" className="space-y-4">
             <div >

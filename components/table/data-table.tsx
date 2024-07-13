@@ -20,14 +20,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DataTableToolbar } from "./data-table-toolbar"
 import { DataTablePagination } from "./data-table-pagination"
 
+// 创建 UserApiContext
+const UserApiContext = React.createContext<any[]>([]);
+export const useUserApi = () => React.useContext(UserApiContext);
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  userApi?: any[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  userApi = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -60,6 +66,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
+    <UserApiContext.Provider value={userApi}>
     <div className="space-y-4">
       <DataTableToolbar table={table} />
       <div className="rounded-md border">
@@ -89,14 +96,16 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -114,5 +123,6 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination table={table} />
     </div>
+    </UserApiContext.Provider>
   )
 }

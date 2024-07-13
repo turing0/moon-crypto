@@ -32,6 +32,7 @@ export async function POST(req: NextRequest, res: NextResponse){
         userId: userId,
       },
       select: { // 选择要返回的字段
+        id: true, 
         accountName: true, 
         exchangeName: true, 
       },

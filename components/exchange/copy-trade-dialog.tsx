@@ -53,7 +53,7 @@ async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInf
 
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 
-export function CopyTradeDialog({traderId, name}) {
+export function CopyTradeDialog({traderId, name, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [activeTab, setActiveTab] = React.useState('fixed');
     const [isCreatePending, startCreateTransition] = React.useTransition()
@@ -62,7 +62,7 @@ export function CopyTradeDialog({traderId, name}) {
       resolver: zodResolver(createCopyTradingSchema),
     })
     // const { control, watch } = form;
-  
+    console.log("CopyTradeDialog userApi:", userApi)
     function onSubmit(input: CreateCopyTradingSchema) {
       startCreateTransition(async () => {
         const { error } = await createCopyTradingAPI(traderId, input)
