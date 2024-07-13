@@ -137,7 +137,7 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
   try {
     const session = await auth()
     
-    if (!session?.user || session?.user.id !== traderId) {
+    if (!session?.user) {
       throw new Error("Unauthorized");
     }
     
