@@ -145,12 +145,12 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
     await prisma.exchangeAccount.create({
       data: {
         userId: traderId,     // TODO
-        exchangeName: input.exchange,
-        accountName: input.exchange,
-        apiKey: input.api,
-        secretKey: input.api,
-        passphrase: input.api,
-        description: input.api,
+        exchangeName: traderId,
+        accountName: traderId,
+        apiKey: traderId,
+        secretKey: traderId,
+        passphrase: traderId,
+        // description: input.api,
       },
     })
 
