@@ -42,7 +42,7 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
             Copyright &copy; 2024. All rights reserved.
           </span> */}
           <p className="text-left text-sm text-muted-foreground">
-            © 2024,{" "}
+            © 2024{" "}
             <Link
               // href={siteConfig.links.twitter}
               href="/"
@@ -50,7 +50,7 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
             >
-              MoonCryp.to
+              MoonCrypto
             </Link>
               {" "}- utilizing methods from top crypto trading experts
             {/* <Link

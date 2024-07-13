@@ -1,3 +1,5 @@
+"use client"
+
 import { createCopyTradingSchema, CreateCopyTradingSchema } from "@/lib/validations/exchange"
 import React, { useEffect } from "react"
 import { toast } from "sonner"
@@ -24,21 +26,9 @@ import { useForm } from "react-hook-form"
 import { Input } from "../ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createCopyTradingAPI, getExchangeAPI } from "@/actions/exchange"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
-import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
-
-async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInfo[]; status: string }> {
-  try {
-    const exchangeAPIs = await getExchangeAPI(userId);
-    console.log('Exchange APIs:', exchangeAPIs);
-    return {data: exchangeAPIs, status: 'success'};
-  } catch (error) {
-    console.error(error);
-    return { data: [], status: 'error' }
-  }
-}
+import { createCopyTradingAPI } from "@/actions/exchange"
 
 
 export function CopyTradeDialog({traderId, name, userApi}) {
@@ -53,18 +43,18 @@ export function CopyTradeDialog({traderId, name, userApi}) {
     console.log("CopyTradeDialog userApi:", userApi)
     function onSubmit(input: CreateCopyTradingSchema) {
       console.log("input:", input)
-      // startCreateTransition(async () => {
-      //   const { error } = await createCopyTradingAPI(traderId, input)
+      startCreateTransition(async () => {
+        const { error } = await createCopyTradingAPI(traderId, input)
   
-      //   if (error) {
-      //     toast.error(error)
-      //     return
-      //   }
+        if (error) {
+          toast.error(error)
+          return
+        }
   
-      //   form.reset()
-      //   setOpen(false)
-      //   toast.success("Exchange API added")
-      // })
+        form.reset()
+        setOpen(false)
+        toast.success("Copy Trading added")
+      })
     }
 
     // const {data:session} = useSession();
@@ -118,7 +108,8 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                         control={form.control}
                         name="apis"
                         render={({ field }) => {
-                          const value = field.value || [];
+                          const value = field.value || "";
+                          const selectedIds = value.split("-").filter((v) => v);
                           return (
                             <FormItem
                               key={item.id}
@@ -127,14 +118,20 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                               <FormControl>
                                 <Checkbox
                                   checked={field.value?.includes(item.id)}
+                                  // onCheckedChange={(checked) => {
+                                  //   return checked
+                                  //     ? field.onChange([...value, item.id])
+                                  //     : field.onChange(
+                                  //         value?.filter(
+                                  //           (v) => v !== item.id
+                                  //         )
+                                  //       )
+                                  // }}
                                   onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...value, item.id])
-                                      : field.onChange(
-                                          value?.filter(
-                                            (v) => v !== item.id
-                                          )
-                                        )
+                                    const newSelectedIds = checked
+                                      ? [...selectedIds, item.id]
+                                      : selectedIds.filter((v) => v !== item.id);
+                                    field.onChange(newSelectedIds.join("-"));
                                   }}
                                 />
                               </FormControl>
@@ -150,46 +147,7 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                   </FormItem>
                 )}
               />
-              {/* <div>
-                <FormLabel>Choose your exchange account</FormLabel>
-                <div className="flex flex-wrap space-x-4 py-1">
-                {userApi.map((item) => (
-                  <FormField
-                    key={item.id}
-                    control={form.control}
-                    name="apis"
-                    render={({ field }) => {
-                      const value = field.value || [];
-                      return (
-                        <FormItem
-                          key={item.id}
-                          className="flex flex-row items-start space-x-2 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...value, item.id])
-                                  : field.onChange(
-                                      value?.filter(
-                                        (v) => v !== item.id
-                                      )
-                                    )
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {item.accountName}
-                          </FormLabel>
-                        </FormItem>
-                      )
-                    }}
-                  />
-                ))}
-                </div>
-              </div> */}
-              
+
               <Tabs defaultValue="fixed" className="space-y-4" onValueChange={setActiveTab}>
                 <TabsList>
                   <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
@@ -211,7 +169,6 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                                 placeholder="Limit: 5 - 20000"
                                 {...field}
                                 onChange={(e) => {
-                                  // 仅允许数字输入
                                   const value = e.target.value.replace(/[^0-9]/g, '');
                                   const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
                                   field.onChange(String(numericValue));  // 更新字段值

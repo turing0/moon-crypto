@@ -485,10 +485,12 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
           <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} className="px-1">
             <Icons.fileBarChart />
           </Link>
-          {/* <Button className="h-7 px-2">
-            Copy Trade
-          </Button> */}
-          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} />
+          <Link href={`/ct/setting/${datarow.traderId}`} className="px-1">
+            <Button className="h-7 px-2">
+              Copy Trade
+            </Button>
+          </Link>
+          {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} /> */}
           {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} /> */}
 
         <DropdownMenu>
