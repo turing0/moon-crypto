@@ -131,8 +131,8 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
 }
 
 
-
 export async function createCopyTradingAPI(traderId: string, input: CreateCopyTradingSchema) {
+  console.log("createCopyTradingAPI traderId", traderId)
   // noStore()
   try {
     const session = await auth()
@@ -140,21 +140,28 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
     if (!session?.user || session?.user.id !== traderId) {
       throw new Error("Unauthorized");
     }
+    
+    const data: any = {
+      userId: session?.user.id,
+      // userId: "clyd0tn8l00006iyf02pppphd",
+      traderId: traderId,
+    };
+    if (input.fixedAmount) {
+      // data.fixedAmount = input.fixedAmount;
+      data.fixedAmount = parseInt(input.fixedAmount, 10);
+    }
+    if (input.multiplierAmount) {
+      // data.multiplierAmount = input.multiplierAmount;
+      data.multiplierAmount = parseFloat(input.multiplierAmount);
+    }
 
-    // creat 
-    await prisma.exchangeAccount.create({
-      data: {
-        userId: traderId,     // TODO
-        exchangeName: traderId,
-        accountName: traderId,
-        apiKey: traderId,
-        secretKey: traderId,
-        passphrase: traderId,
-        // description: input.api,
-      },
+    // insert CopyTradingSetting
+    await prisma.copyTradingSetting.create({
+      data: data,
     })
 
-    revalidatePath("/exchanges")
+
+    revalidatePath("/traders")
 
     return {
       status: "success",
