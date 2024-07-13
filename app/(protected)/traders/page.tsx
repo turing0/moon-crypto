@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export type BitgetTrader = {
+  userApi: any[];
   canTrace: string;
   traderId: string;
   traderName: string;

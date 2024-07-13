@@ -21,7 +21,6 @@ import { BitgetTrader } from "@/app/(protected)/traders/page"
 import { Icons } from "../shared/icons"
 import { CopyTradeDialog } from "../exchange/copy-trade-dialog"
 import { Switch } from "../ui/switch"
-import { useUserApi } from "./data-table"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -474,7 +473,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const userApi = useUserApi(); // 使用 useUserApi 钩子
+      // const userApi = useUserApi(); // 使用 useUserApi 钩子
       const datarow = row.original
 
       return (
@@ -486,7 +485,8 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
           {/* <Button className="h-7 px-2">
             Copy Trade
           </Button> */}
-          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={userApi} />
+          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} />
+          {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} /> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

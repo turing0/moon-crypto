@@ -33,8 +33,17 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  userApi = [],
+  userApi = [], // 使用空数组作为默认值
 }: DataTableProps<TData, TValue>) {
+
+  const stableUserApi = React.useMemo(() => userApi, [userApi]);
+  const enhancedData = React.useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      userApi: stableUserApi, // 将 stableUserApi 合并到每个数据项中
+    }));
+  }, [data, stableUserApi]);
+
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -44,7 +53,8 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([])
 
   const table = useReactTable({
-    data,
+    data: enhancedData,
+    // data,
     columns,
     state: {
       sorting,
