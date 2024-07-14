@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@/lib/session";
 import { constructMetadata } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "@/components/dashboard/header";
@@ -8,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const metadata = constructMetadata({
   title: "Dashboard – Moon Crypto",
-  description: "Create and manage content.",
+  description: "Streamline your crypto trading management.",
 });
 
 export default async function DashboardPage() {
@@ -20,7 +19,7 @@ export default async function DashboardPage() {
         heading="Dashboard"
         // text={`Current Role : ${user?.role} — Change your role in settings.`}
       />
-      <div>
+      <div className="flex-1 space-y-4">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
