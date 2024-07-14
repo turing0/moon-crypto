@@ -34,10 +34,13 @@ export function DataTable<TData, TValue>({
 
   const stableUserApi = React.useMemo(() => userApi, [userApi]);
   const enhancedData = React.useMemo(() => {
-    return data.map(item => ({
-      ...item,
-      userApi: stableUserApi, // 将 stableUserApi 合并到每个数据项中
-    }));
+    if (userApi && userApi.length > 0) {
+      return data.map(item => ({
+        ...item,
+        userApi: stableUserApi, // 将 stableUserApi 合并到每个数据项中
+      }));
+    }
+    return data; // userApi 为空时，返回原始数据
   }, [data, stableUserApi]);
 
   const [rowSelection, setRowSelection] = React.useState({})
