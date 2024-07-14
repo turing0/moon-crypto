@@ -155,24 +155,47 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
     }
 
     // insert CopyTradingSetting
-    const copyTradingSetting = await prisma.copyTradingSetting.create({
-      data: data,
-    })
-
-    // const copyTradingAccount = await prisma.copyTradingAccount.create({
-    //   data: {
-    //     copyTradingSettingId: copyTradingSetting.id,
-    //     exchangeAccountId: input.apis[0]
-    //   }
+    // const copyTradingSetting = await prisma.copyTradingSetting.create({
+    //   data: data,
+    // })
+    // const copyTradingAccountCreations = input.apis.map(apiId => {
+    //   return prisma.copyTradingAccount.create({
+    //     data: {
+    //       copyTradingSettingId: copyTradingSetting.id,
+    //       exchangeAccountId: apiId
+    //     }
+    //   });
     // });
+    // await Promise.all(copyTradingAccountCreations);
 
+    // 使用 prisma.$transaction 来确保所有操作都在一个事务中执行
+    await prisma.$transaction(async (prisma) => {
+      // 创建 CopyTradingSetting
+      const copyTradingSetting = await prisma.copyTradingSetting.create({
+        data: data,
+      });
+  
+      // 为每个 apiId 创建 CopyTradingAccount
+      const copyTradingAccountCreations = input.apis.map(apiId => {
+        return prisma.copyTradingAccount.create({
+          data: {
+            copyTradingSettingId: copyTradingSetting.id,
+            exchangeAccountId: apiId
+          }
+        });
+      });
+  
+      // 使用 Promise.all 来同时执行所有创建操作
+      await Promise.all(copyTradingAccountCreations);
+    });
+    
     revalidatePath("/traders")
 
     return {
       status: "success",
     }
   } catch (err) {
-    console.log(err)
+    console.log("createCopyTradingAPI error:", err)
     return {
       data: null,
       error: (err),
