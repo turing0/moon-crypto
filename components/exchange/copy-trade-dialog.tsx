@@ -40,7 +40,7 @@ export function CopyTradeDialog({traderId, name, userApi}) {
       resolver: zodResolver(createCopyTradingSchema),
     })
     // const { control, watch } = form;
-    console.log("CopyTradeDialog userApi:", userApi)
+    // console.log("CopyTradeDialog userApi:", userApi)
     function onSubmit(input: CreateCopyTradingSchema) {
       console.log("input:", input)
       startCreateTransition(async () => {

@@ -128,9 +128,7 @@ async function getOkxHistoryOrder(traderId: string) {
 //   </div>
 //   </>
 // }
-function SearchBarFallback() {
-  return <>Loading...</>
-}
+
 interface SearchParams {
   // [key: string]: string | string[] | undefined
   [key: string]: string | undefined
@@ -235,7 +233,8 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
           <TabsContent value="bitget" className="space-y-4">
             {/* <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
             <div>
-              <form onSubmit={handleBitgetOrderSubmit}>
+              {/* <form onSubmit={handleBitgetOrderSubmit}> */}
+              <form>
                 {/* <Suspense fallback={<SearchBarFallback />}>
                   <SearchBar name="bitgetTraderId" placeholder="Search Bitget TraderId" />
                 </Suspense> */}
@@ -264,7 +263,8 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
           </TabsContent>
           <TabsContent value="okx" className="space-y-4">
             <div >
-              <form onSubmit={handleOKXSubmit}>
+              {/* <form onSubmit={handleOKXSubmit}> */}
+              <form>
                 {/* <Suspense fallback={<SearchBarFallback />}>
                   <SearchBar name="okxTraderId" placeholder="Search OKX TraderId" />
                 </Suspense> */}
