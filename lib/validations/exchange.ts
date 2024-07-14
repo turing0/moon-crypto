@@ -23,14 +23,14 @@ export const updateExchangeApiSchema = z.object({
 export type UpdateExchangeApiSchema = z.infer<typeof updateExchangeApiSchema>
 
 export const createCopyTradingSchema = z.object({
-  // exchangeName: z.string(),
-  // exchange: z.string(),
-  // apis: z.array(z.string()).refine((value) => value.some((item) => item), {
-  //   message: "You have to select at least one item.",
-  // }),
-  apis: z.string().refine((value) => value.trim().length > 0, {
-    message: "You have to select at least one API.",
+  exchangeName: z.string(),
+  exchange: z.string(),
+  apis: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
   }),
+  // apis: z.string().refine((value) => value.trim().length > 0, {
+  //   message: "You have to select at least one API.",
+  // }),
   fixedAmount: z.string().optional(),
   multiplierAmount: z.string().optional(),
 })

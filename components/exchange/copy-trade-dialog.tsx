@@ -108,8 +108,8 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                         control={form.control}
                         name="apis"
                         render={({ field }) => {
-                          const value = field.value || "";
-                          const selectedIds = value.split("-").filter((v) => v);
+                          const value = field.value || [];
+                          // const selectedIds = value.split("-").filter((v) => v);
                           return (
                             <FormItem
                               key={item.id}
@@ -118,21 +118,21 @@ export function CopyTradeDialog({traderId, name, userApi}) {
                               <FormControl>
                                 <Checkbox
                                   checked={field.value?.includes(item.id)}
-                                  // onCheckedChange={(checked) => {
-                                  //   return checked
-                                  //     ? field.onChange([...value, item.id])
-                                  //     : field.onChange(
-                                  //         value?.filter(
-                                  //           (v) => v !== item.id
-                                  //         )
-                                  //       )
-                                  // }}
                                   onCheckedChange={(checked) => {
-                                    const newSelectedIds = checked
-                                      ? [...selectedIds, item.id]
-                                      : selectedIds.filter((v) => v !== item.id);
-                                    field.onChange(newSelectedIds.join("-"));
+                                    return checked
+                                      ? field.onChange([...value, item.id])
+                                      : field.onChange(
+                                          value?.filter(
+                                            (v) => v !== item.id
+                                          )
+                                        )
                                   }}
+                                  // onCheckedChange={(checked) => {
+                                  //   const newSelectedIds = checked
+                                  //     ? [...selectedIds, item.id]
+                                  //     : selectedIds.filter((v) => v !== item.id);
+                                  //   field.onChange(newSelectedIds.join("-"));
+                                  // }}
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">

@@ -151,15 +151,20 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
       data.fixedAmount = parseInt(input.fixedAmount, 10);
     }
     if (input.multiplierAmount) {
-      // data.multiplierAmount = input.multiplierAmount;
       data.multiplierAmount = parseFloat(input.multiplierAmount);
     }
 
     // insert CopyTradingSetting
-    await prisma.copyTradingSetting.create({
+    const copyTradingSetting = await prisma.copyTradingSetting.create({
       data: data,
     })
 
+    // const copyTradingAccount = await prisma.copyTradingAccount.create({
+    //   data: {
+    //     copyTradingSettingId: copyTradingSetting.id,
+    //     exchangeAccountId: input.apis[0]
+    //   }
+    // });
 
     revalidatePath("/traders")
 
