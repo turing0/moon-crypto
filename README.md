@@ -75,6 +75,16 @@ npx prisma db push
 
 
 
+### 其他
+
+更新 `pnpm-lock.yaml` 文件：
+
+```bash
+pnpm install --lockfile-only
+```
+
+
+
 
 
 ## Roadmap
