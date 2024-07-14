@@ -626,10 +626,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
       const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false)
 
       return (
-        <div className="flex items-center">
-        <div className="cursor-pointer" onClick={() => setShowUpdateTaskSheet(true)}>
-          <Icons.pencilLine />
-        </div>
+        <div className="flex items-center space-x-2">
         <UpdateExchangeApiSheet
           open={showUpdateTaskSheet}
           onOpenChange={setShowUpdateTaskSheet}
@@ -642,7 +639,13 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
           showTrigger={false}
           onSuccess={() => row.toggleSelected(false)}
         />
-        <DropdownMenu>
+        <div className="cursor-pointer" onClick={() => setShowUpdateTaskSheet(true)}>
+          <Icons.pencilLine />
+        </div>
+        <div className="cursor-pointer" onClick={() => setShowDeleteTaskDialog(true)}>
+          <Icons.trash2 />
+        </div>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
@@ -650,7 +653,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onSelect={() => setShowUpdateTaskSheet(true)}>
               Edit
             </DropdownMenuItem>
@@ -664,7 +667,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
         </div>
       )
     },
