@@ -4,6 +4,7 @@ import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { InteractiveBarChart } from "@/components/charts/interactive-bar-chart";
 
 export const metadata = constructMetadata({
   title: "Dashboard – Moon Crypto",
@@ -19,6 +20,7 @@ export default async function DashboardPage() {
         heading="Dashboard"
         // text={`Current Role : ${user?.role} — Change your role in settings.`}
       />
+      <>
       <div className="flex-1 space-y-4">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
@@ -135,13 +137,13 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
           <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Overview</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
-              {/* <Overview /> */}
+              <Overview />
             </CardContent>
           </Card>
           <Card className="col-span-3">
@@ -152,11 +154,30 @@ export default async function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* <RecentSales /> */}
+              <RecentSales />
             </CardContent>
           </Card>
-        </div>
+        </div> */}
       </div>
+
+      <div className="flex flex-col gap-5">
+        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+          <RadialTextChart />
+          <AreaChartStacked />
+          <BarChartMixed />
+          <RadarChartSimple />
+        </div> */}
+
+        <InteractiveBarChart />
+
+        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+          <RadialChartGrid />
+          <RadialShapeChart />
+          <LineChartMultiple />
+          <RadialStackedChart />
+        </div> */}
+      </div>
+      </>
     </DashboardShell>
   );
 }
