@@ -617,6 +617,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   // },
   {
     id: "actions",
+    header: "Actions",
     enableHiding: false,
     // cell: ({ row }) => {
     cell: function Cell({ row }) {
@@ -625,7 +626,10 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
       const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false)
 
       return (
-        <>
+        <div className="flex items-center">
+        <div className="cursor-pointer" onClick={() => setShowUpdateTaskSheet(true)}>
+          <Icons.pencilLine />
+        </div>
         <UpdateExchangeApiSheet
           open={showUpdateTaskSheet}
           onOpenChange={setShowUpdateTaskSheet}
@@ -661,7 +665,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        </>
+        </div>
       )
     },
   },

@@ -7,6 +7,10 @@ export const dashboardConfig: DashboardConfig = {
       href: "/dashboard",
     },
     {
+      title: "Positions",
+      href: "/positions",
+    },
+    {
       title: "Traders",
       href: "/traders",
     },
