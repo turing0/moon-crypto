@@ -5,7 +5,13 @@ import { CreateExchangeDialog } from "@/components/exchange/create-exchange-dial
 import { exchangeApiInfoColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { getCurrentUser } from "@/lib/session";
+import { constructMetadata } from "@/lib/utils";
 import { redirect } from "next/navigation";
+
+export const metadata = constructMetadata({
+  title: "Exchanges – Moon Crypto",
+  description: "Setting your exchange account.",
+});
 
 export type ExchangeApiInfo = {
   id: string;

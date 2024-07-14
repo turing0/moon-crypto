@@ -474,6 +474,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
   // },
   {
     id: "actions",
+    header: "Actions",
     enableHiding: false,
     cell: ({ row }) => {
       // const userApi = useUserApi(); // 使用 useUserApi 钩子
