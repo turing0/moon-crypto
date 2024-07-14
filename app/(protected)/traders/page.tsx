@@ -7,15 +7,14 @@ import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns
 import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { constructMetadata } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export const metadata = constructMetadata({
-  title: "Traders – Moon Crypto",
-  description: "Find the best crypto trader.",
-});
+// export const metadata = constructMetadata({
+//   title: "Traders – Moon Crypto",
+//   description: "Find the best crypto trader.",
+// });
 
 export type BitgetTrader = {
   userApi: any[];

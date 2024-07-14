@@ -12,12 +12,11 @@ import { DataTable } from "@/components/table/data-table"
 import { okxOrderColumns, orderColumns } from "@/components/table/columns"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { constructMetadata } from "@/lib/utils"
 
-export const metadata = constructMetadata({
-  title: "Analysis – Moon Crypto",
-  description: "In-depth trader analysis.",
-});
+// export const metadata = constructMetadata({
+//   title: "Analysis – Moon Crypto",
+//   description: "In-depth trader analysis.",
+// });
 
 export type BitGetHistoryOrder = {
   trackingNo: string;
