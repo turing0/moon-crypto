@@ -562,7 +562,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   // },
   {
     accessorKey: "accountName",
-    header: "AccountName",
+    header: "Account Name",
     cell: ({ row }) => (
       <div>{row.getValue("accountName")}</div>
     ),
@@ -572,6 +572,13 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
     header: "Exchange",
     cell: ({ row }) => (
       <div>{row.getValue("exchangeName")}</div>
+    ),
+  },
+  {
+    accessorKey: "exchangeName",
+    header: "Balance",
+    cell: ({ row }) => (
+      <div></div>
     ),
   },
   {
