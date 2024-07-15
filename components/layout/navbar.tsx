@@ -93,36 +93,40 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 
               item.dropdown ? (
                 <div
-            key={index}
-            className={cn(
-              "relative flex cursor-pointer items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-              "text-foreground/60" // Apply the same color as other navigation links
-            )}
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
-          >
-            {item.title} <Icons.chevronDown size="12"/>
-            {isDropdownOpen && (
-              <div
-                className="absolute left-0 top-full w-48 rounded-md border border-gray-200 bg-white shadow-lg"
-                onMouseEnter={() => setIsDropdownOpen(true)}
-                onMouseLeave={() => setIsDropdownOpen(false)}
-              >
-                {item.dropdown.map((dropdownItem, dropdownIndex) => (
-                  <Link
-                    key={dropdownIndex}
-                    href={dropdownItem.href}
-                    className={cn(
-                      "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
-                      // dropdownItem.disabled && "cursor-not-allowed opacity-80"
-                    )}
-                  >
-                    {dropdownItem.title}
+                  key={index}
+                  className={cn(
+                    "relative flex cursor-pointer items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+                    "text-foreground/60" // Apply the same color as other navigation links
+                  )}
+                  onMouseEnter={() => setIsDropdownOpen(true)}
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+                >
+                  {/* <Link href="/positions" className="flex items-center"> */}
+                  <Link href={item.dropdown[0].href} className="flex items-center">
+                    {item.title} <Icons.chevronDown size="12"/>
                   </Link>
-                ))}
-              </div>
-            )}
-          </div>
+                  {/* {item.title} <Icons.chevronDown size="12"/> */}
+                  {isDropdownOpen && (
+                    <div
+                      className="absolute left-0 top-full w-48 rounded-md border border-gray-200 bg-white shadow-lg"
+                      onMouseEnter={() => setIsDropdownOpen(true)}
+                      onMouseLeave={() => setIsDropdownOpen(false)}
+                    >
+                      {item.dropdown.map((dropdownItem, dropdownIndex) => (
+                        <Link
+                          key={dropdownIndex}
+                          href={dropdownItem.href}
+                          className={cn(
+                            "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
+                            // dropdownItem.disabled && "cursor-not-allowed opacity-80"
+                          )}
+                        >
+                          {dropdownItem.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : (
                   <Link
                   key={index}
@@ -149,7 +153,9 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
-                Copy-Trading <Icons.chevronDown size="12"/>
+                <Link href="/positions" className="flex items-center">
+                  Copy-Trading <Icons.chevronDown size="12"/>
+                </Link>
                 {isDropdownOpen && (
                   <div
                     className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg"
