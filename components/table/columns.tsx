@@ -560,20 +560,32 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //     <div>{row.getValue("id")}</div>
   //   ),
   // },
+  // {
+  //   accessorKey: "accountName",
+  //   header: "Account Name",
+  //   cell: ({ row }) => (
+  //     <div>{row.getValue("accountName")}</div>
+  //   ),
+  // },  
   {
-    accessorKey: "accountName",
-    header: "Account Name",
-    cell: ({ row }) => (
-      <div>{row.getValue("accountName")}</div>
-    ),
-  },
-  {
-    accessorKey: "exchangeName",
     header: "Exchange",
-    cell: ({ row }) => (
-      <div>{row.getValue("exchangeName")}</div>
-    ),
+    cell: function Cell({ row }) {
+      const datarow = row.original
+
+      return (
+        <div className="flex items-center space-x-2">
+          {datarow.exchangeName}: {datarow.accountName}
+        </div>
+      )
+    },
   },
+  // {
+  //   accessorKey: "exchangeName",
+  //   header: "Exchange",
+  //   cell: ({ row }) => (
+  //     <div>{row.getValue("exchangeName")}</div>
+  //   ),
+  // },
   {
     accessorKey: "exchangeName",
     header: "Balance",
