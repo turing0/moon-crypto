@@ -76,7 +76,7 @@ export function CreateExchangeDialog({userid}) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add exchange</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="hidden sm:block">
             Fill in the details below to create a new exchange api.
           </DialogDescription>
         </DialogHeader>
