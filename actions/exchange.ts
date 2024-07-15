@@ -56,6 +56,15 @@ export async function getExchangeAPI(userId: string): Promise<ExchangeApiInfo[]>
       where: {
         userId: userId
       },
+      select: { // 选择要返回的字段
+        id: true, 
+        userId: true, 
+        accountName: true, 
+        exchangeName: true, 
+        apiKey: true, 
+        enabled: true, 
+        // description: true, 
+      },
     })
 
     return exchangeAPIs

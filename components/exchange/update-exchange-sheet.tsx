@@ -67,7 +67,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
       api: task.apiKey,
       secret: "",
       passphrase: "",
-      description: task.description ?? "",
+      // description: task.description ?? "",
     },
   })
 

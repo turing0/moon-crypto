@@ -21,7 +21,7 @@ export type ExchangeApiInfo = {
   apiKey: string;
   // secretKey: string;
   // passphrase: string | null;
-  description: string | null;
+  // description: string | null;
   enabled: boolean;
   // createdAt: string;
   // updatedAt: string;
@@ -30,7 +30,7 @@ export type ExchangeApiInfo = {
 async function fetchExchangeAPIs(userId: string): Promise<{ data: ExchangeApiInfo[]; status: string }> {
   try {
     const exchangeAPIs = await getExchangeAPI(userId);
-    console.log('Exchange APIs:', exchangeAPIs);
+    // console.log('Exchange APIs:', exchangeAPIs);
     return {data: exchangeAPIs, status: 'success'};
   } catch (error) {
     console.error(error);
