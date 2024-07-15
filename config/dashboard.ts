@@ -7,8 +7,18 @@ export const dashboardConfig: DashboardConfig = {
       href: "/dashboard",
     },
     {
-      title: "Positions",
+      title: "Copy-Trading",
       href: "/positions",
+      dropdown: [
+        {
+          title: "Positions",
+          href: "/positions",
+        },
+        {
+          title: "Top Traders",
+          href: "/traders",
+        },
+      ],
     },
     {
       title: "Traders",

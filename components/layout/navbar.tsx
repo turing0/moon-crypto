@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -20,6 +20,9 @@ import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 
 import { UserAccountNav } from "./user-account-nav";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "../ui/navigation-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 interface NavBarProps {
   scroll?: boolean;
@@ -30,7 +33,15 @@ export function NavBar({ scroll = false }: NavBarProps) {
   const scrolled = useScroll(50);
   const { data: session, status } = useSession();
   const { setShowSignInModal } = useContext(ModalContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const handleMouseEnter = () => {
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDropdownOpen(false);
+  };
   const selectedLayout = useSelectedLayoutSegment();
   const admin = selectedLayout === "admin";
   const dashBoard = selectedLayout === "dashboard";
@@ -44,7 +55,20 @@ export function NavBar({ scroll = false }: NavBarProps) {
   const links =
     // (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
     (selectedLayout && configMap[selectedLayout]) || (session ? dashboardConfig.mainNav : marketingConfig.mainNav);
-
+  const copyTradingLinks = [
+    {
+      title: "Positions",
+      href: "/positions",
+    },
+    {
+      title: "Top Traders",
+      href: "/traders",
+    },
+    {
+      title: "Manage Copy-Trading",
+      href: "/traders",
+    },
+  ]
   return (
     <header
       className={`sticky top-0 z-40 flex w-full justify-center bg-background/60 backdrop-blur-xl transition-all ${
@@ -66,7 +90,41 @@ export function NavBar({ scroll = false }: NavBarProps) {
           {links && links.length > 0 ? (
             <nav className="hidden gap-6 md:flex">
               {(admin ? adminConfig.mainNav : links).map((item, index) => (
-                <Link
+                
+              item.dropdown ? (
+                <div
+            key={index}
+            className={cn(
+              "relative flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm cursor-pointer",
+              "text-foreground/60" // Apply the same color as other navigation links
+            )}
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            {item.title} <Icons.chevronDown className="items-center w-3 h-3"/>
+            {isDropdownOpen && (
+              <div
+                className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg"
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
+              >
+                {item.dropdown.map((dropdownItem, dropdownIndex) => (
+                  <Link
+                    key={dropdownIndex}
+                    href={dropdownItem.href}
+                    className={cn(
+                      "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
+                      // dropdownItem.disabled && "cursor-not-allowed opacity-80"
+                    )}
+                  >
+                    {dropdownItem.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+              ) : (
+                  <Link
                   key={index}
                   href={item.disabled ? "#" : item.href}
                   prefetch={true}
@@ -80,9 +138,43 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 >
                   {item.title}
                 </Link>
+              )
               ))}
+              
+              {/* <div
+                className={cn(
+                  "relative flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm cursor-pointer",
+                  "text-foreground/60" // Apply the same color as other navigation links
+                )}
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
+              >
+                Copy-Trading <Icons.chevronDown className="items-center w-3 h-3"/>
+                {isDropdownOpen && (
+                  <div
+                    className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg"
+                    onMouseEnter={() => setIsDropdownOpen(true)}
+                    onMouseLeave={() => setIsDropdownOpen(false)}
+                  >
+                    {copyTradingLinks.map((item, index) => (
+                      <Link
+                        key={index}
+                        href={item.href}
+                        className={cn(
+                          "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
+                          // item.disabled && "cursor-not-allowed opacity-80"
+                        )}
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div> */}
+
             </nav>
           ) : null}
+
         </div>
 
         <div className="flex items-center space-x-3">

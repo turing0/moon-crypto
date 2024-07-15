@@ -6,6 +6,7 @@ import { Icons } from "@/components/shared/icons";
 export type NavItem = {
   title: string;
   href: string;
+  dropdown?: NavItem[];
   disabled?: boolean;
 };
 
