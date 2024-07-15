@@ -95,16 +95,16 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 <div
             key={index}
             className={cn(
-              "relative flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm cursor-pointer",
+              "relative flex cursor-pointer items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
               "text-foreground/60" // Apply the same color as other navigation links
             )}
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            {item.title} <Icons.chevronDown className="items-center w-3 h-3"/>
+            {item.title} <Icons.chevronDown size="12"/>
             {isDropdownOpen && (
               <div
-                className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg"
+                className="absolute left-0 top-full w-48 rounded-md border border-gray-200 bg-white shadow-lg"
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
@@ -149,7 +149,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
-                Copy-Trading <Icons.chevronDown className="items-center w-3 h-3"/>
+                Copy-Trading <Icons.chevronDown size="12"/>
                 {isDropdownOpen && (
                   <div
                     className="absolute left-0 top-full w-48 bg-white border border-gray-200 rounded-md shadow-lg"
