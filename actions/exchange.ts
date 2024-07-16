@@ -172,7 +172,7 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
   }
 }
 
-export async function createCopyTradingAPI(traderId: string, input: CreateCopyTradingSchema) {
+export async function createCopyTradingAPI(traderId: string, traderName:string, input: CreateCopyTradingSchema) {
   console.log("createCopyTradingAPI traderId", traderId)
   // noStore()
   try {
@@ -185,6 +185,7 @@ export async function createCopyTradingAPI(traderId: string, input: CreateCopyTr
     const data: any = {
       userId: session?.user.id,
       // userId: "clyd0tn8l00006iyf02pppphd",
+      traderName: traderName,
       traderId: traderId,
     };
     if (input.fixedAmount) {
