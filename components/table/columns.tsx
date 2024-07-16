@@ -802,6 +802,7 @@ export type CopyTradingSettingInfo = {
   id: string;
   userId: string;
   traderId: string;
+  traderName: string;
   fixedAmount: number | null;
   multiplierAmount: number | null;
   followedApis: CopyTradingAccountInfo[];
@@ -809,54 +810,67 @@ export type CopyTradingSettingInfo = {
 
 export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
   {
-    accessorKey: "traderName",
-    header: "TraderName",
-    cell: ({ row }) => (
-      <div>{row.getValue("traderName")}</div>
-      // <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(row.getValue("traderId"))}`}>
-      //   {row.getValue("traderName")}
-      // </Link>
-    ),
+    header: "Trader",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      return (
+        <div className="flex items-center space-x-2">
+          {(
+            <>{datarow.traderName}</>
+          )}
+        </div>
+      )
+    },
   },
   {
-    accessorKey: "traderId",
-    header: "TraderId",
-    cell: ({ row }) => (
-      <div>{row.getValue("traderId")}</div>
-    ),
+    header: "Mode",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      return (
+        <div className="flex items-center space-x-2">
+          {datarow.fixedAmount && (
+            <>FixedAmount: {datarow.fixedAmount} USDT</>
+          )}
+          {datarow.multiplierAmount && (
+            <>MultiplierAmount: {datarow.multiplierAmount} X</>
+          )}
+        </div>
+      )
+    },
   },
-  // {
-  //   accessorKey: "TotalPnL",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Total PnL" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const columnList = row.original.columnList;
-  //     const pnlItem = columnList[1];
-  //     const pnlValue = pnlItem ? pnlItem.value : "";
-  //     return <div>{pnlValue}</div>;
-  //   },
-  // },
+  {
+    header: "Pnl",
+    cell: ({ row }) => {
+      // const columnList = row.original.columnList;
+      // const pnlItem = columnList[1];
+      // const pnlValue = pnlItem ? pnlItem.value : "";
+      // return <div>{pnlValue}</div>;
+    },
+  },
   {
     id: "actions",
     header: "Actions",
     enableHiding: false,
     cell: ({ row }) => {
-      // const userApi = useUserApi(); // 使用 useUserApi 钩子
       const datarow = row.original
 
       return (
         <>
-        <div className="flex items-center">
-          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
+        <div className="flex items-center space-x-2">
+          {/* <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
             <Icons.fileBarChart />
-          </Link>
+          </Link> */}
+          <div className="cursor-pointer" >
+            <Icons.pencilLine />
+          </div>
+          <div className="cursor-pointer" >
+            <Icons.trash2 />
+          </div>
           {/* <Link href={`/ct/setting/${datarow.traderId}`} className="px-1">
             <Button className="h-7 px-2">
               Copy Trade
             </Button>
           </Link> */}
-          {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} /> */}
 
         </div>
         </>
