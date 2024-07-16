@@ -485,7 +485,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
       return (
         <>
         <div className="flex items-center">
-          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} />
+          <CopyTradeDialog traderId={datarow.traderId} traderName={datarow.traderName} userApi={datarow.userApi} />
           <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
             <Icons.fileBarChart />
           </Link>

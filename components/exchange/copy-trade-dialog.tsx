@@ -31,7 +31,7 @@ import { Checkbox } from "../ui/checkbox"
 import { createCopyTradingAPI } from "@/actions/exchange"
 
 
-export function CopyTradeDialog({traderId, name, userApi}) {
+export function CopyTradeDialog({traderId, traderName, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [activeTab, setActiveTab] = React.useState('fixed');
     const [isCreatePending, startCreateTransition] = React.useTransition()
@@ -44,7 +44,7 @@ export function CopyTradeDialog({traderId, name, userApi}) {
     function onSubmit(input: CreateCopyTradingSchema) {
       console.log("input:", input)
       startCreateTransition(async () => {
-        const { error } = await createCopyTradingAPI(traderId, input)
+        const { error } = await createCopyTradingAPI(traderId, traderName, input)
   
         if (error) {
           toast.error(error)
@@ -86,7 +86,7 @@ export function CopyTradeDialog({traderId, name, userApi}) {
           <DialogHeader>
             <DialogTitle>Start Copy Trading</DialogTitle>
             <DialogDescription>
-              Trader: {name}
+              Trader: {traderName}
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
