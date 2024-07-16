@@ -36,7 +36,7 @@ export function EnabledExchangeApiDialog({
   onSuccess,
   ...props
 }: ToggleExchangeApiDialogProps) {
-  const [isDeletePending, startDeleteTransition] = React.useTransition()
+  const [isEnablePending, startEnableTransition] = React.useTransition()
 
   return (
     <Dialog {...props}>
@@ -51,7 +51,7 @@ export function EnabledExchangeApiDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Disable API</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-base font-semibold">
             If you currently have open positions, this action will close them all.
           </DialogDescription>
         </DialogHeader>
@@ -60,10 +60,10 @@ export function EnabledExchangeApiDialog({
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button
-            aria-label="Delete selected rows"
+            aria-label="Enable selected rows"
             variant="destructive"
             onClick={() => {
-              startDeleteTransition(async () => {
+              startEnableTransition(async () => {
                 const { error } = await toggleEnabledExchangeAPI({
                   ids: tasks.map((task) => task.id),
                 }, status)
@@ -78,9 +78,9 @@ export function EnabledExchangeApiDialog({
                 onSuccess?.()
               })
             }}
-            disabled={isDeletePending}
+            disabled={isEnablePending}
           >
-            {isDeletePending && (
+            {isEnablePending && (
               <ReloadIcon
                 className="mr-2 size-4 animate-spin"
                 aria-hidden="true"
