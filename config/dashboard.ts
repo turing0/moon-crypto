@@ -16,11 +16,11 @@ export const dashboardConfig: DashboardConfig = {
         },
         {
           title: "Top Traders",
-          href: "/copy-trading/manage",
+          href: "/traders",
         },
         {
           title: "Manage Copy-Trading",
-          href: "/traders",
+          href: "/copy-trading/manage",
         },
       ],
     },
