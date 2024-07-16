@@ -61,7 +61,7 @@ export type BitgetTrader = {
 
 async function getBitgetTraders(traderId: string) {
   try {
-    const response = await fetch(`https://45.77.180.194:8000/api/bitget/traders?traderId=${traderId}`)
+    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
@@ -89,6 +89,17 @@ async function getBitgetTraders(traderId: string) {
     return [];
   }
 }
+// async function fetchBitgetTraders(traderId: string): Promise<{ data: BitgetTrader[]; pageCount: number; status: string }> {
+// async function fetchBitgetTraders(traderId: string): Promise<{ data: BitgetTrader[]; status: string }> {
+//   try {
+//     const data = await getBitgetTraders(traderId);
+//     console.log('getBitgetTraders data:', data);
+//     return {data: data, status: 'success'};
+//   } catch (error) {
+//     console.error(error);
+//     return { data: [], status: 'error' }
+//   }
+// }
 
 export default function TradersPage() {
   const [bitgetTrader, setBitgetTrader] = useState<BitgetTrader[]>([]);
