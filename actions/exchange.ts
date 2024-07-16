@@ -28,6 +28,8 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
       },
     })
 
+    // api verify
+
     revalidatePath("/exchanges")
 
     return {
@@ -153,6 +155,8 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
       },
     })
     
+    // TODO: 市价全平仓位
+
     revalidatePath("/exchanges")
 
     return {
