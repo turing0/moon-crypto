@@ -139,6 +139,34 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
   }
 }
 
+export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status: boolean) {
+  try {
+    // disable  
+    const result = await prisma.exchangeAccount.updateMany({
+      where: {
+        id: {
+          in: input.ids,
+        }
+      },
+      data: {
+        enabled: !status
+      },
+    })
+    
+    revalidatePath("/exchanges")
+
+    return {
+      data: null,
+      error: null,
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      data: null,
+      error: (err),
+    }
+  }
+}
 
 export async function createCopyTradingAPI(traderId: string, input: CreateCopyTradingSchema) {
   console.log("createCopyTradingAPI traderId", traderId)

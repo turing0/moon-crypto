@@ -21,6 +21,8 @@ import { BitgetTrader } from "@/app/(protected)/traders/page"
 import { Icons } from "../shared/icons"
 import { CopyTradeDialog } from "../exchange/copy-trade-dialog"
 import { Switch } from "../ui/switch"
+import { EnabledExchangeApiDialog } from "../exchange/enabled-api-dialog"
+import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -618,15 +620,44 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },
   {
-    accessorKey: "enabled",
+    // accessorKey: "enabled",
     header: "Enabled",
-    cell: ({ row }) => (
-      <div>
-        <div className="flex items-center space-x-2">
-          <Switch id="api-enabled" defaultChecked={row.getValue("enabled")} />
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      const [showEnabledApiDialog, setShowEnabledApiDialog] = useState(false)
+      const [enabled, setEnabled] = useState<boolean>(datarow.enabled);
+      const handleSwitchChange = async () => {
+        if (enabled) {
+          setShowEnabledApiDialog(true);
+          // setEnabled(false);
+        } else {
+          // enableApi(row);
+          const { error } = await toggleEnabledExchangeAPI({
+            ids: [datarow.id],
+          }, enabled)
+          setEnabled(true);
+        }
+      };
+      const handleSuccess = (newState: boolean) => {
+        setEnabled(newState); // Update state only on successful action
+      };
+      return (
+        <div>
+          <EnabledExchangeApiDialog
+            open={showEnabledApiDialog}
+            onOpenChange={setShowEnabledApiDialog}
+            tasks={[row.original]}
+            status={enabled}
+            showTrigger={false}
+            onSuccess={() => handleSuccess(!enabled)}
+          />
+          <div className="flex items-center space-x-2">
+            {/* <Switch id="api-enabled" defaultChecked={row.getValue("enabled")} onClick={handleSwitchChange}/> */}
+            <Switch id="api-enabled" checked={enabled} onClick={handleSwitchChange}/>
+          </div>
         </div>
-      </div>
-    ),
+      )
+    },
   },
   // {
   //   accessorKey: "description",
