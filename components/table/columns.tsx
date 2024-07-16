@@ -485,7 +485,8 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
       return (
         <>
         <div className="flex items-center">
-          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} className="px-1">
+          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} />
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
             <Icons.fileBarChart />
           </Link>
           {/* <Link href={`/ct/setting/${datarow.traderId}`} className="px-1">
@@ -493,10 +494,9 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
               Copy Trade
             </Button>
           </Link> */}
-          <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} userApi={datarow.userApi} />
           {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} /> */}
 
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
@@ -504,7 +504,6 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
             <Link
                 href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`}
                 target="_blank"
@@ -518,11 +517,8 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
             >
               Copy TraderId
             </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
-            {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
-            {/* <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
         </div>
         </>
       )
