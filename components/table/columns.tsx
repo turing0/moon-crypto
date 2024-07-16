@@ -571,8 +571,13 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
       const datarow = row.original
 
       return (
-        <div className="flex items-center space-x-2">
-          {datarow.exchangeName}: {datarow.accountName}
+        <div className="flex flex-col">
+          <div className="font-bold">
+            {datarow.accountName}
+          </div>
+          <div className="text-gray-500">
+            {datarow.exchangeName}
+          </div>
         </div>
       )
     },
