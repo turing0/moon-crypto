@@ -22,6 +22,7 @@ export const footerLinks: SidebarNavItem[] = [
     items: [
       // { title: "About", href: "#" },
       // { title: "Disclaimer", href: "#" },
+      { title: "Contact", href: "mailto:support@mooncryp.to" },
       { title: "Terms", href: "/terms" },
       { title: "Privacy", href: "/privacy" },
     ],

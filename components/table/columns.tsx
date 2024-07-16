@@ -791,3 +791,76 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
 //     cell: ({ row }) => <DataTableRowActions row={row} />,
 //   },
 // ]
+
+export type CopyTradingAccountInfo = { 
+  copyTradingSettingId: string; 
+  exchangeAccountId: string; 
+};
+
+export type CopyTradingSettingInfo = {
+  // userApi: any[];
+  id: string;
+  userId: string;
+  traderId: string;
+  fixedAmount: number | null;
+  multiplierAmount: number | null;
+  followedApis: CopyTradingAccountInfo[];
+};
+
+export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
+  {
+    accessorKey: "traderName",
+    header: "TraderName",
+    cell: ({ row }) => (
+      <div>{row.getValue("traderName")}</div>
+      // <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(row.getValue("traderId"))}`}>
+      //   {row.getValue("traderName")}
+      // </Link>
+    ),
+  },
+  {
+    accessorKey: "traderId",
+    header: "TraderId",
+    cell: ({ row }) => (
+      <div>{row.getValue("traderId")}</div>
+    ),
+  },
+  // {
+  //   accessorKey: "TotalPnL",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Total PnL" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const columnList = row.original.columnList;
+  //     const pnlItem = columnList[1];
+  //     const pnlValue = pnlItem ? pnlItem.value : "";
+  //     return <div>{pnlValue}</div>;
+  //   },
+  // },
+  {
+    id: "actions",
+    header: "Actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      // const userApi = useUserApi(); // 使用 useUserApi 钩子
+      const datarow = row.original
+
+      return (
+        <>
+        <div className="flex items-center">
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
+            <Icons.fileBarChart />
+          </Link>
+          {/* <Link href={`/ct/setting/${datarow.traderId}`} className="px-1">
+            <Button className="h-7 px-2">
+              Copy Trade
+            </Button>
+          </Link> */}
+          {/* <CopyTradeDialog traderId={datarow.traderId} name={datarow.traderName} /> */}
+
+        </div>
+        </>
+      )
+    },
+  },
+]
