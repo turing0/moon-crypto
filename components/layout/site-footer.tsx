@@ -48,11 +48,12 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
               href="/"
               target="_blank"
               rel="noreferrer"
-              className="font-medium underline underline-offset-4"
+              // className="font-medium underline underline-offset-4"
+              className="font-medium"
             >
               MoonCrypto
             </Link>
-              {" "}- utilizing methods from top crypto trading experts
+              {" "}- Utilizing methods from top crypto trading experts.
             {/* <Link
               href="https://vercel.com"
               target="_blank"
