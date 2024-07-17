@@ -85,10 +85,9 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Start Copy Trading</DialogTitle>
-            <DialogDescription>
-              Trader: {traderName}
-            </DialogDescription>
+            <DialogTitle>Copy Trading: {traderName}</DialogTitle>
+            {/* <DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
           <Form {...form}>
             <form
