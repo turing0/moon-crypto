@@ -795,6 +795,8 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
 export type CopyTradingAccountInfo = { 
   copyTradingSettingId: string; 
   exchangeAccountId: string; 
+  // copyTradingSetting: any[]; 
+  exchangeAccount: ExchangeApiInfo; 
 };
 
 export type CopyTradingSettingInfo = {
@@ -845,6 +847,22 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
       // const pnlItem = columnList[1];
       // const pnlValue = pnlItem ? pnlItem.value : "";
       // return <div>{pnlValue}</div>;
+    },
+  },
+  {
+    header: "FollowedApis",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      return (
+        <div className="flex items-center space-x-2">
+          {datarow.followedApis.map((api, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <span>{api.exchangeAccount.accountName}</span>
+              {/* <span>{api.apiName}</span> */}
+            </div>
+          ))}
+        </div>
+      )
     },
   },
   {
