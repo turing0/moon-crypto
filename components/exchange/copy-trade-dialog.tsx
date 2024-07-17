@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
 import { createCopyTradingAPI } from "@/actions/exchange"
+import Link from "next/link"
 
 
 export function CopyTradeDialog({traderId, traderName, userApi}) {
@@ -102,7 +103,14 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                     <div className="mb-4">
                       <FormLabel className="text-base">Choose your exchange account</FormLabel>
                     </div>
-                    {userApi.map((item) => (
+                    {!userApi || userApi.length === 0 ? (
+                      <div className="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+                        <p>You don't have any exchange APIs.</p>
+                        Please <Link href="/exchanges" className="text-blue-500 underline">add an API</Link> to proceed.
+                      </div>
+                    ) : (
+                    // {userApi && userApi.map((item) => (
+                    userApi.map((item) => (
                       <FormField
                         key={item.id}
                         control={form.control}
@@ -142,7 +150,8 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                           )
                         }}
                       />
-                    ))}
+                    ))
+                  )}
                     <FormMessage />
                   </FormItem>
                 )}
