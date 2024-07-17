@@ -60,7 +60,7 @@ export type OkxHistoryOrder = {
 
 async function getBitgetHistoryOrder(traderId: string) {
   try {
-    const response = await fetch(`https://45.77.180.194:8000/api/bitget/order/history?traderId=${traderId}&pageSize=5000`)
+    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/history?traderId=${traderId}&pageSize=5000`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
@@ -90,7 +90,7 @@ async function getBitgetHistoryOrder(traderId: string) {
 }
 async function getOkxHistoryOrder(traderId: string) {
   try {
-    const response = await fetch(`https://45.77.180.194:8000/api/okx/order/history?uniqueCode=${traderId}&pageSize=5000`)
+    const response = await fetch(`https://tdb.mooncryp.to/api/okx/order/history?uniqueCode=${traderId}&pageSize=5000`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
