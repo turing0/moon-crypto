@@ -38,7 +38,8 @@ export default async function Author({
         <p className="font-semibold text-foreground max-md:text-sm">
           {authors[username].name}
         </p>
-        <p className="text-sm text-muted-foreground">@{authors[username].link}</p>
+        {/* <p className="text-sm text-muted-foreground">@{authors[username].link}</p> */}
+        <p className="text-sm text-muted-foreground">@{authors[username].name}</p>
       </div>
     </Link>
   );
