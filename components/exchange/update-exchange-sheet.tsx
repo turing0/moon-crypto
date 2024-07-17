@@ -179,7 +179,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
                   <FormLabel>Passphrase</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter passphrase"
+                      placeholder="Enter passphrase if needed"
                       type="password"
                       defaultValue="password"
                       onChange={handlePassphraseChange}

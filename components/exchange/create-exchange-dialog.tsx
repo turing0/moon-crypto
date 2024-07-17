@@ -174,7 +174,7 @@ export function CreateExchangeDialog({userid}) {
                   <FormLabel>Passphrase</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter passphrase"
+                      placeholder="Enter passphrase if needed"
                       {...field}
                     />
                   </FormControl>
