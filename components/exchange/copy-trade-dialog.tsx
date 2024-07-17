@@ -103,8 +103,8 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                       <FormLabel className="text-base">Choose your exchange account</FormLabel>
                     </div>
                     {!userApi || userApi.length === 0 ? (
-                      <div className="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
-                        <p>You don't have any exchange APIs.</p>
+                      <div className="border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700">
+                        <p>{`You don't have any exchange APIs.`}</p>
                         Please <Link href="/exchanges" className="text-blue-500 underline">add an API</Link> to proceed.
                       </div>
                     ) : (
