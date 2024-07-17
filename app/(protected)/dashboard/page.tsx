@@ -5,6 +5,8 @@ import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InteractiveBarChart } from "@/components/charts/interactive-bar-chart";
+import { ProfitChart } from "@/components/charts/profit-chart";
+import { AssetAreaChart } from "@/components/charts/area-chart-stacked";
 
 export const metadata = constructMetadata({
   title: "Dashboard – Moon Crypto",
@@ -161,12 +163,13 @@ export default async function DashboardPage() {
       </div>
 
       <div className="flex flex-col gap-5">
-        {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-          <RadialTextChart />
-          <AreaChartStacked />
-          <BarChartMixed />
-          <RadarChartSimple />
-        </div> */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+          {/* <RadialTextChart /> */}
+          <ProfitChart />
+          <AssetAreaChart />
+          {/* <BarChartMixed />
+          <RadarChartSimple /> */}
+        </div>
 
         <InteractiveBarChart />
 
