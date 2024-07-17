@@ -19,11 +19,11 @@ export const BLOG_AUTHORS = {
   mickasmt: {
     name: "MoonCrypto",
     image: "/_static/avatars/mooncrypto.png",
-    twitter: "miickasmt",
+    link: "/",
   },
   shadcn: {
     name: "shadcn",
     image: "/_static/avatars/shadcn.jpeg",
-    twitter: "shadcn",
+    link: "/",
   },
 };

@@ -22,7 +22,7 @@ export default async function Author({
     />
   ) : (
     <Link
-      href={`https://twitter.com/${authors[username].twitter}`}
+      href={authors[username].link}
       className="group flex w-max items-center space-x-2.5"
       target="_blank"
       rel="noopener noreferrer"
@@ -38,7 +38,7 @@ export default async function Author({
         <p className="font-semibold text-foreground max-md:text-sm">
           {authors[username].name}
         </p>
-        <p className="text-sm text-muted-foreground">@{authors[username].twitter}</p>
+        <p className="text-sm text-muted-foreground">@{authors[username].link}</p>
       </div>
     </Link>
   );
