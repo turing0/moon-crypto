@@ -6,6 +6,25 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
 
+async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
+  try {
+    // 这里我们可以使用具体交易所的API SDK或HTTP请求来验证API密钥
+    // 这个示例只是一个简单的模拟，你需要根据实际情况进行实现
+    // 比如对于Binance：
+    // const client = new BinanceClient(apiKey, secretKey);
+    // const accountInfo = await client.getAccountInfo();
+    // if (accountInfo) {
+    //   return true;
+    // }
+
+    // 模拟验证成功
+    return true;
+  } catch (error) {
+    console.error("API verify failed:", error);
+    return false;
+  }
+}
+
 export async function createExchangeAPI(userId: string, input: CreateExchangeApiSchema) {
   // noStore()
   try {
@@ -13,6 +32,12 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
     
     if (!session?.user || session?.user.id !== userId) {
       throw new Error("Unauthorized");
+    }
+
+    // api verify
+    const isApiValid = await exchangeApiVerify(input.exchange, input.api, input.secret, input.passphrase);
+    if (!isApiValid) {
+      throw new Error("API invalid");
     }
 
     // creat 
@@ -27,8 +52,6 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
         description: input.description,
       },
     })
-
-    // api verify
 
     revalidatePath("/exchanges")
 
@@ -76,8 +99,8 @@ export async function getExchangeAPI(userId: string): Promise<ExchangeApiInfo[]>
   }
 }
 
-export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: string }) {
-  noStore()
+export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: string }, exchangeName: string) {
+  // noStore()
   try {
     const updateData: any = {
       accountName: input.accountName,
@@ -90,6 +113,11 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
     }
     if (input.passphrase) {
       updateData.passphrase = input.passphrase;
+    }
+
+    const isApiValid = await exchangeApiVerify(exchangeName, input.api, input.secret, input.passphrase);
+    if (!isApiValid) {
+      throw new Error("API invalid");
     }
 
     await prisma.exchangeAccount

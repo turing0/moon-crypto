@@ -48,7 +48,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
   const [isUpdatePending, startUpdateTransition] = React.useTransition()
   const [secretUpdated, setSecretUpdated] = useState(false);
   const [passphraseUpdated, setPassphraseUpdated] = useState(false);
-  
+
   const handleSecretChange = (e) => {
     setSecretUpdated(e.target.value !== '');
     form.setValue('secret', e.target.value);
@@ -62,7 +62,6 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
   const form = useForm<UpdateExchangeApiSchema>({
     resolver: zodResolver(updateExchangeApiSchema),
     defaultValues: {
-      // title: task.title ?? "",
       accountName: task.accountName,
       api: task.apiKey,
       secret: "",
@@ -93,7 +92,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
       //   id: task.id,
       //   ...input,
       // })
-      const { error } = await updateExchangeAPI(updateData);
+      const { error } = await updateExchangeAPI(updateData, task.exchangeName);
 
       if (error) {
         toast.error(error)
