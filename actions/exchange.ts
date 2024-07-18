@@ -5,23 +5,26 @@ import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateExchangeApiSche
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
+import { error } from "console";
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
-    // 这里我们可以使用具体交易所的API SDK或HTTP请求来验证API密钥
-    // 这个示例只是一个简单的模拟，你需要根据实际情况进行实现
-    // 比如对于Binance：
-    // const client = new BinanceClient(apiKey, secretKey);
-    // const accountInfo = await client.getAccountInfo();
-    // if (accountInfo) {
-    //   return true;
-    // }
+    const response = await fetch(`https://tdb.mooncryp.to/api/exchange/verify?exchange=${exchangeName}&key=${apiKey}&secret=${secretKey}&passphrase=${passphrase}`, {
+      // body: JSON.stringify({ data })
+    })
+    if (!response.ok) {
+      throw new Error("OKX verrify fetch failed")
+    }
+    const data = await response.json()
+    console.log("response data:", data)
+    if (data['code']==="0") {
+      return {"verified": true, "msg": "success"}
+    } 
 
-    // 模拟验证成功
-    return true;
+    return {"verified": false, "msg": data["msg"]}
   } catch (error) {
     console.error("API verify failed:", error);
-    return false;
+    return {"verified": false, "msg": error};
   }
 }
 
@@ -35,9 +38,12 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
     }
 
     // api verify
-    const isApiValid = await exchangeApiVerify(input.exchange, input.api, input.secret, input.passphrase);
-    if (!isApiValid) {
-      throw new Error("API invalid");
+    const {verified, msg} = await exchangeApiVerify(input.exchange, input.api, input.secret, input.passphrase);
+    if (!verified) {
+      // throw new Error("API invalid:");
+      return {
+        error: msg
+      }
     }
 
     // creat 
@@ -115,9 +121,12 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
       updateData.passphrase = input.passphrase;
     }
 
-    const isApiValid = await exchangeApiVerify(exchangeName, input.api, input.secret, input.passphrase);
-    if (!isApiValid) {
-      throw new Error("API invalid");
+    const {verified, msg} = await exchangeApiVerify(exchangeName, input.api, input.secret, input.passphrase);
+    if (!verified) {
+      // throw new Error("API invalid:");
+      return {
+        error: msg
+      }
     }
 
     await prisma.exchangeAccount

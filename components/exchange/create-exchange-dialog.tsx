@@ -54,13 +54,13 @@ export function CreateExchangeDialog({userid}) {
       const { error } = await createExchangeAPI(userid, input)
 
       if (error) {
-        toast.error(error)
+        toast.error(error, {position: "top-center"})
         return
       }
 
       form.reset()
       setOpen(false)
-      toast.success("Exchange API added")
+      toast.success("Exchange API added", {position: "top-center"})
     })
   }
 
