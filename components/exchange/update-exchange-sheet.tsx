@@ -101,7 +101,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
 
       form.reset()
       props.onOpenChange?.(false)
-      toast.success("API updated")
+      toast.success("API updated", {position: "top-center"})
     })
   }
 
