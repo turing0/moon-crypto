@@ -1,5 +1,6 @@
 "use server"
 
+import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
@@ -7,13 +8,13 @@ import { auth } from "@/auth";
 
 // export async function getCopyTradingSetting(userId: string): Promise<ExchangeApiInfo[]> {
 export async function getCopyTradingSetting(userId: string) {
-  // noStore()
+  noStore()
   try {
-    const session = await auth()
+    // const session = await auth()
     
-    if (!session?.user || session?.user.id !== userId) {
-      throw new Error("Unauthorized");
-    }
+    // if (!session?.user || session?.user.id !== userId) {
+    //   throw new Error("Unauthorized");
+    // }
 
     // Retrieve  
     const exchangeAPIs = await prisma.copyTradingSetting.findMany({
