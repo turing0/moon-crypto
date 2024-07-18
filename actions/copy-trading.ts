@@ -10,11 +10,11 @@ import { auth } from "@/auth";
 export async function getCopyTradingSetting(userId: string) {
   noStore()
   try {
-    // const session = await auth()
+    const session = await auth()
     
-    // if (!session?.user || session?.user.id !== userId) {
-    //   throw new Error("Unauthorized");
-    // }
+    if (!session?.user || session?.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
 
     // Retrieve  
     const exchangeAPIs = await prisma.copyTradingSetting.findMany({

@@ -47,11 +47,11 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
 export async function getExchangeAPI(userId: string): Promise<ExchangeApiInfo[]> {
   noStore()
   try {
-    // const session = await auth()
+    const session = await auth()
     
-    // if (!session?.user || session?.user.id !== userId) {
-    //   throw new Error("Unauthorized");
-    // }
+    if (!session?.user || session?.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
 
     // Retrieve  
     const exchangeAPIs = await prisma.exchangeAccount.findMany({
