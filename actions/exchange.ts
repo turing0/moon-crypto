@@ -94,7 +94,6 @@ export async function getExchangeAPI(userId: string): Promise<ExchangeApiInfo[]>
         exchangeName: true, 
         apiKey: true, 
         enabled: true, 
-        // description: true, 
       },
     })
 
@@ -131,9 +130,11 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
         passphrase: true, 
       },
     })
-    console.log("oringinApi:", oringinApi)
+    // console.log("oringinApi:", oringinApi)
     // need verify api
     if ((input.api !== oringinApi?.apiKey) || (input.secret) || (input.passphrase)) {
+      // console.log("new api data:", input.api, 
+        // input.secret? input.secret:oringinApi?.secretKey!, input.passphrase? input.passphrase:oringinApi?.passphrase!)
       const {verified, msg} = await exchangeApiVerify(exchangeName, input.api, 
         input.secret? input.secret:oringinApi?.secretKey!, input.passphrase? input.passphrase:oringinApi?.passphrase!);
       if (!verified) {
@@ -142,15 +143,15 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
           error: msg
         }
       }
-    }
 
-    await prisma.exchangeAccount
+      await prisma.exchangeAccount
       .update({
         where: {
           id: input.id,
         },
         data: updateData,
       })
+    }
 
     revalidatePath("/exchanges")
 
@@ -224,7 +225,6 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
 }
 
 export async function createCopyTradingAPI(traderId: string, traderName:string, input: CreateCopyTradingSchema) {
-  console.log("createCopyTradingAPI traderId", traderId)
   // noStore()
   try {
     const session = await auth()
