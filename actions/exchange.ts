@@ -113,7 +113,7 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
       apiKey: input.api,
       description: input.description,
     };
-
+    
     if (input.secret) {
       updateData.secretKey = input.secret;
     }
@@ -121,11 +121,26 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
       updateData.passphrase = input.passphrase;
     }
 
-    const {verified, msg} = await exchangeApiVerify(exchangeName, input.api, input.secret, input.passphrase);
-    if (!verified) {
-      // throw new Error("API invalid:");
-      return {
-        error: msg
+    const oringinApi = await prisma.exchangeAccount.findUnique({
+      where: {
+        id: input.id
+      },
+      select: { // 选择要返回的字段
+        apiKey: true, 
+        secretKey: true, 
+        passphrase: true, 
+      },
+    })
+    console.log("oringinApi:", oringinApi)
+    // need verify api
+    if ((input.api !== oringinApi?.apiKey) || (input.secret) || (input.passphrase)) {
+      const {verified, msg} = await exchangeApiVerify(exchangeName, input.api, 
+        input.secret? input.secret:oringinApi?.secretKey!, input.passphrase? input.passphrase:oringinApi?.passphrase!);
+      if (!verified) {
+        // throw new Error("API invalid:");
+        return {
+          error: msg
+        }
       }
     }
 
