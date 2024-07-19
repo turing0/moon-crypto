@@ -18,7 +18,10 @@ async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey
     const data = await response.json()
     console.log("response data:", data)
     if (data['code']==="0") {
-      return {"verified": true, "msg": "success"}
+      return {
+        "verified": true, 
+        "data": data, 
+        "msg": "success"}
     } 
 
     return {"verified": false, "msg": data["msg"]}

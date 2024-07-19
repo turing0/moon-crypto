@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select"
 import { createExchangeAPI } from "@/actions/exchange"
 import { CreateExchangeApiSchema, createExchangeApiSchema } from "@/lib/validations/exchange"
+import { Icons } from "../shared/icons"
 
 
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
@@ -44,6 +45,7 @@ const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 export function CreateExchangeDialog({userid}) {
   const [open, setOpen] = React.useState(false)
   const [isCreatePending, startCreateTransition] = React.useTransition()
+  const [isExpanded, setIsExpanded] = React.useState(false)
 
   const form = useForm<CreateExchangeApiSchema>({
     resolver: zodResolver(createExchangeApiSchema),
@@ -64,6 +66,20 @@ export function CreateExchangeDialog({userid}) {
     })
   }
 
+  const whitelistIPs = [
+    "coming soon..."
+  ]
+
+  const whitelistIPsString = whitelistIPs.join(',')
+  const displayIPs = isExpanded 
+  ? whitelistIPsString 
+  : whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
+  
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(whitelistIPsString)
+    toast.success("IP addresses copied to clipboard", {position: "top-center"})
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -80,6 +96,48 @@ export function CreateExchangeDialog({userid}) {
             Fill in the details below to create a new exchange api.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="p-4 bg-gray-100 rounded-md">
+          <p className="text-sm font-medium text-gray-700">Whitelist IP Addresses:</p>
+          <div className="mt-1 flex items-start">
+            <code className="px-2 py-1 bg-white rounded border border-gray-300 overflow-x-auto max-w-[calc(100%-140px)] max-h-20">
+              {displayIPs}
+            </code>
+            <div className="ml-2 flex flex-col space-y-2">
+              <Button
+                onClick={copyToClipboard}
+                variant="outline"
+                size="sm"
+                className="flex-shrink-0"
+              >
+                <Icons.copy className="h-4 w-4 mr-1" aria-hidden="true" />
+                Copy
+              </Button>
+              {/* {whitelistIPs.length > 3 && (
+                <Button
+                  onClick={toggleExpand}
+                  variant="outline"
+                  size="sm"
+                  className="flex-shrink-0"
+                >
+                  {isExpanded ? (
+                    <>
+                      <Icons.chevronDown className="mr-2 size-4" />
+                      Collapse
+                    </>
+                  ) : (
+                    <>
+                      <Icons.chevronDown className="mr-2 size-4" />
+                      Expand
+                    </>
+                  )}
+                </Button>
+              )} */}
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-gray-500">Add these IP addresses to your exchange's API whitelist for secure access.</p>
+        </div>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
