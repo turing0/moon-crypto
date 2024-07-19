@@ -1,6 +1,5 @@
 "use client"
 
-import { getRedisArray } from "@/actions/redisKey";
 import { OkxHistoryOrder } from "@/app/(tools)/analysis/page";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
@@ -143,7 +142,7 @@ export default function TradersPage() {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("response data:", data)
+          console.log("userApi data:", data)
           setUserApiData(data);
         } else {
           console.error('Failed to fetch user data:', response.status);
@@ -152,25 +151,8 @@ export default function TradersPage() {
         console.error('Failed to fetch user data:', error);
       }
     }
-    // async function fetchIpData() {
-    //   try {
-    //     const response = await getRedisArray(`exchange_whitelistIPs`)
-    //     console.log("getRedisArray response:", response)
-        
-    //     // if (response.ok) {
-    //     //   const data = await response.json();
-    //     //   console.log("response data:", data)
-    //     //   setUserApiData(data);
-    //     // } else {
-    //     //   console.error('Failed to fetch user data:', response.status);
-    //     // }
-    //   } catch (error) {
-    //     console.error('Failed to fetch user data:', error);
-    //   }
-    // }
 
     fetchUserApiData();
-    // fetchIpData();
   }, [session]);
 
 

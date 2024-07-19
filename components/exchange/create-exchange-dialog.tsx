@@ -42,7 +42,7 @@ import { Icons } from "../shared/icons"
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 
 
-export function CreateExchangeDialog({userid}) {
+export function CreateExchangeDialog({userid, ipdata}) {
   const [open, setOpen] = React.useState(false)
   const [isCreatePending, startCreateTransition] = React.useTransition()
   const [isExpanded, setIsExpanded] = React.useState(false)
@@ -66,10 +66,7 @@ export function CreateExchangeDialog({userid}) {
     })
   }
 
-  const whitelistIPs = [
-    "coming soon..."
-  ]
-
+  const whitelistIPs = ipdata
   const whitelistIPsString = whitelistIPs.join(',')
   const displayIPs = isExpanded 
   ? whitelistIPsString 

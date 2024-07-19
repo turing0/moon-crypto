@@ -1,4 +1,5 @@
 import { getExchangeAPI } from "@/actions/exchange";
+import { getRedisArray } from "@/actions/redisKey";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
 import { CreateExchangeDialog } from "@/components/exchange/create-exchange-dialog";
@@ -44,6 +45,7 @@ export default async function ExchangePage() {
     redirect("/login");
   }
   const {data, status} = await fetchExchangeAPIs(user.id!);
+  const whitelistIPs = await getRedisArray(`exchange_whitelistIPs`)
 
   return (
     <DashboardShell>
@@ -54,7 +56,7 @@ export default async function ExchangePage() {
       {/* <div className='flex h-full w-full flex-col items-center justify-center'> */}
       <div className=''>
       
-        <CreateExchangeDialog userid={user?.id} />
+        <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
         
         <DataTable data={data} columns={exchangeApiInfoColumns} />
 
