@@ -5,6 +5,7 @@ import NextAuth, { type DefaultSession } from "next-auth";
 
 import { prisma } from "@/lib/db";
 import { getUserById } from "@/lib/user";
+import { headers } from "next/headers";
 
 // More info: https://authjs.dev/getting-started/typescript#module-augmentation
 declare module "next-auth" {
@@ -60,6 +61,34 @@ export const {
       token.role = dbUser.role;
 
       return token;
+    },
+
+    async signIn({ user, account, profile, email, credentials }) {
+      // if (user && account && profile) {
+      //   const ip = await captureIp(req); // Capture IP address
+
+      //   // Create a new login log record
+      //   await prisma.loginLog.create({
+      //     data: {
+      //       userId: user.id,
+      //       ipAddress: ip,
+      //     },
+      //   });
+      // }
+      if (user && account && profile) {
+        const ip = (headers().get('x-forwarded-for') || '').split(',')[0] || 'Unknown';
+        const userAgent = headers().get('user-agent') || 'Unknown';
+  
+        await prisma.loginLog.create({
+          data: {
+            userId: user.id!,
+            ip: ip,
+            userAgent: userAgent,
+          },
+        });
+      }
+
+      return true;
     },
   },
   ...authConfig,
