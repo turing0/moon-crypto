@@ -69,12 +69,12 @@ export function DeleteExchangeApiDialog({
                 })
 
                 if (error) {
-                  toast.error(error)
+                  toast.error(error, {position: "top-center"})
                   return
                 }
 
                 props.onOpenChange?.(false)
-                toast.success("API deleted")
+                toast.success("API deleted", {position: "top-center"})
                 onSuccess?.()
               })
             }}

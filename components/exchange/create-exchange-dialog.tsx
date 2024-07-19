@@ -38,14 +38,14 @@ import { createExchangeAPI } from "@/actions/exchange"
 import { CreateExchangeApiSchema, createExchangeApiSchema } from "@/lib/validations/exchange"
 import { Icons } from "../shared/icons"
 
-
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
-
+const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
 export function CreateExchangeDialog({userid, ipdata}) {
   const [open, setOpen] = React.useState(false)
+  const [selectedExchange, setSelectedExchange] = React.useState("");
   const [isCreatePending, startCreateTransition] = React.useTransition()
-  const [isExpanded, setIsExpanded] = React.useState(false)
+  // const [isExpanded, setIsExpanded] = React.useState(false)
 
   const form = useForm<CreateExchangeApiSchema>({
     resolver: zodResolver(createExchangeApiSchema),
@@ -68,10 +68,12 @@ export function CreateExchangeDialog({userid, ipdata}) {
 
   const whitelistIPs = ipdata
   const whitelistIPsString = whitelistIPs.join(',')
-  const displayIPs = isExpanded 
-  ? whitelistIPsString 
-  : whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
-  
+  // const displayIPs = isExpanded 
+  // ? whitelistIPsString 
+  // : whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
+  const displayIPs = whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
+  const showPassphrase = exchangesRequiringPassphrase.includes(selectedExchange);
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(whitelistIPsString)
     toast.success("IP addresses copied", {position: "top-center"})
@@ -86,7 +88,8 @@ export function CreateExchangeDialog({userid, ipdata}) {
           Add exchange
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      {/* <DialogContent className={"overflow-y-scroll max-h-screen"}> */}
+      <DialogContent className={"max-h-[90vh] overflow-auto"}>
         <DialogHeader>
           <DialogTitle>Add exchange</DialogTitle>
           <DialogDescription className="hidden sm:block">
@@ -147,7 +150,10 @@ export function CreateExchangeDialog({userid, ipdata}) {
                 <FormItem>
                   <FormLabel>Exchange</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setSelectedExchange(value);
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -221,7 +227,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
                 </FormItem>
               )}
             />
-            <FormField
+            {showPassphrase && (<FormField
               control={form.control}
               name="passphrase"
               render={({ field }) => (
@@ -229,7 +235,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
                   <FormLabel>Passphrase</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter passphrase if needed"
+                      placeholder="Enter passphrase"
                       {...field}
                     />
                   </FormControl>
@@ -237,6 +243,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
                 </FormItem>
               )}
             />
+            )}
             {/* <FormField
               control={form.control}
               name="description"
