@@ -45,7 +45,8 @@ export default async function ExchangePage() {
     redirect("/login");
   }
   const {data, status} = await fetchExchangeAPIs(user.id!);
-  const whitelistIPs = await getRedisArray(`exchange_whitelistIPs`)
+  // const whitelistIPs = await getRedisArray(`exchange_whitelistIPs`)
+  const whitelistIPs = ["coming soon"]
 
   return (
     <DashboardShell>
