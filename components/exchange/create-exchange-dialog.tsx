@@ -108,7 +108,7 @@ export function CreateExchangeDialog({userid}) {
                 onClick={copyToClipboard}
                 variant="outline"
                 size="sm"
-                className="flex-shrink-0"
+                className="shrink-0"
               >
                 <Icons.copy className="mr-1h-4 w-4" aria-hidden="true" />
                 Copy
