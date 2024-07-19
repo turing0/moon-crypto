@@ -28,8 +28,8 @@ import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
-import { createCopyTradingAPI } from "@/actions/exchange"
 import Link from "next/link"
+import { createCopyTradingAPI } from "@/actions/copy-trading"
 
 
 export function CopyTradeDialog({traderId, traderName, userApi}) {

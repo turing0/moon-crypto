@@ -132,7 +132,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
               )} */}
             </div>
           </div>
-          <p className="mt-2 text-xs text-gray-500">{"Add these IP addresses to your exchange's API whitelist for secure access."}</p>
+          <p className="mt-2 text-xs text-gray-500">{"Turn on IP whitelisting and copy/paste these IP addresses."}</p>
         </div>
 
         <Form {...form}>

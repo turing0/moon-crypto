@@ -590,11 +590,12 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },
   {
-    accessorKey: "exchangeName",
+    accessorKey: "balance",
     header: "Balance",
-    cell: ({ row }) => (
-      <div></div>
-    ),
+    cell: ({ row }) => {
+      const balance = row.getValue("balance");
+      return <div>{balance ? `${balance} USDT` : null}</div>;
+    },
   },
   {
     accessorKey: "apiKey",

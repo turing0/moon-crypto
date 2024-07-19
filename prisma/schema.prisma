@@ -81,6 +81,7 @@ model ExchangeAccount {
   apiKey            String
   secretKey         String
   passphrase        String?
+  balance           String?
   description       String?
   enabled           Boolean  @default(true)
   createdAt         DateTime @default(now()) @map(name: "created_at")
