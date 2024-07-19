@@ -96,11 +96,11 @@ export function CreateExchangeDialog({userid}) {
             Fill in the details below to create a new exchange api.
           </DialogDescription>
         </DialogHeader>
-
-        <div className="p-4 bg-gray-100 rounded-md">
+        
+        <div className="rounded-md bg-gray-100 p-4">
           <p className="text-sm font-medium text-gray-700">Whitelist IP Addresses:</p>
           <div className="mt-1 flex items-start">
-            <code className="px-2 py-1 bg-white rounded border border-gray-300 overflow-x-auto max-w-[calc(100%-140px)] max-h-20">
+            <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1">
               {displayIPs}
             </code>
             <div className="ml-2 flex flex-col space-y-2">
@@ -110,7 +110,7 @@ export function CreateExchangeDialog({userid}) {
                 size="sm"
                 className="flex-shrink-0"
               >
-                <Icons.copy className="h-4 w-4 mr-1" aria-hidden="true" />
+                <Icons.copy className="mr-1h-4 w-4" aria-hidden="true" />
                 Copy
               </Button>
               {/* {whitelistIPs.length > 3 && (
@@ -135,7 +135,7 @@ export function CreateExchangeDialog({userid}) {
               )} */}
             </div>
           </div>
-          <p className="mt-2 text-xs text-gray-500">Add these IP addresses to your exchange's API whitelist for secure access.</p>
+          <p className="mt-2 text-xs text-gray-500">{"Add these IP addresses to your exchange's API whitelist for secure access."}</p>
         </div>
 
         <Form {...form}>
