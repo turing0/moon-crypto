@@ -74,7 +74,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(whitelistIPsString)
-    toast.success("IP addresses copied to clipboard", {position: "top-center"})
+    toast.success("IP addresses copied", {position: "top-center"})
   }
 
   return (
@@ -94,10 +94,10 @@ export function CreateExchangeDialog({userid, ipdata}) {
           </DialogDescription>
         </DialogHeader>
         
-        <div className="rounded-md bg-gray-100 p-4">
-          <p className="text-sm font-medium text-gray-700">Whitelist IP Addresses:</p>
+        <div className="rounded-md bg-gray-100 p-4 dark:bg-gray-800">
+          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Whitelist IP Addresses:</p>
           <div className="mt-1 flex items-start">
-            <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1">
+            <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
               {displayIPs}
             </code>
             <div className="ml-2 flex flex-col space-y-2">
@@ -105,9 +105,9 @@ export function CreateExchangeDialog({userid, ipdata}) {
                 onClick={copyToClipboard}
                 variant="outline"
                 size="sm"
-                className="shrink-0"
+                className="shrink-0 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               >
-                <Icons.copy className="mr-1h-4 w-4" aria-hidden="true" />
+                <Icons.copy className="mr-1 h-4 w-4" aria-hidden="true" />
                 Copy
               </Button>
               {/* {whitelistIPs.length > 3 && (
@@ -132,7 +132,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
               )} */}
             </div>
           </div>
-          <p className="mt-2 text-xs text-gray-500">{"Turn on IP whitelisting and copy/paste these IP addresses."}</p>
+          <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{"Turn on IP whitelisting and copy/paste these IP addresses."}</p>
         </div>
 
         <Form {...form}>
