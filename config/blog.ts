@@ -16,7 +16,7 @@ export const BLOG_CATEGORIES: {
 ];
 
 export const BLOG_AUTHORS = {
-  mickasmt: {
+  mooncrypto: {
     name: "MoonCrypto",
     image: "/_static/avatars/mooncrypto.png",
     link: "/",
