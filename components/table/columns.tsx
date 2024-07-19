@@ -572,7 +572,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
 
       return (
         <div className="flex flex-col">
-          <div className="font-bold">
+          <div className="font-bold max-w-xs truncate">
             {datarow.accountName}
           </div>
           <div className="text-gray-500">
@@ -603,9 +603,13 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
     // header: ({ column }) => (
     //   <DataTableColumnHeader column={column} title="ApiKey" />
     // ),
-    cell: ({ row }) => (
-      <div>{row.getValue("apiKey")}</div>
-    ),
+    cell: ({ row }) => {
+      const apiKey = row.getValue("apiKey") as string;
+      const displayApiKey = apiKey.length > 20
+        ? `${apiKey.slice(0, 10)}...${apiKey.slice(-10)}`
+        : apiKey;
+      return <div>{displayApiKey}</div>;
+    },
   },
   // {
   //   accessorKey: "secretKey",
