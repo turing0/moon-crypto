@@ -149,7 +149,14 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
           error: msg
         }
       }
-
+      await prisma.exchangeAccount
+      .update({
+        where: {
+          id: input.id,
+        },
+        data: updateData,
+      })
+    } else {
       await prisma.exchangeAccount
       .update({
         where: {
