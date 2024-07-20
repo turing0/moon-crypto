@@ -6,6 +6,7 @@ import { DashboardShell } from "@/components/dashboard/shell";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
+import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -107,6 +108,7 @@ export default function TradersPage() {
   const [traderId, setTraderId] = useState<string>('');
   const [okxOraderId, setOkxTraderId] = useState<string>('');
   const [userApiData, setUserApiData] = useState(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleOKXSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -120,6 +122,7 @@ export default function TradersPage() {
       const bitgetdata = await getBitgetTraders("");
       console.log("bitgetdata:", bitgetdata);
       setBitgetTrader(bitgetdata);
+      setIsLoading(false);
     };
 
     fetchBitgetData();
@@ -187,8 +190,16 @@ export default function TradersPage() {
                 </div>
               </form>
             </div> */}
-            <DataTable data={bitgetTrader} columns={bitgetTraderColumns} userApi={userApiData!} />
+
+            {isLoading ? (
+              <div>
+                <TableSkeleton />
+              </div>
+            ) : (
+              <DataTable data={bitgetTrader} columns={bitgetTraderColumns} userApi={userApiData!} />
+            )}
           </TabsContent>
+
           <TabsContent value="binance" className="space-y-4">
             <div >
               {/* <form onSubmit={handleBinanceSubmit}> */}

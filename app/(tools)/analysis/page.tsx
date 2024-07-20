@@ -256,7 +256,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
                 </div>
               </form>
             </div>
-            {/* <DataTable data={bitgetOrder} columns={orderColumns} /> */}
+            
             {isLoading ? (
               <div>
                 <TableSkeleton />
