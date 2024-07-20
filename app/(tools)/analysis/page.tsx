@@ -12,6 +12,7 @@ import { DataTable } from "@/components/table/data-table"
 import { okxOrderColumns, orderColumns } from "@/components/table/columns"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { DashboardHeader } from "@/components/dashboard/header"
+import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 
 // export const metadata = constructMetadata({
 //   title: "Analysis – Moon Crypto",
@@ -157,6 +158,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
   const [bitgetTraderId, setBitgetTraderId] = useState<string>('');
   const [okxTraderId, setOkxTraderId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // const searchParams = useSearchParams()
   // const bitgetTraderId = searchParams.get('bitgetTraderId')
@@ -190,7 +192,10 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
 
   useEffect(() => {
     if (bitgetTraderId) {
-      getBitgetHistoryOrder(bitgetTraderId).then(data => setBitgetOrder(data));
+      getBitgetHistoryOrder(bitgetTraderId).then(data => {
+        setBitgetOrder(data);
+        setIsLoading(false);
+      });
       // router.replace(`${pathname}?${newSearchParams.toString()}`, {
       router.replace(`${pathname}?bitgetTraderId=${bitgetTraderId}`, {
         scroll: false,
@@ -199,8 +204,10 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   }, [bitgetTraderId]);
   useEffect(() => {
     if (okxTraderId) {
-      getOkxHistoryOrder(okxTraderId)
-      .then(data => setOkxOrder(data));
+      getOkxHistoryOrder(okxTraderId).then(data => {
+        setOkxOrder(data);
+        setIsLoading(false);
+      });
       router.replace(`${pathname}?okxTraderId=${okxTraderId}`, {
         scroll: false,
       });
@@ -249,8 +256,16 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
                 </div>
               </form>
             </div>
-            <DataTable data={bitgetOrder} columns={orderColumns} />
+            {/* <DataTable data={bitgetOrder} columns={orderColumns} /> */}
+            {isLoading ? (
+              <div>
+                <TableSkeleton />
+              </div>
+            ) : (
+              <DataTable data={bitgetOrder} columns={orderColumns} />
+            )}
           </TabsContent>
+
           <TabsContent value="binance" className="space-y-4">
             <div >
               {/* <form onSubmit={handleBinanceSubmit}> */}
