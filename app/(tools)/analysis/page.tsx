@@ -1,6 +1,7 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tab, TabList, TabPanel, Tabs as Tabs2 } from "@/components/v2/tabs/tabs"
 import { Search } from "lucide-react"
 import { Suspense, useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -257,13 +258,35 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
               </form>
             </div>
             
-            {isLoading ? (
-              <div>
-                <TableSkeleton />
-              </div>
-            ) : (
-              <DataTable data={bitgetOrder} columns={orderColumns} />
-            )}
+
+            <Tabs2 defaultValue="order">
+              <TabList>
+                <Tab value="overview">Overview</Tab>
+                <Tab value="order">
+                  <div className="flex items-center">
+                    <p>History Order</p>
+                  </div>
+                </Tab>
+                {/* <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
+              </TabList>
+              <TabPanel value="overview">
+
+              </TabPanel>
+              <TabPanel value="order">
+                {isLoading ? (
+                  <div>
+                    <TableSkeleton />
+                  </div>
+                ) : (
+                  <>
+                    <DataTable data={bitgetOrder} columns={orderColumns} />
+                  </>
+                )}
+              </TabPanel>
+              {/* <TabPanel value={TabSections.Roles}>
+                Roles
+              </TabPanel> */}
+            </Tabs2>
           </TabsContent>
 
           <TabsContent value="binance" className="space-y-4">
