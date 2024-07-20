@@ -159,7 +159,6 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   const [bitgetTraderId, setBitgetTraderId] = useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
   const [okxTraderId, setOkxTraderId] = useState<string>(okxTraderIdParam?okxTraderIdParam:'');
   const [isLoading, setIsLoading] = useState<boolean>(bitgetTraderId?true:false);
-  console.log('isLoading:', isLoading)
 
   // const searchParams = useSearchParams()
   // const bitgetTraderId = searchParams.get('bitgetTraderId')

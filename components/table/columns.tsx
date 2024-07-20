@@ -51,18 +51,24 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: "symbol",
     header: "Position",
-    cell: ({ row }) => (
-      <div>{row.getValue("symbol")}</div>
-    ),
-  },
-  {
-    accessorKey: "posSide",
-    header: "Side",
-    cell: ({ row }) => (
-      <div>{row.getValue("posSide")}</div>
-    ),
+    // cell: ({ row }) => (
+    //   <div>{row.getValue("symbol")}</div>
+    // ),
+    cell: function Cell({ row }) {
+      const datarow = row.original
+
+      return (
+        <div className="flex flex-col">
+          <div className="max-w-xs truncate font-semibold">
+            {datarow.symbol}
+          </div>
+          <div className="text-gray-500">
+            {datarow.posSide}
+          </div>
+        </div>
+      )
+    },
   },
   {
     accessorKey: "openSize",
@@ -87,16 +93,20 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   {
     accessorKey: "openPriceAvg",
     header: "OpenPriceAvg",
-    cell: ({ row }) => (
-      <div>{row.getValue("openPriceAvg")} USDT</div>
-    ),
+    cell: ({ row }) => {
+      const valueStr = row.getValue("openPriceAvg") as string;
+      const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
+      return <div>{truncatedValue} USDT</div>;
+    },
   },
   {
     accessorKey: "closePriceAvg",
     header: "ClosePriceAvg",
-    cell: ({ row }) => (
-      <div>{row.getValue("closePriceAvg")} USDT</div>
-    ),
+    cell: ({ row }) => {
+      const valueStr = row.getValue("closePriceAvg") as string;
+      const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
+      return <div>{truncatedValue} USDT</div>;
+    },
   },
   {
     accessorKey: "margin",
@@ -192,9 +202,9 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
             >
               Copy TrackingNo
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            {/* <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
+            <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
