@@ -156,9 +156,10 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   const [bitgetOrder, setBitgetOrder] = useState<BitGetHistoryOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
-  const [bitgetTraderId, setBitgetTraderId] = useState<string>('');
-  const [okxTraderId, setOkxTraderId] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [bitgetTraderId, setBitgetTraderId] = useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
+  const [okxTraderId, setOkxTraderId] = useState<string>(okxTraderIdParam?okxTraderIdParam:'');
+  const [isLoading, setIsLoading] = useState<boolean>(bitgetTraderId?true:false);
+  console.log('isLoading:', isLoading)
 
   // const searchParams = useSearchParams()
   // const bitgetTraderId = searchParams.get('bitgetTraderId')
@@ -167,14 +168,14 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
 
   const defaultTabValue = okxTraderIdParam ? "okx":"bitget";
 
-  useEffect(() => {
-    if (bitgetTraderIdParam) {
-      setBitgetTraderId(bitgetTraderIdParam);
-    }
-    if (okxTraderIdParam) {
-      setOkxTraderId(okxTraderIdParam);
-    }
-  }, [bitgetTraderIdParam, okxTraderIdParam]);
+  // useEffect(() => {
+  //   if (bitgetTraderIdParam) {
+  //     setBitgetTraderId(bitgetTraderIdParam);
+  //   }
+  //   if (okxTraderIdParam) {
+  //     setOkxTraderId(okxTraderIdParam);
+  //   }
+  // }, [bitgetTraderIdParam, okxTraderIdParam]);
   // useEffect(() => {
   //   if (okxTraderId) {
   //     setOkxTraderId(okxTraderId);
