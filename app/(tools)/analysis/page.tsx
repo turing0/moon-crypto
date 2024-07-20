@@ -270,7 +270,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
                 {/* <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
               </TabList>
               <TabPanel value="overview">
-
+                  Coming soon
               </TabPanel>
               <TabPanel value="order">
                 {isLoading ? (
@@ -321,7 +321,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
           </TabsContent>
         </Tabs>
 
-        <Separator/>
+        {/* <Separator/> */}
         
       {/* </div> */}
     </div>

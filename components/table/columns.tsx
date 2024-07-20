@@ -374,14 +374,17 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
   //   enableHiding: false,
   // },
   {
-    accessorKey: "traderName",
-    header: "TraderName",
-    cell: ({ row }) => (
-      <div>{row.getValue("traderName")}</div>
-      // <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(row.getValue("traderId"))}`}>
-      //   {row.getValue("traderName")}
-      // </Link>
-    ),
+    header: "Trader",
+    cell: ({ row }) => {
+      const datarow = row.original
+      
+      return (
+        // <div>{row.getValue("traderName")}</div>
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`}>
+          {datarow["traderName"]}
+        </Link>
+      )
+    },
   },
   {
     accessorKey: "TotalPnL",
