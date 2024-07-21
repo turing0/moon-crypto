@@ -836,11 +836,14 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
     cell: function Cell({ row }) {
       const datarow = row.original
       return (
-        <div className="flex items-center space-x-2">
-          {(
-            <>{datarow.traderName}</>
-          )}
-        </div>
+        // <div className="flex items-center space-x-2">
+        //   {(
+        //     <>{datarow.traderName}</>
+        //   )}
+        // </div>
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`}>
+          {datarow["traderName"]}
+        </Link>
       )
     },
   },

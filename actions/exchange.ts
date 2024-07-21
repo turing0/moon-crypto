@@ -1,7 +1,7 @@
 "use server"
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
-import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
+import { CreateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
