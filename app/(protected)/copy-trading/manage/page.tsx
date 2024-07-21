@@ -41,7 +41,7 @@ export default function ManageCopyTradingPage() {
     };
 
     fetchData();
-  }, []);
+  }, [session, status]);
 
   return (
     <DashboardShell>
