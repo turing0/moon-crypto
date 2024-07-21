@@ -17,7 +17,7 @@ enum TabSections {
   Identities = "identities"
 }
 
-export default async function ManageCopyTradingPage() {
+export default function ManageCopyTradingPage() {
   const {data:session} = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
