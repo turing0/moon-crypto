@@ -1,7 +1,7 @@
 "use server"
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
-import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
+import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateCopyTradingSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
 
@@ -20,6 +20,13 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
       traderName: traderName,
       traderId: traderId,
     };
+    if (input.fixedAmount && input.multiplierAmount) {
+      return {
+        data: null,
+        error: "FixedAmount and MultiplierAmount can not both have values",
+      }
+    }
+
     if (input.fixedAmount) {
       // data.fixedAmount = input.fixedAmount;
       data.fixedAmount = parseInt(input.fixedAmount, 10);
@@ -115,6 +122,50 @@ export async function getCopyTradingSetting(userId: string) {
   }
 }
 
+export async function updateCopyTradingSetting(input: UpdateCopyTradingSchema & { id: string }) {
+  // noStore()
+  try {
+    const updateData: any = {
+      fixedAmount: null,
+      multiplierAmount: null,
+    };
+
+    if (input.fixedAmount && input.multiplierAmount) {
+      return {
+        data: null,
+        error: "FixedAmount and MultiplierAmount can not both have values",
+      }
+    }
+
+    if (input.fixedAmount) {
+      updateData.fixedAmount = parseInt(input.fixedAmount, 10);
+    }
+    if (input.multiplierAmount) {
+      updateData.multiplierAmount = parseFloat(input.multiplierAmount);
+    }
+    
+    await prisma.copyTradingSetting
+    .update({
+      where: {
+        id: input.id,
+      },
+      data: updateData,
+    })
+
+    revalidatePath("/copy-trading/manage")
+
+    return {
+      data: null,
+      error: null,
+    }
+  } catch (err) {
+    return {
+      data: null,
+      error: (err),
+    }
+  }
+}
+
 export async function deleteCopyTradingSetting(input: { ids: string[] }) {
   const session = await auth()
     
@@ -132,6 +183,8 @@ export async function deleteCopyTradingSetting(input: { ids: string[] }) {
       },
     })
     
+    // TODO: 市价全平仓位
+
     revalidatePath("/copy-trading/manage")
 
     return {

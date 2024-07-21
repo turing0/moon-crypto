@@ -17,10 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { deleteExchangeAPI } from "@/actions/exchange"
 import { CopyTradingSettingInfo } from "../table/columns"
 import { deleteCopyTradingSetting } from "@/actions/copy-trading"
-
 
 interface DeleteCopyTradingDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {

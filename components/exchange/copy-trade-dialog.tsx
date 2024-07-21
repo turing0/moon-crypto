@@ -157,6 +157,9 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
               />
 
               <Tabs defaultValue="fixed" className="space-y-4" onValueChange={setActiveTab}>
+                <div>
+                  <FormLabel className="text-base">Mode</FormLabel>
+                </div>
                 <TabsList>
                   <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
                   <TabsTrigger value="multiplier">Multiplier</TabsTrigger>

@@ -24,6 +24,7 @@ import { Switch } from "../ui/switch"
 import { EnabledExchangeApiDialog } from "../exchange/enabled-api-dialog"
 import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
+import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -890,12 +891,17 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
     enableHiding: false,
     cell: function Cell({ row }) {
       const datarow = row.original
-      const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false)
+      const [showUpdateSheet, setShowUpdateSheet] = useState(false)
       const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
       return (
         <>
         <div className="flex items-center space-x-2">
+          <UpdateCopyTradingSheet
+            open={showUpdateSheet}
+            onOpenChange={setShowUpdateSheet}
+            task={row.original}
+          />
           <DeleteCopyTradingDialog
             open={showDeleteDialog}
             onOpenChange={setShowDeleteDialog}
@@ -906,7 +912,7 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
           {/* <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow.traderId)}`} >
             <Icons.fileBarChart />
           </Link> */}
-          <div className="cursor-pointer" >
+          <div className="cursor-pointer" onClick={() => setShowUpdateSheet(true)}>
             <Icons.pencilLine />
           </div>
           <div className="cursor-pointer" onClick={() => setShowDeleteDialog(true)}>

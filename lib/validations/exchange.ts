@@ -44,3 +44,20 @@ export const createCopyTradingSchema = z.object({
 });
 
 export type CreateCopyTradingSchema = z.infer<typeof createCopyTradingSchema>
+
+export const updateCopyTradingSchema = z.object({
+  // apis: z.string(),
+  apis: z.string().optional(),
+  fixedAmount: z.string().optional(),
+  multiplierAmount: z.string().optional(),
+})
+.refine(data => data.fixedAmount || data.multiplierAmount, {
+  message: "You must fill at least one of fixedAmount or multiplierAmount.",
+  path: ["fixedAmount"], // This makes the error appear on both fields
+})
+.refine(data => data.fixedAmount || data.multiplierAmount, {
+  message: "You must fill at least one of fixedAmount or multiplierAmount.",
+  path: ["multiplierAmount"], // This makes the error appear on both fields
+});
+
+export type UpdateCopyTradingSchema = z.infer<typeof updateCopyTradingSchema>
