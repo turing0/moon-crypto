@@ -8,12 +8,11 @@ export const pricingData: SubscriptionPlan[] = [
     benefits: [
       "Up to 100 monthly posts",
       "Basic analytics and reporting",
-      "Access to standard templates",
+      "Test with virtual money",
     ],
     limitations: [
       "No priority access to new features.",
       "Limited customer support",
-      "No custom branding",
       "Limited access to premium resources.",
     ],
     prices: {
@@ -33,10 +32,8 @@ export const pricingData: SubscriptionPlan[] = [
       "Advanced analytics and reporting",
       "Access to premium templates",
       "Priority customer support",
-      "Exclusive webinars and training.",
     ],
     limitations: [
-      "No custom branding",
       "Limited access to premium resources.",
     ],
     prices: {

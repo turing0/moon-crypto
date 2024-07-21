@@ -38,6 +38,18 @@ const pricingFaqData = [
     answer:
       "We offer a 14-day free trial for both the Pro Monthly and Pro Annual plans. It's a great way to experience all the features before committing to a paid subscription.",
   },
+  {
+    id: "item-6",
+    question: "What will happen once my paid plan is over?",
+    answer:
+      "Once your paid plan is over, if you did not renew it, you will be downgraded to the free plan, any copy-trading and live positions depending on your expired paid plan will be stopped.",
+  },
+  {
+    id: "item-7",
+    question: "Does MoonCrypto take any fees from trades?",
+    answer:
+      "No, MoonCrypto only charges monthly subscriptions when using a paid plan. There is no extra or hidden fee.",
+  },
 ];
 
 export function PricingFaq() {
