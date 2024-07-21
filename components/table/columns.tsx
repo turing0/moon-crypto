@@ -888,7 +888,7 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
     id: "actions",
     header: "Actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: function Cell({ row }) {
       const datarow = row.original
       const [showUpdateTaskSheet, setShowUpdateTaskSheet] = useState(false)
       const [showDeleteDialog, setShowDeleteDialog] = useState(false)
