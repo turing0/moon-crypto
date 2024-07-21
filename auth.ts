@@ -63,33 +63,33 @@ export const {
       return token;
     },
 
-    async signIn({ user, account, profile, email, credentials }) {
-      // if (user && account && profile) {
-      //   const ip = await captureIp(req); // Capture IP address
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   // if (user && account && profile) {
+    //   //   const ip = await captureIp(req); // Capture IP address
 
-      //   // Create a new login log record
-      //   await prisma.loginLog.create({
-      //     data: {
-      //       userId: user.id,
-      //       ipAddress: ip,
-      //     },
-      //   });
-      // }
-      if (user && account && profile) {
-        const ip = (headers().get('x-forwarded-for') || '').split(',')[0] || 'Unknown';
-        const userAgent = headers().get('user-agent') || 'Unknown';
+    //   //   // Create a new login log record
+    //   //   await prisma.loginLog.create({
+    //   //     data: {
+    //   //       userId: user.id,
+    //   //       ipAddress: ip,
+    //   //     },
+    //   //   });
+    //   // }
+    //   if (user && account && profile) {
+    //     const ip = (headers().get('x-forwarded-for') || '').split(',')[0] || 'Unknown';
+    //     const userAgent = headers().get('user-agent') || 'Unknown';
   
-        await prisma.loginLog.create({
-          data: {
-            userId: user.id!,
-            ip: ip,
-            userAgent: userAgent,
-          },
-        });
-      }
+    //     await prisma.loginLog.create({
+    //       data: {
+    //         userId: user.id!,
+    //         ip: ip,
+    //         userAgent: userAgent,
+    //       },
+    //     });
+    //   }
 
-      return true;
-    },
+    //   return true;
+    // },
   },
   ...authConfig,
   // debug: process.env.NODE_ENV !== "production"
