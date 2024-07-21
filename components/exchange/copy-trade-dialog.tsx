@@ -104,8 +104,8 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                     </div>
                     {!userApi || userApi.length === 0 ? (
                       <div className="border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700">
-                        <p>{`You don't have any exchange APIs.`}</p>
-                        Please <Link href="/exchanges" className="text-blue-500 underline">add an API</Link> to proceed.
+                        <p>{`You don't have any enabled exchange APIs.`}</p>
+                        Please <Link href="/exchanges" className="text-blue-500 underline">add or check your APIs</Link> to proceed.
                       </div>
                     ) : (
                     // {userApi && userApi.map((item) => (

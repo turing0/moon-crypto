@@ -192,6 +192,10 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   };
 
   useEffect(() => {
+    document.title = "Analysis – Moon Crypto";
+  }, []);
+
+  useEffect(() => {
     if (bitgetTraderId) {
       getBitgetHistoryOrder(bitgetTraderId).then(data => {
         setBitgetOrder(data);
