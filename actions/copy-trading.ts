@@ -114,3 +114,35 @@ export async function getCopyTradingSetting(userId: string) {
     return []
   }
 }
+
+export async function deleteCopyTradingSetting(input: { ids: string[] }) {
+  const session = await auth()
+    
+  if (!session?.user) {
+    throw new Error("Unauthorized");
+  }
+  
+  try {
+    // Delete  
+    const result = await prisma.copyTradingSetting.deleteMany({
+      where: {
+        id: {
+          in: input.ids,
+        }
+      },
+    })
+    
+    revalidatePath("/copy-trading/manage")
+
+    return {
+      data: null,
+      error: null,
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      data: null,
+      error: (err),
+    }
+  }
+}
