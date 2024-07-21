@@ -18,16 +18,21 @@ enum TabSections {
 }
 
 export default function ManageCopyTradingPage() {
-  const {data:session} = useSession();
+  const {data:session, status} = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
   
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   // const data = await getCopyTradingSetting(user?.id!);
   useEffect(() => {
+    if (status === 'loading') return; // 如果 session 还在加载，什么都不做
+    if (!session || !session.user) {
+      redirect("/login");
+    }
+
     const fetchData = async () => {
       const data = await getCopyTradingSetting(session.user.id!);
       // console.log("data:", data);
