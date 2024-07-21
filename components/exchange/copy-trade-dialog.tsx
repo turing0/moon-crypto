@@ -43,7 +43,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
     // const { control, watch } = form;
     // console.log("CopyTradeDialog userApi:", userApi)
     function onSubmit(input: CreateCopyTradingSchema) {
-      console.log("input:", input)
+      // console.log("input:", input)
       startCreateTransition(async () => {
         const { error } = await createCopyTradingAPI(traderId, traderName, input)
   

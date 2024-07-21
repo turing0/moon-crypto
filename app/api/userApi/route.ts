@@ -23,6 +23,7 @@ export async function POST(req: NextRequest, res: NextResponse){
   try {
     const body = await req.json(); // 假设请求的 body 包含 userId
     const userId = body.userId; // 从请求体中获取 userId
+    const enabled = body.enabled ? body.enabled:true; 
     if (!userId) {
       return NextResponse.json([])
     }
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse){
     const userApiData = await prisma.exchangeAccount.findMany({
       where: {
         userId: userId,
+        enabled: enabled,
       },
       select: { // 选择要返回的字段
         id: true, 

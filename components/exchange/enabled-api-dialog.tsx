@@ -52,7 +52,8 @@ export function EnabledExchangeApiDialog({
         <DialogHeader>
           <DialogTitle>Disable API</DialogTitle>
           <DialogDescription className="text-base font-semibold">
-            If the current API has open positions, this action will close them all at market price.
+            If the current API has open positions, this action will close them all at market price.<br />
+            Additionally, if this API is included in any copy-trading settings, it will also be removed from those settings.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:space-x-0">

@@ -48,11 +48,12 @@ export function DeleteExchangeApiDialog({
       ) : null}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle>Delete API</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your{" "}
-            <span className="font-medium">{tasks.length}</span>
-            {tasks.length === 1 ? " API" : " APIs"} from our servers.
+            This action cannot be undone. This will permanently delete this API from our servers.
+            <div className="font-semibold">
+              If the current API has open positions, this action will close them all at market price.
+            </div>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:space-x-0">

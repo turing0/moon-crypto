@@ -196,6 +196,8 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
         }
       },
     })
+
+    // TODO: 市价全平仓位
     
     revalidatePath("/exchanges")
 
@@ -226,7 +228,18 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
       },
     })
     
-    // TODO: 市价全平仓位
+    if (status) {
+      // TODO: 市价全平仓位
+      
+      // Delete  
+      const deleteResult = await prisma.copyTradingAccount.deleteMany({
+        where: {
+          exchangeAccountId: {
+            in: input.ids,
+          }
+        },
+      })
+    }
 
     revalidatePath("/exchanges")
 
