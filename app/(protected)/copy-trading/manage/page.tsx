@@ -76,8 +76,12 @@ export default async function ManageCopyTradingPage() {
             ) : (
               <DataTable data={data} columns={copyTradingSettingColumns} />
             )} */}
-
+            {data ? (
               <DataTable data={data} columns={copyTradingSettingColumns} />
+            ) : (
+              <TableSkeleton />
+            )}
+              {/* <DataTable data={data} columns={copyTradingSettingColumns} /> */}
 
           </TabPanel>
           {/* <TabPanel value={TabSections.Identities}>
