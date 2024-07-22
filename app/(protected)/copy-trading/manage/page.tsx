@@ -8,7 +8,7 @@ import { DataTable } from "@/components/table/data-table";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 enum TabSections {
@@ -21,16 +21,18 @@ export default function ManageCopyTradingPage() {
   const {data:session, status} = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
-  
+  const router = useRouter();
+
   // if (!session || !session.user) {
   //   redirect("/login");
   // }
 
   // const data = await getCopyTradingSetting(user?.id!);
   useEffect(() => {
-    if (status === 'loading') return; // 如果 session 还在加载，什么都不做
+    if (status === 'loading') return;
     if (!session || !session.user) {
-      redirect("/login");
+      router.push('/login');
+      return;
     }
 
     const fetchData = async () => {
