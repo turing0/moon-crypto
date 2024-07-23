@@ -58,7 +58,7 @@ export default async function ExchangePage() {
         <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
       </div>
       {/* <div className='flex h-full w-full flex-col items-center justify-center'> */}
-      <div className=''>
+      <div className="overflow-x-auto">
         {/* <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} /> */}
         
         {data && data.length > 0 ? (
