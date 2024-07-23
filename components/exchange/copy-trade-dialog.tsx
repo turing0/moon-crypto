@@ -30,10 +30,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
 import Link from "next/link"
 import { createCopyTradingAPI } from "@/actions/copy-trading"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
+import { Icons } from "../shared/icons"
 
 
 export function CopyTradeDialog({traderId, traderName, userApi}) {
     const [open, setOpen] = React.useState(false)
+    const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);    
     const [activeTab, setActiveTab] = React.useState('fixed');
     const [isCreatePending, startCreateTransition] = React.useTransition()
   
@@ -108,6 +111,62 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                         Please <Link href="/exchanges" className="text-blue-500 underline">add or check your APIs</Link> to proceed.
                       </div>
                     ) : (
+                      <div className="flex flex-wrap gap-4">
+                        {userApi.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="apis"
+                            render={({ field }) => {
+                              const value = field.value || [];
+                              return (
+                                <FormItem
+                                  key={item.id}
+                                  className="flex flex-row items-end space-x-2"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([...value, item.id])
+                                          : field.onChange(
+                                              value?.filter(
+                                                (v) => v !== item.id
+                                              )
+                                            )
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal mb-0 pb-[2px]">
+                                    {item.accountName}
+                                  </FormLabel>
+                                </FormItem>
+                              )
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* <FormField
+                control={form.control}
+                name="apis"
+                render={() => (
+                  <FormItem>
+                    <div className="mb-4">
+                      <FormLabel className="text-base">Choose your exchange account</FormLabel>
+                    </div>
+                    {!userApi || userApi.length === 0 ? (
+                      <div className="border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700">
+                        <p>{`You don't have any enabled exchange APIs.`}</p>
+                        Please <Link href="/exchanges" className="text-blue-500 underline">add or check your APIs</Link> to proceed.
+                      </div>
+                    ) : (
                     // {userApi && userApi.map((item) => (
                     userApi.map((item) => (
                       <FormField
@@ -120,7 +179,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                           return (
                             <FormItem
                               key={item.id}
-                              className="flex flex-row items-start space-x-3 space-y-0"
+                              className="flex flex-row items-start space-x-2 space-y-0"
                             >
                               <FormControl>
                                 <Checkbox
@@ -134,12 +193,6 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                                           )
                                         )
                                   }}
-                                  // onCheckedChange={(checked) => {
-                                  //   const newSelectedIds = checked
-                                  //     ? [...selectedIds, item.id]
-                                  //     : selectedIds.filter((v) => v !== item.id);
-                                  //   field.onChange(newSelectedIds.join("-"));
-                                  // }}
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
@@ -154,7 +207,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <Tabs defaultValue="fixed" className="space-y-4" onValueChange={setActiveTab}>
                 <div>
@@ -277,6 +330,54 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                   </div>
                 </TabsContent>
               </Tabs>
+
+              {/* Advanced Options Section */}
+              {/* <Collapsible
+                open={isAdvancedOpen}
+                onOpenChange={setIsAdvancedOpen}
+                className="w-full space-y-2"
+              >
+                <div className="flex items-center justify-between space-x-4 px-4">
+                  <div className="">
+                      <FormLabel className="text-base">Advanced Options</FormLabel>
+                  </div>
+                  <h4 className="text-sm font-semibold">Advanced Options</h4>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm" className="w-9 p-0">
+                      {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown  className="h-4 w-4" />}
+                      <span className="sr-only">Toggle advanced options</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                </div>
+                <CollapsibleContent className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="apis"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Max Leverage</FormLabel>
+                        <FormControl>
+                          <Input type="number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="apis"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Stop Loss (%)</FormLabel>
+                        <FormControl>
+                          <Input type="number" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CollapsibleContent>
+              </Collapsible> */}
 
               {/* <FormField
                 control={form.control}

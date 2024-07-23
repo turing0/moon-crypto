@@ -34,6 +34,7 @@ import {
   PencilLine,
   Trash2,
   ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -44,6 +45,7 @@ export const Icons = {
   arrowUpRight: ArrowUpRight,
   arrowRightLeft: ArrowRightLeft,
   billing: CreditCard,
+  chevronUp: ChevronUp,
   chevronDown: ChevronDown,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
