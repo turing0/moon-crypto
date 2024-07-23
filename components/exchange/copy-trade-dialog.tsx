@@ -38,7 +38,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);    
     const [activeTab, setActiveTab] = React.useState('fixed');
-    const [fixedValue, setFixedValue] = React.useState('')
+    // const [fixedValue, setFixedValue] = React.useState('')
     const [isCreatePending, startCreateTransition] = React.useTransition()
   
     const form = useForm<CreateCopyTradingSchema>({
