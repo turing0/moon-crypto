@@ -50,14 +50,17 @@ export default async function ExchangePage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader
-        heading="Exchanges"
-        text="Create and manage exchange accounts."
-      />
+      <div className="flex items-center justify-between">
+        <DashboardHeader
+          heading="Exchanges"
+          text="Create and manage exchange accounts."
+        />
+        <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
+      </div>
       {/* <div className='flex h-full w-full flex-col items-center justify-center'> */}
       <div className=''>
       
-        <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
+        {/* <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} /> */}
         
         <DataTable data={data} columns={exchangeApiInfoColumns} />
 
