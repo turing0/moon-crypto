@@ -69,7 +69,7 @@ const exchangnos = [
     },
     {
       title: "Bitget",
-      href: "https://authjs.dev/",
+      href: "#",
       icon: (
         <Image 
           src="_static/images/bitget.svg"
@@ -82,7 +82,7 @@ const exchangnos = [
     },
     {
       title: "Kraken",
-      href: "https://ui.shadcn.com/",
+      href: "#",
       icon: (
         <Image 
           src="_static/images/krkn-logo.svg"
@@ -95,11 +95,50 @@ const exchangnos = [
     },
     {
       title: "Gateio",
-      href: "https://stripe.com/",
+      href: "#",
       icon: (
         <Image 
           src="_static/images/gateio.svg"
           alt="Gateio"
+          width={100}
+          height={36}
+          className="h-9 w-auto object-contain"
+        />
+      ),
+    },
+    {
+      title: "BingX",
+      href: "#",
+      icon: (
+        <Image 
+          src="_static/images/bingx.svg"
+          alt="BingX"
+          width={100}
+          height={36}
+          className="h-9 w-auto object-contain"
+        />
+      ),
+    },
+    {
+      title: "Kucoin",
+      href: "#",
+      icon: (
+        <Image 
+          src="_static/images/Kucoin.svg"
+          alt="Kucoin"
+          width={100}
+          height={36}
+          className="h-9 w-auto object-contain"
+        />
+      ),
+    },
+    {
+      title: "HTX",
+      href: "#",
+      icon: (
+        <Image 
+          src="_static/images/htx.svg"
+          alt="HTX"
           width={100}
           height={36}
           className="h-9 w-auto object-contain"

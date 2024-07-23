@@ -30,7 +30,7 @@ export const footerLinks: SidebarNavItem[] = [
   {
     title: "Product",
     items: [
-      { title: "Copy Trading", href: "/traders" },
+      { title: "Copy-Trading", href: "/traders" },
       { title: "Trader Analysis", href: "/analysis" },
       // { title: "Customers", href: "#" },
       // { title: "Changelog", href: "#" },
