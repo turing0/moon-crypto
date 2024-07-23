@@ -38,6 +38,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);    
     const [activeTab, setActiveTab] = React.useState('fixed');
+    const [fixedValue, setFixedValue] = React.useState('')
     const [isCreatePending, startCreateTransition] = React.useTransition()
   
     const form = useForm<CreateCopyTradingSchema>({
@@ -138,7 +139,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal mb-0 pb-[2px]">
+                                  <FormLabel className="mb-0 pb-[2px] font-normal">
                                     {item.accountName}
                                   </FormLabel>
                                 </FormItem>
@@ -249,32 +250,8 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                     />
                     </div>
                     <span className="text-[14px] text-gray-500 ">
-                      Fixed investment: -- USDT margin
+                      Fixed investment: {form.watch('fixedAmount') || '--'} USDT margin
                     </span>
-                    {/* <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          className="h-4 w-4 text-muted-foreground"
-                        >
-                          <rect width="20" height="14" x="2" y="5" rx="2" />
-                          <path d="M2 10h20" />
-                        </svg>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold">+12,234</div>
-                        <p className="text-xs text-muted-foreground">
-                          +19% from last month
-                        </p>
-                      </CardContent>
-                    </Card> */}
                   </div>
                 </TabsContent>
                 <TabsContent value="multiplier" className="space-y-4">
@@ -325,7 +302,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                       />
                     </div>
                     <span className=" text-[14px] text-gray-500">
-                      Copy traders place -- times the size of the orders of the elite trader.
+                      Copy traders place {form.watch('multiplierAmount') || '--'} times the size of the orders of the elite trader.
                     </span>
                   </div>
                 </TabsContent>

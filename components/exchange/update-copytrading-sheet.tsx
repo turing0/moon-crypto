@@ -241,7 +241,7 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
                     />
                     </div>
                     <span className="text-[14px] text-gray-500 ">
-                      Fixed investment: -- USDT margin
+                      Fixed investment: {form.watch('fixedAmount') || '--'} USDT margin
                     </span>
                   </div>
                 </TabsContent>
@@ -285,7 +285,7 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
                       />
                     </div>
                     <span className=" text-[14px] text-gray-500">
-                      Copy traders place -- times the size of the orders of the elite trader.
+                      Copy traders place {form.watch('multiplierAmount') || '--'} times the size of the orders of the elite trader.
                     </span>
                   </div>
                 </TabsContent>
