@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 
 
 const TableSkeleton = () => (
-  <div className="space-y-4">
+  <div className="space-y-2">
     {/* Table header skeleton */}
     {/* <div className="flex items-center justify-between">
       <Skeleton className="h-8 w-[250px]" />

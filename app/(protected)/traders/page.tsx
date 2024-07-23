@@ -171,7 +171,7 @@ export default function TradersPage() {
         text=""
       />
       {/* <div className='flex h-full w-full flex-col items-center justify-center'> */}
-      <div className=''>
+      <div className='overflow-x-auto'>
         
       {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue="Bitget" className="space-y-4">
