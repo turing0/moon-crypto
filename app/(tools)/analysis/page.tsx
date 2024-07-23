@@ -238,7 +238,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
       <DashboardHeader
         heading="Analysis"
       />
-      <div>
+      <div className="overflow-x-auto">
       {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue={defaultTabValue} className="space-y-4">
         {/* <Tabs defaultValue="bitget" className="space-y-4"> */}

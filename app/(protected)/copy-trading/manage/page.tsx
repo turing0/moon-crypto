@@ -57,7 +57,7 @@ export default async function ManageCopyTradingPage() {
         heading="Manage Copy-Trading"
         text=""
       />
-      <div className=''>
+      <div className='overflow-x-auto'>
         <Tabs defaultValue={TabSections.Following}>
           <TabList>
             <Tab value={TabSections.Following}>Following</Tab>
