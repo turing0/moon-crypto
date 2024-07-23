@@ -44,10 +44,13 @@ interface UpdateExchangeApiSheetProps
   task: ExchangeApiInfo
 }
 
+const exchangesRequiringPassphrase = ["OKX", "Bitget"];
+
 export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiSheetProps) {
   const [isUpdatePending, startUpdateTransition] = React.useTransition()
   const [secretUpdated, setSecretUpdated] = useState(false);
   const [passphraseUpdated, setPassphraseUpdated] = useState(false);
+  const showPassphrase = exchangesRequiringPassphrase.includes(task.exchangeName);
 
   const handleSecretChange = (e) => {
     setSecretUpdated(e.target.value !== '');
@@ -170,7 +173,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
                 </FormItem>
               )}
             />
-            <FormField
+            {showPassphrase && (<FormField
               control={form.control}
               name="passphrase"
               render={({ field }) => (
@@ -189,6 +192,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
                 </FormItem>
               )}
             />
+            )}
             {/* <FormField
               control={form.control}
               name="description"
