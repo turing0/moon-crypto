@@ -103,6 +103,9 @@ model CopyTradingSetting {
   // exchangeAccountId String
   fixedAmount       Int?
   multiplierAmount  Float?
+  takeProfit        Int?
+  stopLoss          Int?
+
 
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   // exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)

@@ -33,6 +33,8 @@ export const createCopyTradingSchema = z.object({
   // }),
   fixedAmount: z.string().optional(),
   multiplierAmount: z.string().optional(),
+  takeProfit: z.string().optional(),
+  stopLoss: z.string().optional(),
 })
 .refine(data => data.fixedAmount || data.multiplierAmount, {
   message: "You must fill at least one of fixedAmount or multiplierAmount.",

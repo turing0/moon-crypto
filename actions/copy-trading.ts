@@ -34,20 +34,12 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
     if (input.multiplierAmount) {
       data.multiplierAmount = parseFloat(input.multiplierAmount);
     }
-
-    // insert CopyTradingSetting
-    // const copyTradingSetting = await prisma.copyTradingSetting.create({
-    //   data: data,
-    // })
-    // const copyTradingAccountCreations = input.apis.map(apiId => {
-    //   return prisma.copyTradingAccount.create({
-    //     data: {
-    //       copyTradingSettingId: copyTradingSetting.id,
-    //       exchangeAccountId: apiId
-    //     }
-    //   });
-    // });
-    // await Promise.all(copyTradingAccountCreations);
+    if (input.takeProfit) {
+      data.takeProfit = parseInt(input.takeProfit);
+    }
+    if (input.stopLoss) {
+      data.stopLoss = parseInt(input.stopLoss);
+    }
 
     // 使用 prisma.$transaction 来确保所有操作都在一个事务中执行
     await prisma.$transaction(async (prisma) => {

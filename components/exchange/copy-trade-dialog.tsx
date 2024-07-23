@@ -33,7 +33,6 @@ import { createCopyTradingAPI } from "@/actions/copy-trading"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Icons } from "../shared/icons"
 
-
 export function CopyTradeDialog({traderId, traderName, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);    
@@ -75,6 +74,8 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
         apis: form.getValues('apis'), // Retain the current value of apis
         fixedAmount: "",
         multiplierAmount: "",
+        takeProfit: form.getValues('takeProfit'),
+        stopLoss: form.getValues('stopLoss'),
       });
     }, [activeTab, form]);
 
@@ -84,10 +85,10 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
         <DialogTrigger asChild>
           {/* <Button variant="outline" size="sm"> */}
           <Button className="h-7 px-2">
-            Copy Trade
+            Copy
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className={"max-h-[90vh] overflow-auto"}>
           <DialogHeader>
             <DialogTitle>Copy Trading: {traderName}</DialogTitle>
             {/* <DialogDescription>
@@ -308,33 +309,45 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                 </TabsContent>
               </Tabs>
 
+              <hr></hr>
+
               {/* Advanced Options Section */}
-              {/* <Collapsible
+              <Collapsible
                 open={isAdvancedOpen}
                 onOpenChange={setIsAdvancedOpen}
                 className="w-full space-y-2"
               >
-                <div className="flex items-center justify-between space-x-4 px-4">
-                  <div className="">
-                      <FormLabel className="text-base">Advanced Options</FormLabel>
+                <CollapsibleTrigger asChild>
+                  <div className="flex cursor-pointer items-center justify-between space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <FormLabel className="cursor-pointer text-base">More Settings</FormLabel>
+                      {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown className="h-4 w-4" />}
+                    </div>
                   </div>
-                  <h4 className="text-sm font-semibold">Advanced Options</h4>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="sm" className="w-9 p-0">
-                      {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown  className="h-4 w-4" />}
-                      <span className="sr-only">Toggle advanced options</span>
-                    </Button>
-                  </CollapsibleTrigger>
-                </div>
+                </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="apis"
+                    name="takeProfit"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Max Leverage</FormLabel>
+                        <FormLabel>Take-Profit Ratio</FormLabel>
                         <FormControl>
-                          <Input type="number" {...field} />
+                          {/* <Input {...field} /> */}
+                          <div className="relative">
+                              <Input
+                                placeholder="Limit: 1 - 500"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value.replace(/[^0-9]/g, '');
+                                  const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                  field.onChange(String(numericValue));
+                                }}
+                              />
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                %
+                              </span>
+                            </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -342,73 +355,86 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                   />
                   <FormField
                     control={form.control}
-                    name="apis"
+                    name="stopLoss"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Stop Loss (%)</FormLabel>
+                        <FormLabel>Stop-Loss Ratio</FormLabel>
                         <FormControl>
-                          <Input type="number" {...field} />
+                          <div className="relative">
+                              <Input
+                                placeholder="Limit: 1 - 500"
+                                {...field}
+                                onChange={(e) => {
+                                  const value = e.target.value.replace(/[^0-9]/g, '');
+                                  const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                  field.onChange(String(numericValue));
+                                }}
+                              />
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                %
+                              </span>
+                            </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </CollapsibleContent>
+              </Collapsible>
+              
+              {/* <Collapsible
+                open={isAdvancedOpen}
+                onOpenChange={setIsAdvancedOpen}
+                className="w-full space-y-2"
+              >
+                <CollapsibleTrigger asChild>
+                  <div className="flex items-center justify-between space-x-4 cursor-pointer">
+                    <div className="flex items-center space-x-2">
+                      <FormLabel className="text-base cursor-pointer">More Settings</FormLabel>
+                      {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown className="h-4 w-4" />}
+                    </div>
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4">
+                  <div className="space-y-2">
+                    <FormLabel>Take-Profit Ratio</FormLabel>
+                    <div className="flex items-center space-x-2">
+                      <Input 
+                        type="number" 
+                        // value={takeProfitRatio} 
+                        // onChange={(e) => setTakeProfitRatio(Number(e.target.value))}
+                        className="w-20"
+                      />
+                      <Slider
+                        // value={[takeProfitRatio]}
+                        // onValueChange={(value) => setTakeProfitRatio(value[0])}
+                        max={400}
+                        step={1}
+                        className="flex-grow"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <FormLabel>Stop-Loss Ratio</FormLabel>
+                    <div className="flex items-center space-x-2">
+                      <Input 
+                        type="number" 
+                        // value={stopLossRatio} 
+                        // onChange={(e) => setStopLossRatio(Number(e.target.value))}
+                        className="w-20"
+                      />
+                      <Slider
+                        // value={[stopLossRatio]}
+                        // onValueChange={(value) => setStopLossRatio(value[0])}
+                        max={400}
+                        step={1}
+                        className="flex-grow"
+                      />
+                    </div>
+                  </div>
+                </CollapsibleContent>
               </Collapsible> */}
 
-              {/* <FormField
-                control={form.control}
-                name="passphrase"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Copy trade settings</FormLabel>
-                    <FormControl>
-                      <Tabs defaultValue="fixed" className="space-y-4">
-                        <TabsList>
-                          <TabsTrigger value="fixed">Fixed Amount</TabsTrigger>
-                          <TabsTrigger value="multiplier">Multiplier</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="fixed" className="space-y-4">
-                          <div className="grid gap-4">
-                            <div className="relative">
-                              <Input
-                                placeholder="Limit: 5 - 20000"
-                                {...field}
-                                name="fixedAmount2"
-                              />
-                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                                USDT
-                              </span>
-                            </div>
-                            <span className="text-gray-500 text-[14px] ">
-                              Fixed investment: -- USDT margin
-                            </span>
-                          </div>
-                        </TabsContent>
-                        <TabsContent value="multiplier" className="space-y-4">
-                          <div className="grid gap-4">
-                            <div className="relative">
-                              <Input
-                                placeholder="Limit: 0.01 - 100"
-                                {...field}
-                                name="multiplierAmount2"
-                              />
-                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                                X
-                              </span>
-                            </div>
-                            <span className="text-gray-500 text-[14px] ">
-                              Copy traders place -- times the size of the orders of the elite trader.
-                            </span>
-                          </div>
-                        </TabsContent>
-                      </Tabs>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
-              
               <DialogFooter className="gap-2 pt-2 sm:space-x-0">
                 <DialogClose asChild>
                   <Button type="button" variant="outline">
@@ -422,7 +448,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                       aria-hidden="true"
                     />
                   )}
-                  Follow Trading
+                  Copy Now
                 </Button>
               </DialogFooter>
             </form>
