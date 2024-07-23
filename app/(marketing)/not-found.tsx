@@ -18,7 +18,7 @@ export default function NotFound() {
           href="/"
           className="text-muted-foreground underline underline-offset-4 hover:text-purple-500"
         >
-          Homepage
+          Home
         </Link>
         .
       </p>
