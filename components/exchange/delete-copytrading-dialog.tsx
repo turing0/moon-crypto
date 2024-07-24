@@ -47,7 +47,7 @@ export function DeleteCopyTradingDialog({
       ) : null}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Unfollow Trader</DialogTitle>
+          <DialogTitle>Stop Copying</DialogTitle>
           <DialogDescription>
             {"This action cannot be undone. You will no longer copy this trader's orders."}<br />
             {"If the trader has open positions, this action will close them all at market price."}
@@ -84,7 +84,7 @@ export function DeleteCopyTradingDialog({
                 aria-hidden="true"
               />
             )}
-            Delete
+            Stop
           </Button>
         </DialogFooter>
       </DialogContent>
