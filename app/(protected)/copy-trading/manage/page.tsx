@@ -84,7 +84,7 @@ export default async function ManageCopyTradingPage() {
                   <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
                     <div className="space-y-2">
                       <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        You haven't followed any traders yet
+                        {"You haven't followed any traders yet"}
                       </h3>
                       <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
                         Follow a trader to start copy-trading.
