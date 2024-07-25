@@ -17,6 +17,16 @@ async function redisUpdate(exchangeAccountId) {
   console.log('Redis update, response:', responseData); // Print response data
   return responseData;
 }
+async function redisDelete(exchangeAccountId) {
+  const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?exchangeAccountId=${exchangeAccountId}`;
+  const response = await fetch(apiUrl, { method: 'GET' });
+  if (!response.ok) {
+    throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
+  }
+  const responseData = await response.json(); // Assuming response is JSON
+  console.log('Redis delete, response:', responseData); // Print response data
+  return responseData;
+}
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
@@ -214,6 +224,8 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
     
     revalidatePath("/exchanges")
 
+    await redisDelete(input.ids[0]);
+
     return {
       data: null,
       error: null,
@@ -255,6 +267,8 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
     }
 
     revalidatePath("/exchanges")
+
+    await redisUpdate(input.ids[0]);
 
     return {
       data: null,
