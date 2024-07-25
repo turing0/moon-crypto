@@ -7,6 +7,17 @@ import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
 import { error } from "console";
 
+async function redisUpdate(exchangeAccountId) {
+  const apiUrl = `https://tdb.mooncryp.to/api/redis/update?exchangeAccountId=${exchangeAccountId}`;
+  const response = await fetch(apiUrl, { method: 'GET' });
+  if (!response.ok) {
+    throw new Error(`Redis update, failed to fetch data: ${response.statusText}`);
+  }
+  const responseData = await response.json(); // Assuming response is JSON
+  console.log('Redis update, response:', responseData); // Print response data
+  return responseData;
+}
+
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
     const response = await fetch(`https://tdb.mooncryp.to/api/exchange/verify?exchange=${exchangeName}&key=${apiKey}&secret=${secretKey}&passphrase=${passphrase}`, {
@@ -167,6 +178,8 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
     }
 
     revalidatePath("/exchanges")
+
+    await redisUpdate(input.id);
 
     return {
       data: null,
