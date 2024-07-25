@@ -5,6 +5,7 @@ import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
+import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { getCurrentUser } from "@/lib/session";
@@ -74,12 +75,31 @@ export default async function ManageCopyTradingPage() {
             ) : (
               <DataTable data={data} columns={copyTradingSettingColumns} />
             )} */}
-            {data ? (
-              <DataTable data={data} columns={copyTradingSettingColumns} />
-            ) : (
-              <TableSkeleton />
-            )}
+
               {/* <DataTable data={data} columns={copyTradingSettingColumns} /> */}
+              {data && data.length > 0 ? (
+                <DataTable data={data} columns={copyTradingSettingColumns} />
+              ) : (
+                <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
+                  <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        You haven't followed any traders yet
+                      </h3>
+                      <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                        Follow a trader to start copy-trading.
+                      </p>
+                    </div>
+                    <form action="/traders" method="get">
+                      <Button 
+                        type="submit"
+                      >
+                        Find Best Traders
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+              )}
 
           </TabPanel>
           {/* <TabPanel value={TabSections.Identities}>

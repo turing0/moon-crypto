@@ -9,10 +9,21 @@ async function redisUpdate(settingId) {
   const apiUrl = `https://tdb.mooncryp.to/api/redis/update?settingId=${settingId}`;
   const response = await fetch(apiUrl, { method: 'GET' });
   if (!response.ok) {
-    throw new Error(`Redis update, Failed to fetch data: ${response.statusText}`);
+    throw new Error(`Redis update, failed to fetch data: ${response.statusText}`);
   }
   const responseData = await response.json(); // Assuming response is JSON
   console.log('Redis update, response:', responseData); // Print response data
+  return responseData;
+}
+async function redisDelete(settingId) {
+  console.log('delete:', settingId)
+  const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?settingId=${settingId}`;
+  const response = await fetch(apiUrl, { method: 'GET' });
+  if (!response.ok) {
+    throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
+  }
+  const responseData = await response.json(); // Assuming response is JSON
+  console.log('Redis delete, response:', responseData); // Print response data
   return responseData;
 }
 
@@ -198,6 +209,8 @@ export async function deleteCopyTradingSetting(input: { ids: string[] }) {
     // TODO: 市价全平仓位
 
     revalidatePath("/copy-trading/manage")
+
+    await redisDelete(input.ids[0]);
 
     return {
       data: null,
