@@ -1,9 +1,20 @@
 "use server"
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
-import { CreateCopyTradingSchema, CreateExchangeApiSchema, UpdateCopyTradingSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange";
+import { CreateCopyTradingSchema, UpdateCopyTradingSchema } from "@/lib/validations/exchange";
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
+
+async function redisUpdate(settingId) {
+  const apiUrl = `https://tdb.mooncryp.to/api/redis/update?settingId=${settingId}`;
+  const response = await fetch(apiUrl, { method: 'GET' });
+  if (!response.ok) {
+    throw new Error(`Redis update, Failed to fetch data: ${response.statusText}`);
+  }
+  const responseData = await response.json(); // Assuming response is JSON
+  console.log('Redis update, response:', responseData); // Print response data
+  return responseData;
+}
 
 export async function createCopyTradingAPI(traderId: string, traderName:string, input: CreateCopyTradingSchema) {
   // noStore()
@@ -41,13 +52,17 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
       data.stopLoss = parseInt(input.stopLoss);
     }
 
+    let copyTradingSettingId;
+
     // 使用 prisma.$transaction 来确保所有操作都在一个事务中执行
     await prisma.$transaction(async (prisma) => {
       // 创建 CopyTradingSetting
       const copyTradingSetting = await prisma.copyTradingSetting.create({
         data: data,
       });
-  
+
+      copyTradingSettingId = copyTradingSetting.id;
+
       // 为每个 apiId 创建 CopyTradingAccount
       const copyTradingAccountCreations = input.apis.map(apiId => {
         return prisma.copyTradingAccount.create({
@@ -63,6 +78,8 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
     });
     
     revalidatePath("/traders")
+
+    await redisUpdate(copyTradingSettingId);
 
     return {
       status: "success",
@@ -146,6 +163,9 @@ export async function updateCopyTradingSetting(input: UpdateCopyTradingSchema & 
 
     revalidatePath("/copy-trading/manage")
 
+    // Call the function to fetch Redis update
+    await redisUpdate(input.id);
+    
     return {
       data: null,
       error: null,

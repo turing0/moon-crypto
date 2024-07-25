@@ -8,9 +8,7 @@ import { DataTable } from "@/components/table/data-table";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { getCurrentUser } from "@/lib/session";
-import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 
 enum TabSections {
   Following = "following",
