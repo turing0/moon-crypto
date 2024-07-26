@@ -147,3 +147,10 @@ model LoginLog {
   @@index([userId])
   @@map(name: "login_logs")
 }
+
+// model Waitlist {
+//   id        Int      @id @default(autoincrement())
+//   email     String   @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
