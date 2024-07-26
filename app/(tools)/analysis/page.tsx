@@ -14,6 +14,9 @@ import { okxOrderColumns, orderColumns } from "@/components/table/columns"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
+import { Card } from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { CopyTradeDialog } from "@/components/exchange/copy-trade-dialog"
 
 // export const metadata = constructMetadata({
 //   title: "Analysis – Moon Crypto",
@@ -77,6 +80,28 @@ async function getBitgetHistoryOrder(traderId: string) {
     //   //   onClick: () => console.log('Cancel!'),
     //   // },
     // });
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      toast.error(error.message);
+    } else {
+      toast.error("An unknown error occurred, check console for more message", {
+        position: "top-center",
+      });
+    }
+    console.error("Failed to fetch order data:", error);
+    return [];
+  }
+}
+async function getBitgetTrader(traderId: string) {
+  try {
+    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
+    if (!response.ok) {
+      throw new Error("Network response was not ok")
+    }
+    const {data, pageCount} = await response.json() as { data: BitGetHistoryOrder[], pageCount: number }
+    console.log("getBitgetTrader data:", data);
+    
     return data;
   } catch (error) {
     if (error instanceof Error) {
@@ -154,6 +179,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   const binanceTraderIdParam = searchParams.binanceTraderId
   const okxTraderIdParam = searchParams.okxTraderId
 
+  const [traderInfo, setTraderInfo] = useState<any>();
   const [bitgetOrder, setBitgetOrder] = useState<BitGetHistoryOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
@@ -197,6 +223,11 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
 
   useEffect(() => {
     if (bitgetTraderId) {
+      getBitgetTrader(bitgetTraderId).then(data => {
+        if (data.length > 0) {
+          setTraderInfo(data[0])
+        }
+      })
       getBitgetHistoryOrder(bitgetTraderId).then(data => {
         setBitgetOrder(data);
         setIsLoading(false);
@@ -262,6 +293,24 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
               </form>
             </div>
             
+            {traderInfo && (
+              <Card className="w-full p-6 bg-background shadow-lg rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="w-16 h-16">
+                    <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
+                    <p className="text-sm text-muted-foreground">Experienced trader with a keen eye for market trends.</p>
+                  </div>
+                </div>
+                {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
+              </div>
+              </Card>
+            )
+            }
 
             <Tabs2 defaultValue="order">
               <TabList>

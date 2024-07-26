@@ -111,14 +111,14 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     },
   },
   {
-    accessorKey: "margin",
     header: "Margin",
-    cell: ({ row }) => {
-      const margin2 = row.getValue("closePriceAvg") as number;
-      const margin1 = row.getValue("openPriceAvg") as number;
-      const size = row.getValue("openSize") as number;
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      const margin2 = parseFloat(datarow.closePriceAvg);
+      const margin1 = parseFloat(datarow.openPriceAvg);
+      const size = parseFloat(datarow.openSize);
       var margin = size*(margin2 - margin1);
-      if (row.getValue("posSide")=="short") {
+      if (datarow.posSide=="short") {
         margin = -margin;
       }
       const marginFormatted = margin.toFixed(2);
