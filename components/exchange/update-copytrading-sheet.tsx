@@ -82,6 +82,12 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
       if (input.multiplierAmount) {
         updateData.multiplierAmount = input.multiplierAmount;
       }
+      if (input.takeProfit) {
+        updateData.takeProfit = input.takeProfit;
+      }
+      if (input.stopLoss) {
+        updateData.stopLoss = input.stopLoss;
+      }
 
       // const { error } = await updateExchangeAPI({
       //   id: task.id,
