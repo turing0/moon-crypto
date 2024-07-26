@@ -28,6 +28,8 @@ export default function EmailForm() {
       if (response.ok) {
         setEmail("");
         toast.success("Thank you for joining our waitlist! 🚀", {position: "top-center"});
+      } else if (response.status===409) {
+        toast.success("You already in the list! Stay tuned! 🚀", {position: "top-center"});
       } else {
         setEmail("");
         toast.error("Oops! Something went wrong!", {position: "top-center"});

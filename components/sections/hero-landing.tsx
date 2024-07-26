@@ -39,7 +39,17 @@ export default async function HeroLanding() {
           <span className="mr-3">🎉</span> Introducing Next Auth Roles Template on{" "}
           <Icons.twitter className="ml-2 size-3.5" />
         </Link> */}
-
+        <Link
+          href="/waitlist"
+          className={cn(
+            buttonVariants({ variant: "outline", size: "sm", rounded: "full" }),
+            "animate-fade-up px-4 opacity-0",
+          )}
+          style={{ animationDelay: "0.15s", animationFillMode: "forwards" }}
+          target="_blank"
+        >
+          <span className="mr-3">🎉</span> Join the Waitlist
+        </Link>
         <h1 className="animate-fade-up text-balance font-urban text-4xl font-extrabold tracking-tight opacity-0 sm:text-5xl md:text-6xl lg:text-[66px]"
           style={{ animationDelay: "0.25s", animationFillMode: "forwards" }}
         >
