@@ -294,20 +294,20 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
             </div>
             
             {traderInfo && (
-              <Card className="w-full p-6 bg-background shadow-lg rounded-lg">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <Avatar className="w-16 h-16">
-                    <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
-                    <p className="text-sm text-muted-foreground">Experienced trader with a keen eye for market trends.</p>
+              <Card className="w-full rounded-lg bg-background p-6 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
+                      <AvatarFallback>JD</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
+                      <p className="text-sm text-muted-foreground">Experienced trader with a keen eye for market trends.</p>
+                    </div>
                   </div>
+                  {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
                 </div>
-                {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
-              </div>
               </Card>
             )
             }
