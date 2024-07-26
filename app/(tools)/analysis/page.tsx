@@ -299,7 +299,7 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-16 w-16">
                       <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
-                      <AvatarFallback>JD</AvatarFallback>
+                      <AvatarFallback>Avatar</AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
                       <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
