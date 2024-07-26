@@ -170,6 +170,12 @@ export async function updateCopyTradingSetting(input: UpdateCopyTradingSchema & 
     if (input.multiplierAmount) {
       updateData.multiplierAmount = parseFloat(input.multiplierAmount);
     }
+    if (input.takeProfit) {
+      updateData.takeProfit = parseInt(input.takeProfit);
+    }
+    if (input.stopLoss) {
+      updateData.stopLoss = parseInt(input.stopLoss);
+    }
     
     await prisma.copyTradingSetting
     .update({
