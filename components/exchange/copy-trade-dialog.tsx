@@ -326,59 +326,62 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="takeProfit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Take-Profit Ratio</FormLabel>
-                        <FormControl>
-                          {/* <Input {...field} /> */}
-                          <div className="relative">
-                              <Input
-                                placeholder="Limit: 1 - 500"
-                                {...field}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/[^0-9]/g, '');
-                                  const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
-                                  field.onChange(String(numericValue));
-                                }}
-                              />
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                                %
-                              </span>
-                            </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="stopLoss"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Stop-Loss Ratio</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                              <Input
-                                placeholder="Limit: 1 - 500"
-                                {...field}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/[^0-9]/g, '');
-                                  const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
-                                  field.onChange(String(numericValue));
-                                }}
-                              />
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                                %
-                              </span>
-                            </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name="takeProfit"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Take-Profit Ratio</FormLabel>
+                          <FormControl>
+                            {/* <Input {...field} /> */}
+                            <div className="relative">
+                                <Input
+                                  placeholder="Limit: 1 - 2000"
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9]/g, '');
+                                    const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                    field.onChange(String(numericValue));
+                                  }}
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                  %
+                                </span>
+                              </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="stopLoss"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Stop-Loss Ratio</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                                <Input
+                                  placeholder="Limit: 1 - 500"
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value.replace(/[^0-9]/g, '');
+                                    const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                    field.onChange(String(numericValue));
+                                  }}
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                  %
+                                </span>
+                              </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                 </CollapsibleContent>
               </Collapsible>
               

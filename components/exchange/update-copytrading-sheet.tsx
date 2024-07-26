@@ -39,7 +39,6 @@ import { CopyTradingSettingInfo } from "../table/columns"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
 import { updateCopyTradingSetting } from "@/actions/copy-trading"
-import { F } from "@upstash/redis/zmscore-80635339"
 
 interface UpdateCopyTradingSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
@@ -61,6 +60,8 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
     defaultValues: {
       fixedAmount: task.fixedAmount?.toString() ?? "",
       multiplierAmount: task.multiplierAmount?.toString() ?? "",
+      takeProfit: task.takeProfit?.toString() ?? "",
+      stopLoss: task.stopLoss?.toString() ?? "",
       // followedApis: task.followedApis,
       // secret: "",
       // description: task.description ?? "",
@@ -114,6 +115,8 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
       // apis: form.getValues('apis'), // Retain the current value of apis
       fixedAmount: "",
       multiplierAmount: "",
+      takeProfit: form.getValues('takeProfit'),
+      stopLoss: form.getValues('stopLoss'),
     });
   }
 
@@ -290,6 +293,64 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
                   </div>
                 </TabsContent>
               </Tabs>
+              
+              <FormLabel className="text-base">Position Risk</FormLabel>
+              <div className="flex gap-4">
+                <FormField
+                  control={form.control}
+                  name="takeProfit"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Take Profit</FormLabel>
+                      <FormControl>
+                        {/* <Input {...field} /> */}
+                        <div className="relative">
+                            <Input
+                              placeholder="Limit: 1 - 2000"
+                              {...field}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/[^0-9]/g, '');
+                                const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                field.onChange(String(numericValue));
+                              }}
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                              %
+                            </span>
+                          </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="stopLoss"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Stop Loss</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                            <Input
+                              placeholder="Limit: 1 - 500"
+                              {...field}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/[^0-9]/g, '');
+                                const numericValue = value ? Math.max(0, Math.min(20000, Number(value))) : '';
+                                field.onChange(String(numericValue));
+                              }}
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                              %
+                            </span>
+                          </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
 
             {/* <FormField
               control={form.control}

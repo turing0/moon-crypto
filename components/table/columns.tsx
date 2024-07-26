@@ -851,6 +851,8 @@ export type CopyTradingSettingInfo = {
   fixedAmount: number | null;
   multiplierAmount: number | null;
   followedApis: CopyTradingAccountInfo[];
+  takeProfit: number | null;
+  stopLoss: number | null;
 };
 
 export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
