@@ -1,3 +1,4 @@
+import { CopyTradingAccountInfo } from './../components/table/columns';
 "use server"
 
 import { unstable_noStore as noStore, revalidatePath } from "next/cache"
@@ -7,9 +8,14 @@ import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
 import { error } from "console";
 
-async function redisUpdate(exchangeAccountId) {
-  const apiUrl = `https://tdb.mooncryp.to/api/redis/update?exchangeAccountId=${exchangeAccountId}`;
-  const response = await fetch(apiUrl, { method: 'GET' });
+async function redisUpdate(settingIds?, exchangeAccountId?) {
+  const response = await fetch(`https://tdb.mooncryp.to/api/redis/update`, { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ settingIds: settingIds, exchangeAccountId: exchangeAccountId }),
+  });
   if (!response.ok) {
     throw new Error(`Redis update, failed to fetch data: ${response.statusText}`);
   }
@@ -17,16 +23,16 @@ async function redisUpdate(exchangeAccountId) {
   console.log('Redis update, response:', responseData); // Print response data
   return responseData;
 }
-async function redisDelete(exchangeAccountId) {
-  const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?exchangeAccountId=${exchangeAccountId}`;
-  const response = await fetch(apiUrl, { method: 'GET' });
-  if (!response.ok) {
-    throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
-  }
-  const responseData = await response.json(); // Assuming response is JSON
-  console.log('Redis delete, response:', responseData); // Print response data
-  return responseData;
-}
+// async function redisDelete(exchangeAccountId) {
+//   const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?exchangeAccountId=${exchangeAccountId}`;
+//   const response = await fetch(apiUrl, { method: 'GET' });
+//   if (!response.ok) {
+//     throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
+//   }
+//   const responseData = await response.json(); // Assuming response is JSON
+//   console.log('Redis delete, response:', responseData); // Print response data
+//   return responseData;
+// }
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
@@ -189,7 +195,7 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
 
     revalidatePath("/exchanges")
 
-    await redisUpdate(input.id);
+    await redisUpdate(undefined, input.id);
 
     return {
       data: null,
@@ -211,6 +217,20 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
   }
   
   try {
+    const resul = await prisma.copyTradingAccount.findMany({
+      where: {
+        exchangeAccountId: {
+          in: input.ids,
+        }
+      },
+      select: { // 选择要返回的字段
+        copyTradingSettingId: true, 
+      },
+    })
+    const settingIds: string[] = resul.map(item => item.copyTradingSettingId);
+    console.log("deleteExchangeAPI settingIds:", settingIds)
+    // redisDelete resul: [ { copyTradingSettingId: 'clz1j7nzb00024i8x6l05wjxr' } ]
+
     // Delete  
     const result = await prisma.exchangeAccount.deleteMany({
       where: {
@@ -220,11 +240,11 @@ export async function deleteExchangeAPI(input: { ids: string[] }) {
       },
     })
 
+    await redisUpdate(settingIds, undefined);
+
     // TODO: 市价全平仓位
     
     revalidatePath("/exchanges")
-
-    await redisDelete(input.ids[0]);
 
     return {
       data: null,
@@ -254,6 +274,18 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
     })
     
     if (status) {
+      const resul = await prisma.copyTradingAccount.findMany({
+        where: {
+          exchangeAccountId: {
+            in: input.ids,
+          }
+        },
+        select: { // 选择要返回的字段
+          copyTradingSettingId: true, 
+        },
+      })
+      const settingIds: string[] = resul.map(item => item.copyTradingSettingId);
+      console.log("toggleEnabledExchangeAPI settingIds:", settingIds)
       // TODO: 市价全平仓位
       
       // Delete  
@@ -264,11 +296,11 @@ export async function toggleEnabledExchangeAPI(input: { ids: string[] }, status:
           }
         },
       })
+
+      await redisUpdate(settingIds, undefined);
     }
 
     revalidatePath("/exchanges")
-
-    await redisUpdate(input.ids[0]);
 
     return {
       data: null,

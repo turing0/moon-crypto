@@ -5,9 +5,14 @@ import { CreateCopyTradingSchema, UpdateCopyTradingSchema } from "@/lib/validati
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
 
-async function redisUpdate(settingId) {
-  const apiUrl = `https://tdb.mooncryp.to/api/redis/update?settingId=${settingId}`;
-  const response = await fetch(apiUrl, { method: 'GET' });
+async function redisUpdate(settingIds) {
+  const response = await fetch(`https://tdb.mooncryp.to/api/redis/update`, { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ settingIds: settingIds }),
+   });
   if (!response.ok) {
     throw new Error(`Redis update, failed to fetch data: ${response.statusText}`);
   }
@@ -90,7 +95,7 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
     
     revalidatePath("/traders")
 
-    await redisUpdate(copyTradingSettingId);
+    await redisUpdate([copyTradingSettingId]);
 
     return {
       status: "success",
@@ -175,7 +180,7 @@ export async function updateCopyTradingSetting(input: UpdateCopyTradingSchema & 
     revalidatePath("/copy-trading/manage")
 
     // Call the function to fetch Redis update
-    await redisUpdate(input.id);
+    await redisUpdate([input.id]);
     
     return {
       data: null,
