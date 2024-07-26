@@ -106,7 +106,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
           <div className="max-w-xs truncate font-semibold">
             {truncatedValue}USDT
           </div>
-          <div className="text-gray-500 text-xs">
+          <div className="text-xs text-gray-500">
             {formattedDate}
           </div>
         </div>
@@ -126,7 +126,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
           <div className="max-w-xs truncate font-semibold">
             {truncatedValue}USDT
           </div>
-          <div className="text-gray-500 text-xs">
+          <div className="text-xs text-gray-500">
             {formattedDate}
           </div>
         </div>
@@ -173,7 +173,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-xs">{row.getValue("trackingNo")}</div>
+      <div className="text-xs">{row.getValue("trackingNo")}</div>
     ),
   },
   // {
