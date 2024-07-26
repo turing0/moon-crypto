@@ -25,6 +25,7 @@ import { EnabledExchangeApiDialog } from "../exchange/enabled-api-dialog"
 import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
 import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
+import { format } from "date-fns"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -93,25 +94,47 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     ),
   },
   {
-    accessorKey: "openPriceAvg",
-    header: "OpenPriceAvg",
-    cell: ({ row }) => {
-      const valueStr = row.getValue("openPriceAvg") as string;
+    header: "Open Price",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      const valueStr = datarow.openPriceAvg as string;
       const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
-      return <div>{truncatedValue} USDT</div>;
+      const formattedDate = format(new Date(parseInt(datarow.openTime)), 'yyyy-MM-dd HH:mm:ss');
+      
+      return (
+        <div className="flex flex-col">
+          <div className="max-w-xs truncate font-semibold">
+            {truncatedValue}USDT
+          </div>
+          <div className="text-gray-500 text-xs">
+            {formattedDate}
+          </div>
+        </div>
+      )
     },
   },
   {
-    accessorKey: "closePriceAvg",
-    header: "ClosePriceAvg",
-    cell: ({ row }) => {
-      const valueStr = row.getValue("closePriceAvg") as string;
+    header: "Close Price",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      const valueStr = datarow.closePriceAvg as string;
       const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
-      return <div>{truncatedValue} USDT</div>;
+      const formattedDate = format(new Date(parseInt(datarow.closeTime)), 'yyyy-MM-dd HH:mm:ss');
+      
+      return (
+        <div className="flex flex-col">
+          <div className="max-w-xs truncate font-semibold">
+            {truncatedValue}USDT
+          </div>
+          <div className="text-gray-500 text-xs">
+            {formattedDate}
+          </div>
+        </div>
+      )
     },
   },
   {
-    header: "Margin",
+    header: "Realized PnL",
     cell: function Cell({ row }) {
       const datarow = row.original
       const margin2 = parseFloat(datarow.closePriceAvg);
@@ -150,7 +173,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("trackingNo")}</div>
+      <div className="capitalize text-xs">{row.getValue("trackingNo")}</div>
     ),
   },
   // {
