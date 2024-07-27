@@ -337,7 +337,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                             {/* <Input {...field} /> */}
                             <div className="relative">
                                 <Input
-                                  placeholder="Limit: 1 - 2000"
+                                  placeholder="Limit: 0 - 2000"
                                   {...field}
                                   onChange={(e) => {
                                     const value = e.target.value.replace(/[^0-9]/g, '');
@@ -363,7 +363,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
                           <FormControl>
                             <div className="relative">
                                 <Input
-                                  placeholder="Limit: 1 - 500"
+                                  placeholder="Limit: 0 - 500"
                                   {...field}
                                   onChange={(e) => {
                                     const value = e.target.value.replace(/[^0-9]/g, '');

@@ -73,21 +73,22 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
     startUpdateTransition(async () => {
       const updateData: any = {
         id: task.id,
+        takeProfit: input.takeProfit,
+        stopLoss: input.stopLoss,
         // apis: input.apis,
       };
-
       if (input.fixedAmount) {
         updateData.fixedAmount = input.fixedAmount;
       }
       if (input.multiplierAmount) {
         updateData.multiplierAmount = input.multiplierAmount;
       }
-      if (input.takeProfit) {
-        updateData.takeProfit = input.takeProfit;
-      }
-      if (input.stopLoss) {
-        updateData.stopLoss = input.stopLoss;
-      }
+      // if (input.takeProfit) {
+      //   updateData.takeProfit = input.takeProfit;
+      // }
+      // if (input.stopLoss) {
+      //   updateData.stopLoss = input.stopLoss;
+      // }
 
       // const { error } = await updateExchangeAPI({
       //   id: task.id,
@@ -312,7 +313,7 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
                         {/* <Input {...field} /> */}
                         <div className="relative">
                             <Input
-                              placeholder="Limit: 1 - 2000"
+                              placeholder="Limit: 0 - 2000"
                               {...field}
                               onChange={(e) => {
                                 const value = e.target.value.replace(/[^0-9]/g, '');
@@ -338,7 +339,7 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
                       <FormControl>
                         <div className="relative">
                             <Input
-                              placeholder="Limit: 1 - 500"
+                              placeholder="Limit: 0 - 500"
                               {...field}
                               onChange={(e) => {
                                 const value = e.target.value.replace(/[^0-9]/g, '');
