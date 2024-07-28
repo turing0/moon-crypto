@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import { adminConfig } from "@/config/admin";
-import { dashboardConfig } from "@/config/dashboard";
 import { docsConfig } from "@/config/docs";
 import { marketingConfig } from "@/config/marketing";
 import { siteConfig } from "@/config/site";
@@ -43,18 +41,15 @@ export function NavBar({ scroll = false }: NavBarProps) {
     setIsDropdownOpen(false);
   };
   const selectedLayout = useSelectedLayoutSegment();
-  const admin = selectedLayout === "admin";
-  const dashBoard = selectedLayout === "dashboard";
   const documentation = selectedLayout === "docs";
 
   const configMap = {
     docs: docsConfig.mainNav,
-    dashboard: dashboardConfig.mainNav,
   };
 
   const links =
-    // (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
-    (selectedLayout && configMap[selectedLayout]) || (session ? dashboardConfig.mainNav : marketingConfig.mainNav);
+    (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
+    // (selectedLayout && configMap[selectedLayout]) || (session ? dashboardConfig.mainNav : marketingConfig.mainNav);
   const copyTradingLinks = [
     {
       title: "Positions",
@@ -80,7 +75,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
         large={documentation}
       >
         <div className="flex gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-1.5">
             <Icons.logo />
             <span className="font-urban text-xl font-bold">
               {siteConfig.name}
@@ -89,46 +84,9 @@ export function NavBar({ scroll = false }: NavBarProps) {
 
           {links && links.length > 0 ? (
             <nav className="hidden gap-6 md:flex">
-              {(admin ? adminConfig.mainNav : links).map((item, index) => (
-                
-              item.dropdown ? (
-                <div
-                  key={index}
-                  className={cn(
-                    "relative flex cursor-pointer items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-                    "text-foreground/60" // Apply the same color as other navigation links
-                  )}
-                  onMouseEnter={() => setIsDropdownOpen(true)}
-                  onMouseLeave={() => setIsDropdownOpen(false)}
-                >
-                  {/* <Link href="/positions" className="flex items-center"> */}
-                  <Link href={item.dropdown[0].href} className="flex items-center">
-                    {item.title} <Icons.chevronDown size="12"/>
-                  </Link>
-                  {/* {item.title} <Icons.chevronDown size="12"/> */}
-                  {isDropdownOpen && (
-                    <div
-                      className="absolute left-0 top-full w-48 rounded-md border border-gray-200 bg-white shadow-lg"
-                      onMouseEnter={() => setIsDropdownOpen(true)}
-                      onMouseLeave={() => setIsDropdownOpen(false)}
-                    >
-                      {item.dropdown.map((dropdownItem, dropdownIndex) => (
-                        <Link
-                          key={dropdownIndex}
-                          href={dropdownItem.href}
-                          className={cn(
-                            "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
-                            // dropdownItem.disabled && "cursor-not-allowed opacity-80"
-                          )}
-                        >
-                          {dropdownItem.title}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                  <Link
+
+              {links.map((item, index) => (
+                <Link
                   key={index}
                   href={item.disabled ? "#" : item.href}
                   prefetch={true}
@@ -143,7 +101,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
                   {item.title}
                 </Link>
               )
-              ))}
+              )}
               
               {/* <div
                 className={cn(
@@ -207,43 +165,22 @@ export function NavBar({ scroll = false }: NavBarProps) {
           ) : null}
 
           {session ? (
-            <>
-              {dashBoard || admin ? (
-                <div className="flex items-center space-x-3">
-                  {dashBoard && session.user.role === "ADMIN" ? (
-                    <Link href="/admin" className="hidden md:block">
-                      <Button
-                        className="gap-2 px-4"
-                        variant="outline"
-                        size="sm"
-                        rounded="xl"
-                      >
-                        <span>Admin</span>
-                      </Button>
-                    </Link>
-                  ) : null}
-                  <UserAccountNav user={session.user} />
-                </div>
-              ) : (
-                // <Link
-                //   href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
-                //   className="hidden md:block"
-                // >
-                //   <Button
-                //     className="gap-2 px-4"
-                //     variant="default"
-                //     size="sm"
-                //     rounded="full"
-                //   >
-                //     <span>Dashboard</span>
-                //   </Button>
-                // </Link>
-                <UserAccountNav user={session.user} />
-              )}
-            </>
+            <Link
+              href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
+              className="hidden md:block"
+            >
+              <Button
+                className="gap-2 px-5"
+                variant="default"
+                size="sm"
+                rounded="full"
+              >
+                <span>Dashboard</span>
+              </Button>
+            </Link>
           ) : status === "unauthenticated" ? (
             <Button
-              className="hidden gap-2 px-4 md:flex"
+              className="hidden gap-2 px-5 md:flex"
               variant="default"
               size="sm"
               rounded="full"
@@ -253,13 +190,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
               <Icons.arrowRight className="size-4" />
             </Button>
           ) : (
-            <div className="hidden lg:flex">
-              {dashBoard || admin ? (
-                <Skeleton className="size-9 rounded-full" />
-              ) : (
-                <Skeleton className="h-9 w-24 rounded-full" />
-              )}
-            </div>
+            <Skeleton className="hidden h-9 w-28 rounded-full lg:flex" />
           )}
         </div>
       </MaxWidthWrapper>

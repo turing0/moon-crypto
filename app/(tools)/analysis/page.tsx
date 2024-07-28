@@ -11,7 +11,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/table/data-table"
 import { okxOrderColumns, orderColumns } from "@/components/table/columns"
-import { DashboardShell } from "@/components/dashboard/shell"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 
@@ -234,7 +233,8 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
   };
   
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Analysis"
       />
@@ -329,6 +329,6 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
         
       {/* </div> */}
     </div>
-    </DashboardShell>
+    </>
   )
 }

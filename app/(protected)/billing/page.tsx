@@ -5,7 +5,6 @@ import { getUserSubscriptionPlan } from "@/lib/subscription";
 import { constructMetadata } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { BillingInfo } from "@/components/pricing/billing-info";
 import { Icons } from "@/components/shared/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +27,8 @@ export default async function BillingPage() {
   }
 
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Billing"
         text="Manage billing and your subscription plan."
@@ -133,6 +133,6 @@ export default async function BillingPage() {
         </Alert> */}
         <BillingInfo userSubscriptionPlan={userSubscriptionPlan} />
       </div>
-    </DashboardShell>
+    </>
   );
 }

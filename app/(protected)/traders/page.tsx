@@ -2,7 +2,6 @@
 
 import { OkxHistoryOrder } from "@/app/(tools)/analysis/page";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Input } from "@/components/ui/input";
@@ -165,7 +164,8 @@ export default function TradersPage() {
   // }
   
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Traders"
         text=""
@@ -229,6 +229,6 @@ export default function TradersPage() {
       {/* </div> */}
 
       </div>
-    </DashboardShell>
+    </>
   );
 }

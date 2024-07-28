@@ -1,7 +1,6 @@
 import { getExchangeAPI } from "@/actions/exchange";
 import { getRedisArray } from "@/actions/redisKey";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { CreateExchangeDialog } from "@/components/exchange/create-exchange-dialog";
 import { exchangeApiInfoColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
@@ -49,7 +48,8 @@ export default async function ExchangePage() {
   const whitelistIPs = ["coming soon"]
 
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Exchanges"
         text="Create and manage exchange accounts."
@@ -62,6 +62,6 @@ export default async function ExchangePage() {
         <DataTable data={data} columns={exchangeApiInfoColumns} />
 
       </div>
-    </DashboardShell>
+    </>
   );
 }
