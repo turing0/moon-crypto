@@ -102,6 +102,7 @@ export const sidebarLinks: SidebarNavItem[] = [
         authorizeOnly: UserRole.ADMIN,
       },
       { href: "/dashboard", icon: "dashboard", title: "Dashboard" },
+      { href: "/exhanges", icon: "arrowRightLeft", title: "Exchanges" },
       {
         href: "/billing",
         icon: "billing",
@@ -116,6 +117,7 @@ export const sidebarLinks: SidebarNavItem[] = [
         badge: 2,
         authorizeOnly: UserRole.ADMIN,
       },
+      { href: "/traders", icon: "candlestickChart", title: "Copy Trading" },
       { href: "/analysis", icon: "lineChart", title: "Analysis" },
 
       // {

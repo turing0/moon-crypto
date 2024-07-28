@@ -41,6 +41,7 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
+  CandlestickChart,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -51,6 +52,7 @@ export const Icons = {
   arrowUpRight: ArrowUpRight,
   arrowRightLeft: ArrowRightLeft,
   billing: CreditCard,
+  candlestickChart: CandlestickChart,
   chevronUp: ChevronUp,
   chevronDown: ChevronDown,
   bookOpen: BookOpen,

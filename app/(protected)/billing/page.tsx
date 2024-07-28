@@ -73,7 +73,7 @@ export default async function BillingPage() {
                   <TableCell className="hidden sm:table-cell">
                     ERC20
                   </TableCell>
-                  <TableCell>250.00</TableCell>
+                  <TableCell>2.50</TableCell>
                   <TableCell>0x112</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     <Badge className="text-xs" variant="secondary">
