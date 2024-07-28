@@ -28,7 +28,8 @@ export default async function Dashboard({ children }: ProtectedLayoutProps) {
   }));
 
   return (
-    <div className="relative flex min-h-screen w-full">
+    // <div className="relative flex min-h-screen w-full">
+    <div className="relative flex min-h-screen flex-col lg:flex-row w-full">
       <DashboardSidebar links={filteredLinks} />
 
       <div className="flex flex-1 flex-col">
