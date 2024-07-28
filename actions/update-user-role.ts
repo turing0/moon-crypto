@@ -22,14 +22,14 @@ export async function updateUserRole(userId: string, data: FormData) {
     const { role } = userRoleSchema.parse(data);
 
     // Update the user role.
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        role: role,
-      },
-    });
+    // await prisma.user.update({
+    //   where: {
+    //     id: userId,
+    //   },
+    //   data: {
+    //     role: role,
+    //   },
+    // });
 
     revalidatePath("/settings");
     return { status: "success" };
