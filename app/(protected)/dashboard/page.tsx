@@ -1,7 +1,6 @@
 import { constructMetadata } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InteractiveBarChart } from "@/components/charts/interactive-bar-chart";
@@ -17,7 +16,7 @@ export default async function DashboardPage() {
   // const user = await getCurrentUser();
 
   return (
-    <DashboardShell>
+    <>
       <DashboardHeader
         heading="Dashboard"
         // text={`Current Role : ${user?.role} — Change your role in settings.`}
@@ -181,6 +180,6 @@ export default async function DashboardPage() {
         </div> */}
       </div>
       </>
-    </DashboardShell>
+    </>
   );
 }

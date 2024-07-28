@@ -2,7 +2,6 @@
 
 import { getCopyTradingSetting } from "@/actions/copy-trading";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,8 @@ export default async function ManageCopyTradingPage() {
   // }, [session, status]);
 
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Manage Copy-Trading"
         text=""
@@ -112,7 +112,7 @@ export default async function ManageCopyTradingPage() {
 
       </div>
       
-    </DashboardShell>
+    </>
   );
 }
 

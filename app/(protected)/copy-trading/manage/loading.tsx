@@ -1,10 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 
 export default function CTMLoading() {
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Manage Copy-Trading"
         // text=""
@@ -12,6 +12,6 @@ export default function CTMLoading() {
       <div className="divide-border-200 divide-y rounded-md border">
         <Skeleton className="h-[400px] w-full rounded-lg" />
       </div>
-    </DashboardShell>
+    </>
   );
 }

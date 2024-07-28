@@ -1,5 +1,4 @@
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardShell } from "@/components/dashboard/shell";
 import { DataTable } from "@/components/table/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { constructMetadata } from "@/lib/utils";
@@ -11,7 +10,8 @@ export const metadata = constructMetadata({
 
 export default function PositionPage() {
   return (
-    <DashboardShell>
+    // <DashboardShell>
+    <>
       <DashboardHeader
         heading="Positions"
         text="Current open positions 1 Unrealized P/L $160"
@@ -48,6 +48,6 @@ export default function PositionPage() {
         </Tabs>
 
       </div>
-    </DashboardShell>
+    </>
   );
 }
