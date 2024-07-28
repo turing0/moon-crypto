@@ -1,5 +1,3 @@
-// import { DashboardConfig, SidebarNavItem } from "types"
-
 // export const dashboardConfig: DashboardConfig = {
 //   mainNav: [
 //     {
@@ -16,7 +14,7 @@
 //         },
 //         {
 //           title: "Top Traders",
-//           href: "/traders",
+//           href: "/copy-trading",
 //         },
 //         {
 //           title: "Manage Copy-Trading",
@@ -26,7 +24,7 @@
 //     },
 //     // {
 //     //   title: "Traders",
-//     //   href: "/traders",
+//     //   href: "/copy-trading",
 //     // },
 //     {
 //       title: "Analysis",
@@ -117,7 +115,7 @@ export const sidebarLinks: SidebarNavItem[] = [
         badge: 2,
         authorizeOnly: UserRole.ADMIN,
       },
-      { href: "/traders", icon: "candlestickChart", title: "Copy Trading" },
+      { href: "/copy-trading", icon: "candlestickChart", title: "Copy Trading" },
       { href: "/analysis", icon: "lineChart", title: "Analysis" },
 
       // {

@@ -57,11 +57,11 @@ export function NavBar({ scroll = false }: NavBarProps) {
     },
     {
       title: "Top Traders",
-      href: "/traders",
+      href: "/copy-trading",
     },
     {
       title: "Manage Copy-Trading",
-      href: "/traders",
+      href: "/copy-trading/manage",
     },
   ]
   return (

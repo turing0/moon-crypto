@@ -66,7 +66,7 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
       await Promise.all(copyTradingAccountCreations);
     });
     
-    revalidatePath("/traders")
+    revalidatePath("/copy-trading")
 
     await redisUpdate([copyTradingSettingId], undefined);
 
