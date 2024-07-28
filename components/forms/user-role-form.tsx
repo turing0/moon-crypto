@@ -60,7 +60,7 @@ export function UserRoleForm({ user }: UserNameFormProps) {
       } else {
         await update();
         setUpdated(false);
-        toast.success("Your role has been updated.");
+        toast.success("Your role has been updated.", {position: "top-center"});
       }
     });
   };

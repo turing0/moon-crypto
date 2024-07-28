@@ -153,6 +153,13 @@ export function UserAccountNav() {
         </div>
         <DropdownMenuSeparator />
 
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard" className="flex items-center space-x-2.5">
+            <LayoutDashboard className="size-4" />
+            <p className="text-sm">Dashboard</p>
+          </Link>
+        </DropdownMenuItem>
+
         {user.role === "ADMIN" ? (
           <DropdownMenuItem asChild>
             <Link href="/admin" className="flex items-center space-x-2.5">
@@ -172,13 +179,6 @@ export function UserAccountNav() {
           </DropdownMenuItem>
         )}
         {/* ) : null} */}
-
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="flex items-center space-x-2.5">
-            <LayoutDashboard className="size-4" />
-            <p className="text-sm">Dashboard</p>
-          </Link>
-        </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link
