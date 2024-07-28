@@ -134,7 +134,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     },
   },
   {
-    header: "Realized PnL",
+    header: "Realized PNL",
     cell: function Cell({ row }) {
       const datarow = row.original
       const margin2 = parseFloat(datarow.closePriceAvg);
@@ -414,7 +414,7 @@ export const bitgetTraderColumns: ColumnDef<BitgetTrader>[] = [
   {
     accessorKey: "TotalPnL",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total PnL" />
+      <DataTableColumnHeader column={column} title="Total PNL" />
     ),
     cell: ({ row }) => {
       const columnList = row.original.columnList;

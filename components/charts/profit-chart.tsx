@@ -29,7 +29,7 @@ const chartData = [
 
 const chartConfig = {
   pnl: {
-    label: "PnL",
+    label: "PNL",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
@@ -38,7 +38,7 @@ export function ProfitChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>PnL</CardTitle>
+        <CardTitle>PNL</CardTitle>
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent>
