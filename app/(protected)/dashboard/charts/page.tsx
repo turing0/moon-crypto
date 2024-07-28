@@ -1,6 +1,6 @@
 import { constructMetadata } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AreaChartStacked } from "@/components/charts/area-chart-stacked";
+import { AssetAreaChart } from "@/components/charts/area-chart-stacked";
 import { BarChartMixed } from "@/components/charts/bar-chart-mixed";
 import { InteractiveBarChart } from "@/components/charts/interactive-bar-chart";
 import { LineChartMultiple } from "@/components/charts/line-chart-multiple";
@@ -23,7 +23,7 @@ export default function ChartsPage() {
       <div className="flex flex-col gap-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
           <RadialTextChart />
-          <AreaChartStacked />
+          <AssetAreaChart />
           <BarChartMixed />
           <RadarChartSimple />
         </div>
