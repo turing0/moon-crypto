@@ -256,9 +256,9 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
                   </section>
                 ))}
 
-                <div className="mt-auto">
+                {/* <div className="mt-auto">
                   <UpgradeCard />
-                </div>
+                </div> */}
               </nav>
             </div>
           </ScrollArea>

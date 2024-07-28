@@ -23,15 +23,15 @@ const projects: ProjectType[] = [
   {
     title: "Project 1",
     slug: "project-number-one",
-    color: "bg-red-500",
+    color: "bg-blue-500",
   },
   {
     title: "Project 2",
     slug: "project-number-two",
-    color: "bg-blue-500",
+    color: "bg-red-500",
   },
 ];
-const selected: ProjectType = projects[1];
+const selected: ProjectType = projects[0];
 
 export default function ProjectSwitcher({
   large = false,
