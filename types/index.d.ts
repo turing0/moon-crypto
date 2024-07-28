@@ -3,30 +3,45 @@ import type { Icon } from "lucide-react";
 
 import { Icons } from "@/components/shared/icons";
 
+// export type NavItem = {
+//   title: string;
+//   href: string;
+//   dropdown?: NavItem[];
+//   disabled?: boolean;
+// };
 export type NavItem = {
   title: string;
   href: string;
-  dropdown?: NavItem[];
+  badge?: number;
   disabled?: boolean;
+  external?: boolean;
+  authorizeOnly?: UserRole;
+  icon?: keyof typeof Icons;
 };
 
 export type MainNavItem = NavItem;
 
 export type SidebarNavItem = {
   title: string;
-  disabled?: boolean;
-  external?: boolean;
+  items: NavItem[];
+  authorizeOnly?: UserRole;
   icon?: keyof typeof Icons;
-} & (
-  | {
-      href: string;
-      items?: never;
-    }
-  | {
-      href?: string;
-      items: NavLink[];
-    }
-);
+};
+// export type SidebarNavItem = {
+//   title: string;
+//   disabled?: boolean;
+//   external?: boolean;
+//   icon?: keyof typeof Icons;
+// } & (
+//   | {
+//       href: string;
+//       items?: never;
+//     }
+//   | {
+//       href?: string;
+//       items: NavLink[];
+//     }
+// );
 
 export type SiteConfig = {
   name: string;
