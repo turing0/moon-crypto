@@ -71,7 +71,7 @@ export default function EmailForm() {
 
       <div className="flex items-start gap-2 text-gray-500">
         <InfoCircledIcon />
-        <p className="-mt-[0.5] max-w-sm text-xs">
+        <p className="mt-[0.5] max-w-sm text-xs">
           No worries! your data is completely safe and will only be utilized to
           provide you with updates about our product.
         </p>

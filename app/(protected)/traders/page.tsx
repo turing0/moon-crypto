@@ -1,6 +1,5 @@
 "use client"
 
-import { OkxHistoryOrder } from "@/app/(tools)/ana/page";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
@@ -10,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { OkxHistoryOrder } from "../analysis/page";
 
 // export const metadata = constructMetadata({
 //   title: "Traders – Moon Crypto",
