@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LayoutDashboard, Lock, LogOut, Settings } from "lucide-react";
+import { CreditCard, LayoutDashboard, Lock, LogOut, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { Drawer } from "vaul";
 
@@ -160,18 +160,18 @@ export function UserAccountNav() {
               <p className="text-sm">Admin</p>
             </Link>
           </DropdownMenuItem>
-        // ) : (
-        //   <DropdownMenuItem asChild>
-        //     <Link
-        //       href="/billing"
-        //       className="flex items-center space-x-2.5"
-        //     >
-        //       <CreditCard className="size-4" />
-        //       <p className="text-sm">Billing</p>
-        //     </Link>
-        //   </DropdownMenuItem>
-        // )}
-        ) : null}
+        ) : (
+          <DropdownMenuItem asChild>
+            <Link
+              href="/billing"
+              className="flex items-center space-x-2.5"
+            >
+              <CreditCard className="size-4" />
+              <p className="text-sm">Billing</p>
+            </Link>
+          </DropdownMenuItem>
+        )}
+        {/* ) : null} */}
 
         <DropdownMenuItem asChild>
           <Link href="/dashboard" className="flex items-center space-x-2.5">
