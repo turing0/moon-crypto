@@ -12,7 +12,6 @@ import { DropdownMenu,
   DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 import Link from "next/link"
-import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(tools)/ana/page"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
 import { UpdateExchangeApiSheet } from "../exchange/update-exchange-sheet"
@@ -26,6 +25,7 @@ import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
 import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 import { format } from "date-fns"
+import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(protected)/analysis/page"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [

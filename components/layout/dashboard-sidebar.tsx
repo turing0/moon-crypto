@@ -29,36 +29,42 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ links }: DashboardSidebarProps) {
   const path = usePathname();
-
-  // NOTE: Use this if you want save in local storage -- Credits: Hosna Qasmei
-  //
-  // const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
-  //   if (typeof window !== "undefined") {
-  //     const saved = window.localStorage.getItem("sidebarExpanded");
-  //     return saved !== null ? JSON.parse(saved) : true;
-  //   }
-  //   return true;
-  // });
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.localStorage.setItem(
-  //       "sidebarExpanded",
-  //       JSON.stringify(isSidebarExpanded),
-  //     );
-  //   }
-  // }, [isSidebarExpanded]);
-
   const { isTablet } = useMediaQuery();
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(!isTablet);
 
-  const toggleSidebar = () => {
-    setIsSidebarExpanded(!isSidebarExpanded);
-  };
+  // Start with a default state that matches the server-side render
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  
+  // Use a separate state to track if the component has mounted
+  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setIsSidebarExpanded(!isTablet);
+    // Mark the component as mounted
+    setHasMounted(true);
+
+    // Now it's safe to access localStorage and update the state
+    const saved = localStorage.getItem('sidebarExpanded');
+    if (saved !== null) {
+      setIsSidebarExpanded(JSON.parse(saved));
+    } else {
+      setIsSidebarExpanded(!isTablet);
+    }
   }, [isTablet]);
+
+  useEffect(() => {
+    // Only update localStorage after the component has mounted
+    if (hasMounted) {
+      localStorage.setItem('sidebarExpanded', JSON.stringify(isSidebarExpanded));
+    }
+  }, [isSidebarExpanded, hasMounted]);
+
+  const toggleSidebar = () => {
+    setIsSidebarExpanded((prev) => !prev);
+  };
+
+  // If the component hasn't mounted yet, return null or a loading state
+  if (!hasMounted) {
+    return null; // or return <LoadingComponent />;
+  }
 
   return (
     <TooltipProvider delayDuration={0}>
