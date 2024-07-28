@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { dashboardConfig } from "@/config/dashboard";
 import { getCurrentUser } from "@/lib/session";
-import { DashboardNav } from "@/components/layout/dashboard-sidenav";
 import { NavBar } from "@/components/layout/navbar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
