@@ -116,6 +116,8 @@ export const sidebarLinks: SidebarNavItem[] = [
         badge: 2,
         authorizeOnly: UserRole.ADMIN,
       },
+      { href: "/analysis", icon: "lineChart", title: "Analysis" },
+
       // {
       //   href: "#/dashboard/posts",
       //   icon: "post",

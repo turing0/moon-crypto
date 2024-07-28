@@ -1,6 +1,6 @@
 "use client"
 
-import { OkxHistoryOrder } from "@/app/(tools)/analysis/page";
+import { OkxHistoryOrder } from "@/app/(tools)/ana/page";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";

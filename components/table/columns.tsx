@@ -12,7 +12,7 @@ import { DropdownMenu,
   DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 import Link from "next/link"
-import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(tools)/analysis/page"
+import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(tools)/ana/page"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
 import { UpdateExchangeApiSheet } from "../exchange/update-exchange-sheet"

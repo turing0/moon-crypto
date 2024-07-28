@@ -22,12 +22,12 @@ type ProjectType = {
 const projects: ProjectType[] = [
   {
     title: "Project 1",
-    slug: "project-number-one",
+    slug: "project-one",
     color: "bg-blue-500",
   },
   {
     title: "Project 2",
-    slug: "project-number-two",
+    slug: "project-two",
     color: "bg-red-500",
   },
 ];
