@@ -221,7 +221,7 @@ export default function TradersPage() {
                 </div> */}
               </form>
             </div>
-            <DataTable data={okxOrder} columns={okxOrderColumns} />
+            {/* <DataTable data={okxOrder} columns={okxOrderColumns} /> */}
           </TabsContent>
         </Tabs>
 
