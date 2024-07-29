@@ -1,6 +1,6 @@
 "use server"
 
-async function redisUpdate(settingIds?, exchangeAccountId?) {
+export async function redisUpdate(settingIds?, exchangeAccountId?) {
   const response = await fetch(`https://tdb.mooncryp.to/api/redis/update`, { 
     method: 'POST',
     headers: {
@@ -16,7 +16,7 @@ async function redisUpdate(settingIds?, exchangeAccountId?) {
   return responseData;
 }
 
-async function redisDelete(settingId) {
+export async function redisDelete(settingId) {
   console.log('delete:', settingId)
   const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?settingId=${settingId}`;
   const response = await fetch(apiUrl, { method: 'GET' });

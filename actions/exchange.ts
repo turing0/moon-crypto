@@ -5,6 +5,7 @@ import { CreateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validati
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
+import { redisUpdate } from "./redis-sync";
 import { error } from "console";
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {

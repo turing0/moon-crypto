@@ -4,6 +4,7 @@ import { unstable_noStore as noStore, revalidatePath } from "next/cache"
 import { CreateCopyTradingSchema, UpdateCopyTradingSchema } from "@/lib/validations/exchange";
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
+import { redisDelete, redisUpdate } from "./redis-sync";
 
 export async function createCopyTradingAPI(traderId: string, traderName:string, input: CreateCopyTradingSchema) {
   // noStore()
