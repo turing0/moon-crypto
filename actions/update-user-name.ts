@@ -20,7 +20,7 @@ export async function updateUserName(userId: string, data: FormData) {
     const { name } = userNameSchema.parse(data);
 
     // Update the user name.
-    await prisma.user.update({
+    const res = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -28,6 +28,7 @@ export async function updateUserName(userId: string, data: FormData) {
         name: name,
       },
     })
+    console.log("updateUserName res:", res);
 
     revalidatePath('/settings');
     return { status: "success" };
