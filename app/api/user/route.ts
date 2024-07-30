@@ -19,6 +19,7 @@ export const DELETE = auth(async (req) => {
       },
     });
   } catch (error) {
+    console.log("error:", error)
     return new Response("Internal server error", { status: 500 });
   }
 
