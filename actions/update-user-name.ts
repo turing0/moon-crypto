@@ -32,7 +32,7 @@ export async function updateUserName(userId: string, data: FormData) {
     revalidatePath('/settings');
     return { status: "success" };
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     return { status: "error" }
   }
 }
