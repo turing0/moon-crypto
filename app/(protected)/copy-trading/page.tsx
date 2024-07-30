@@ -3,6 +3,7 @@
 import { DashboardHeader } from "@/components/dashboard/header";
 import { bitgetTraderColumns, okxOrderColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +11,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { OkxHistoryOrder } from "../analysis/page";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 // export const metadata = constructMetadata({
 //   title: "Traders – Moon Crypto",
@@ -164,15 +167,32 @@ export default function TradersPage() {
   // }
   
   return (
-    // <DashboardShell>
     <>
       <DashboardHeader
-        heading="Traders"
+        heading="Copy Trading"
         text=""
       />
+
+      <div className="mb-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>My Copy Trading</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              View detailed statistics and performance metrics for your copytrading activities.
+            </p>
+            <Link href="/copy-trading/manage" className="mt-4 inline-flex items-center text-sm font-medium text-primary">
+              Copy Overview
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+
+      <h2 className="text-2xl font-bold tracking-tight">Explore Traders</h2>
       {/* <div className='flex h-full w-full flex-col items-center justify-center'> */}
       <div className='overflow-x-auto'>
-        
       {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue="Bitget" className="space-y-4">
           <TabsList>
@@ -201,6 +221,7 @@ export default function TradersPage() {
           </TabsContent>
 
           <TabsContent value="binance" className="space-y-4">
+            <p className="text-sm text-muted-foreground">Binance trader data coming soon.</p>
             <div >
               {/* <form onSubmit={handleBinanceSubmit}> */}
               <form>
@@ -213,6 +234,7 @@ export default function TradersPage() {
             {/* <DataTable data={binanceOrder} columns={binanceOrderColumns} /> */}
           </TabsContent>
           <TabsContent value="okx" className="space-y-4">
+            <p className="text-sm text-muted-foreground">OKX trader data coming soon.</p>
             <div>
               <form onSubmit={handleOKXSubmit}>
                 {/* <div className="relative">
