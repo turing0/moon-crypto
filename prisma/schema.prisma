@@ -105,7 +105,7 @@ model CopyTradingSetting {
   multiplierAmount  Float?
   takeProfit        Int?
   stopLoss          Int?
-
+  createdAt         DateTime @default(now()) @map(name: "created_at")
 
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   // exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)

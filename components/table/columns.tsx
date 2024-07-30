@@ -866,9 +866,18 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
         //     <>{datarow.traderName}</>
         //   )}
         // </div>
-        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`}>
-          {datarow["traderName"]}
-        </Link>
+        <div className="flex flex-col space-y-1">
+          <div className="font-semibold">
+            <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`}>
+              {datarow["traderName"]}
+              {/* {datarow["createdAt"]} */}
+            </Link>
+          </div>
+
+          <div className="text-xs text-gray-500">
+            Copied on: {format(datarow["createdAt"], 'yyyy-MM-dd HH:mm:ss')}
+          </div>
+        </div>
       )
     },
   },

@@ -107,6 +107,7 @@ export async function getCopyTradingSetting(userId: string) {
         multiplierAmount: true, 
         takeProfit: true, 
         stopLoss: true, 
+        createdAt: true, 
         followedApis: {select: {
           copyTradingSettingId: true,   // Replace with the actual field names you need
           exchangeAccountId: true,
