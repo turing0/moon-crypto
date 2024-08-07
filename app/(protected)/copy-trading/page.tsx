@@ -129,6 +129,9 @@ export default function TradersPage() {
 
     fetchBitgetData();
   }, []);
+  useEffect(() => {
+    document.title = "Copy Trading – Moon Crypto";
+  }, []);
 
   const {data:session} = useSession();
   useEffect(() => {

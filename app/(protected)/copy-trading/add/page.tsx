@@ -103,7 +103,6 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
   }, [session]);
 
   const bitgetTraderIdParam = searchParams.bitgetTraderId
-  const traderNameParam = searchParams.traderName
   
   const [bitgetTraderId, setBitgetTraderId] = React.useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
   const [isLoading, setIsLoading] = React.useState<boolean>(bitgetTraderId?true:false);
@@ -112,7 +111,8 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
     if (bitgetTraderId) {
       getBitgetTrader(bitgetTraderId).then(data => {
         if (data.length > 0) {
-          setTraderInfo(data[0])
+          setTraderInfo(data[0]);
+          document.title = `${data[0]['traderName']} – Moon Crypto`;
         }
       })
     }
