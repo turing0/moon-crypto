@@ -16,6 +16,7 @@ import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CopyTradeDialog } from "@/components/exchange/copy-trade-dialog"
+import { Button } from "@/components/ui/button"
 
 // export const metadata = constructMetadata({
 //   title: "Analysis – Moon Crypto",
@@ -164,10 +165,10 @@ interface SearchParams {
   // [key: string]: string | string[] | undefined
   [key: string]: string | undefined
 }
-export interface IndexPageProps {
+export interface AnalysisPageProps {
   searchParams: SearchParams
 }
-export default function AnalysisPage({ searchParams }: IndexPageProps) {
+export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   const router = useRouter()
   const pathname = usePathname()
   // const search = searchParamsSchema.parse(searchParams)
@@ -262,6 +263,9 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
     const id = formData.get('okxTraderId') as string;
     setOkxTraderId(id);
   };
+  const handleCopyTrade = () => {
+    router.push(`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`); // 替换成你要跳转的页面路径
+  };
   
   return (
     // <DashboardShell>
@@ -307,6 +311,9 @@ export default function AnalysisPage({ searchParams }: IndexPageProps) {
                     </div>
                   </div>
                   {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
+                  <Button onClick={handleCopyTrade}>
+                    Copy Trade
+                  </Button>
                 </div>
               </Card>
             )
