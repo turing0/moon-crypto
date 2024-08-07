@@ -184,7 +184,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel className="font-normal h-full">{item.accountName}</FormLabel>
+                              <FormLabel className="h-full font-normal">{item.accountName}</FormLabel>
                             </FormItem>
                           )
                         }}
