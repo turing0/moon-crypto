@@ -8,7 +8,13 @@ import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { getCurrentUser } from "@/lib/session";
+import { constructMetadata } from "@/lib/utils";
 import { redirect } from "next/navigation";
+
+export const metadata = constructMetadata({
+  title: "Manage Copy Trading – Moon Crypto",
+  description: "Streamline your crypto trading management.",
+});
 
 enum TabSections {
   Following = "following",

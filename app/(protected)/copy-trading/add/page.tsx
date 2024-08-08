@@ -133,7 +133,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
 
       form.reset()
       toast.success("Copy Trading added", {position: "top-center"})
-      router.push('/dashboard') // Redirect to dashboard or appropriate page
+      router.push('/copy-trading/manage')
     })
   }
 
