@@ -256,7 +256,7 @@ export default function ManageCopyTradingPage() {
                 </div>
               ) : (
                 <>
-                  {data && data.length > 0 ? (
+                  {/* {data && data.length > 0 ? (
                     <DataTable data={data} columns={copyTradingSettingColumns} />
                   ) : (
                     <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
@@ -278,7 +278,7 @@ export default function ManageCopyTradingPage() {
                         </form>
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {data && data.length > 0 ? (
                     <div className="space-y-4">

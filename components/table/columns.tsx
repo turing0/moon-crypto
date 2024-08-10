@@ -868,7 +868,7 @@ export const copyTradingSettingColumns: ColumnDef<CopyTradingSettingInfo>[] = [
         // </div>
         <div className="flex flex-col space-y-1">
           <div className="font-semibold">
-            <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`}>
+            <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(datarow["traderId"])}`} target="_blank">
               {datarow["traderName"]}
               {/* {datarow["createdAt"]} */}
             </Link>
