@@ -25,6 +25,7 @@ import { Icons } from "@/components/shared/icons"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { BitGetHistoryOrder } from "@/app/(protected)/analysis/page"
+import { Loader2 } from "lucide-react"
 
 async function getBitgetTrader(traderId: string) {
   try {
@@ -68,6 +69,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
   const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);
   const [isCreatePending, startCreateTransition] = React.useTransition()
   const [userApi, setUserApi] = React.useState<any[]>([]);
+  const [apiLoading, setApiLoading] = React.useState<boolean>(true);
   const [traderInfo, setTraderInfo] = React.useState<any>({});
   
   console.log("searchParams", searchParams)
@@ -158,40 +160,49 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
             render={() => (
               <FormItem>
                 <FormLabel className="text-lg">Choose your exchange account</FormLabel>
-                {!userApi || userApi.length === 0 ? (
-                  <div className="rounded border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700">
-                    <p>{`You don't have any enabled exchange APIs.`}</p>
-                    Please <Link href="/exchanges" className="text-blue-500 underline">add or check your APIs</Link> to proceed.
+                {apiLoading ? (
+                  <div className="flex items-center">
+                    <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+                    <span className="ml-2 text-gray-500">Loading APIs...</span>
                   </div>
                 ) : (
-                  <div className="mt-2 flex flex-wrap gap-4">
-                    {userApi.map((item) => (
-                      <FormField
-                        key={item.id}
-                        control={form.control}
-                        name="apis"
-                        render={({ field }) => {
-                          const value = field.value || [];
-                          return (
-                            <FormItem key={item.id} className="flex items-center space-x-3">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(item.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...value, item.id])
-                                      : field.onChange(value?.filter((v) => v !== item.id))
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="h-full font-normal">{item.accountName}</FormLabel>
-                            </FormItem>
-                          )
-                        }}
-                      />
-                    ))}
-                    
-                  </div>
+                  <>
+                    {!userApi || userApi.length === 0 ? (
+                      <div className="rounded border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700">
+                        <p>{`You don't have any enabled exchange APIs.`}</p>
+                        Please <Link href="/exchanges" className="text-blue-500 underline">add or check your APIs</Link> to proceed.
+                      </div>
+                    ) : (
+                      <div className="mt-2 flex flex-wrap gap-4">
+                        {userApi.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="apis"
+                            render={({ field }) => {
+                              const value = field.value || [];
+                              return (
+                                <FormItem key={item.id} className="flex items-center space-x-3">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([...value, item.id])
+                                          : field.onChange(value?.filter((v) => v !== item.id))
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="h-full font-normal">{item.accountName}</FormLabel>
+                                </FormItem>
+                              )
+                            }}
+                          />
+                        ))}
+                          
+                      </div>
+                    )}
+                  </>
                 )}
                 <FormMessage />
               </FormItem>
