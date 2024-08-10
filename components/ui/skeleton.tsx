@@ -70,11 +70,11 @@ const CardSkeleton = () => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Skeleton className="h-4 w-40 mb-2" />
+            <Skeleton className="mb-2 h-4 w-40" />
             <Skeleton className="h-4 w-60" />
           </div>
           <div>
-            <Skeleton className="h-4 w-40 mb-2" />
+            <Skeleton className="mb-2 h-4 w-40" />
             <Skeleton className="h-4 w-32" />
           </div>
         </div>
