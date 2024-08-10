@@ -1,20 +1,28 @@
-// "use client"
+"use client"
 
 import { getCopyTradingSetting } from "@/actions/copy-trading";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getCurrentUser } from "@/lib/session";
-import { constructMetadata } from "@/lib/utils";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { Icons } from "@/components/shared/icons";
+import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading-sheet";
+import { useEffect, useState } from "react";
+import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytrading-dialog";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { CalendarIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-export const metadata = constructMetadata({
-  title: "Manage Copy Trading – Moon Crypto",
-  description: "Streamline your crypto trading management.",
-});
+// export const metadata = constructMetadata({
+//   title: "Manage Copy Trading – Moon Crypto",
+//   description: "Streamline your crypto trading management.",
+// });
 
 enum TabSections {
   Following = "following",
@@ -22,41 +30,199 @@ enum TabSections {
   Identities = "identities"
 }
 
-export default async function ManageCopyTradingPage() {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/login");
-  }
-  // const {data:session, status} = useSession();
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-  // const [data, setData] = useState<any[]>([]);
-  // const router = useRouter();
-
-  // if (!session || !session.user) {
-  //   redirect("/login");
-  // }
-  const data = await getCopyTradingSetting(user?.id!);
-
-  // const data = await getCopyTradingSetting(user?.id!);
-  // useEffect(() => {
-  //   if (status === 'loading') return;
-  //   if (!session || !session.user) {
-  //     router.push('/login');
-  //     return;
-  //   }
-
-  //   const fetchData = async () => {
-  //     const data = await getCopyTradingSetting(session.user.id!);
-  //     // console.log("data:", data);
-  //     setData(data);
-  //     setIsLoading(false);
-  //   };
-
-  //   fetchData();
-  // }, [session, status]);
+const TraderCard = ({ trader }) => {
+  const [showUpdateSheet, setShowUpdateSheet] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    // <DashboardShell>
+    <Card className="mb-8 w-full">
+      <CardHeader>
+        <UpdateCopyTradingSheet
+          open={showUpdateSheet}
+          onOpenChange={setShowUpdateSheet}
+          task={trader}
+        />
+        <DeleteCopyTradingDialog
+          open={showDeleteDialog}
+          onOpenChange={setShowDeleteDialog}
+          tasks={[trader]}
+          showTrigger={false}
+          // onSuccess={() => row.toggleSelected(false)}
+        />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Avatar>
+              <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
+              {/* <AvatarFallback>{trader.name.charAt(0)}</AvatarFallback> */}
+            </Avatar>
+            <div>
+              <CardTitle>{trader.traderName}</CardTitle>
+              <CardDescription className="mt-1 flex items-center">
+                <CalendarIcon className="mr-1 h-4 w-4" />
+                Started: {trader.createdAt.toLocaleString('zh-CN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false
+                })}
+              </CardDescription>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
+              {/* <GearIcon className="mr-2 h-4 w-4" /> */}
+              Settings
+            </Button>
+            <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
+              {/* <StopIcon className="mr-2 h-4 w-4" /> */}
+              Stop Following
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Realized PNL:</strong> {trader.pnl}</p>
+            <p><strong>Followed APIs:</strong>{' '}
+              {trader.followedApis.map((api, index) => (
+                  <span>{api.exchangeAccount.accountName}{' '}</span>
+              ))}
+            </p>
+          </div>
+          <div>
+            <p><strong>Mode:</strong> {" "}
+              {trader.fixedAmount && (
+                <>FixedAmount: {trader.fixedAmount} USDT</>
+              )}
+              {trader.multiplierAmount && (
+                <>MultiplierAmount: {trader.multiplierAmount} X</>
+              )}
+            </p>
+            <p><strong>Risk Level:</strong> {trader.riskLevel}</p>
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex items-center justify-between">
+        <Button 
+          variant="ghost" 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full"
+        >
+          {isExpanded ? (
+            <>
+              Hide Details
+              <Icons.chevronUp className="ml-2 h-4 w-4" />
+            </>
+          ) : (
+            <>
+              Expand Details
+              <Icons.chevronDown className="ml-2 h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </CardFooter>
+      {isExpanded && (
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <h4 className="mb-2 font-semibold">Current Positions</h4>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Symbol</TableHead>
+                    <TableHead>Size</TableHead>
+                    <TableHead>Entry Price</TableHead>
+                    <TableHead>Current Price</TableHead>
+                    <TableHead>PNL</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* {trader.currentPositions.map((position, index) => (
+                    <TableRow key={index}>
+                      <TableCell>position.symbol</TableCell>
+                      <TableCell>position.size</TableCell>
+                      <TableCell>position.entryPrice</TableCell>
+                      <TableCell>position.currentPrice</TableCell>
+                      <TableCell>position.pnl</TableCell>
+                    </TableRow>
+                  ))} */}
+                </TableBody>
+              </Table>
+            </div>
+            <div>
+              <h4 className="mb-2 font-semibold">Historical Positions</h4>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Symbol</TableHead>
+                    <TableHead>Entry Date</TableHead>
+                    <TableHead>Exit Date</TableHead>
+                    <TableHead>Entry Price</TableHead>
+                    <TableHead>Exit Price</TableHead>
+                    <TableHead>PNL</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* {trader.historicalPositions.map((position, index) => (
+                    <TableRow key={index}>
+                      <TableCell>position.symbol</TableCell>
+                      <TableCell>position.entryDate</TableCell>
+                      <TableCell>position.exitDate</TableCell>
+                      <TableCell>position.entryPrice</TableCell>
+                      <TableCell>position.exitPrice</TableCell>
+                      <TableCell>position.pnl</TableCell>
+                    </TableRow>
+                  ))} */}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
+export default function ManageCopyTradingPage() {
+  // const user = await getCurrentUser();
+  // if (!user) {
+  //   redirect("/login");
+  // }
+  const {data:session, status} = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [data, setData] = useState<any[]>([]);
+  const router = useRouter();
+
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+
+  // const data = await getCopyTradingSetting(user?.id!);
+  // const data = await getCopyTradingSetting(user?.id!);
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    // if (status === "loading") return;
+    if (!session || !session.user) {
+      router.push('/login');
+      return;
+    }
+
+    const fetchData = async () => {
+      const data = await getCopyTradingSetting(session.user.id!);
+      // console.log("data:", data);
+      setData(data);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [session, status]);
+
+  return (
     <>
       <DashboardHeader
         heading="Manage Copy-Trading"
@@ -106,6 +272,32 @@ export default async function ManageCopyTradingPage() {
                   </div>
                 </div>
               )}
+
+            {data && data.length > 0 ? (
+              <div className="space-y-4">
+                {data.map((trader, index) => (
+                  <TraderCard key={index} trader={trader} />
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-medium">
+                      {"You haven't followed any traders yet"}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Follow a trader to start copy-trading.
+                    </p>
+                  </div>
+                  <form action="/traders" method="get">
+                    <Button type="submit">
+                      Find Best Traders
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
 
           </TabPanel>
           {/* <TabPanel value={TabSections.Identities}>
