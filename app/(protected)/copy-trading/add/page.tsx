@@ -93,6 +93,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
           const data = await response.json();
           console.log("userApi data:", data)
           setUserApi(data);
+          setApiLoading(false);
         } else {
           console.error('Failed to fetch user data:', response.status);
         }
