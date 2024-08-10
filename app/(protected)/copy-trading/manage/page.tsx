@@ -17,11 +17,7 @@ import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytradin
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-
-// export const metadata = constructMetadata({
-//   title: "Manage Copy Trading – Moon Crypto",
-//   description: "Streamline your crypto trading management.",
-// });
+import Link from "next/link";
 
 enum TabSections {
   Following = "following",
@@ -50,7 +46,8 @@ const TraderCard = ({ trader }) => {
           // onSuccess={() => row.toggleSelected(false)}
         />
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+          <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
               <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
               {/* <AvatarFallback>{trader.name.charAt(0)}</AvatarFallback> */}
@@ -71,6 +68,7 @@ const TraderCard = ({ trader }) => {
               </CardDescription>
             </div>
           </div>
+          </Link>
           <div className="flex items-center space-x-2">
             <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
               {/* <GearIcon className="mr-2 h-4 w-4" /> */}
@@ -205,7 +203,6 @@ export default function ManageCopyTradingPage() {
     document.title = "Manage Copy Trading – Moon Crypto";
   }, []);
 
-  // const data = await getCopyTradingSetting(user?.id!);
   // const data = await getCopyTradingSetting(user?.id!);
   useEffect(() => {
     if (status !== "authenticated") return;
