@@ -201,6 +201,10 @@ export default function ManageCopyTradingPage() {
   //   redirect("/login");
   // }
 
+  useEffect(() => {
+    document.title = "Manage Copy Trading – Moon Crypto";
+  }, []);
+
   // const data = await getCopyTradingSetting(user?.id!);
   // const data = await getCopyTradingSetting(user?.id!);
   useEffect(() => {
@@ -248,29 +252,6 @@ export default function ManageCopyTradingPage() {
             )} */}
 
               {/* <DataTable data={data} columns={copyTradingSettingColumns} /> */}
-              {data && data.length > 0 ? (
-                <DataTable data={data} columns={copyTradingSettingColumns} />
-              ) : (
-                <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
-                  <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {"You haven't followed any traders yet"}
-                      </h3>
-                      <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
-                        Follow a trader to start copy-trading.
-                      </p>
-                    </div>
-                    <form action="/copy-trading" method="get">
-                      <Button 
-                        type="submit"
-                      >
-                        Find Best Traders
-                      </Button>
-                    </form>
-                  </div>
-                </div>
-              )}
 
               {isLoading ? (
                 <div>
@@ -278,6 +259,30 @@ export default function ManageCopyTradingPage() {
                 </div>
               ) : (
                 <>
+                  {data && data.length > 0 ? (
+                    <DataTable data={data} columns={copyTradingSettingColumns} />
+                  ) : (
+                    <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
+                      <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            {"You haven't followed any traders yet"}
+                          </h3>
+                          <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                            Follow a trader to start copy-trading.
+                          </p>
+                        </div>
+                        <form action="/copy-trading" method="get">
+                          <Button 
+                            type="submit"
+                          >
+                            Find Best Traders
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
+                  )}
+
                   {data && data.length > 0 ? (
                     <div className="space-y-4">
                       {data.map((trader, index) => (
