@@ -6,10 +6,9 @@ import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { TableSkeleton } from "@/components/ui/skeleton";
+import { CardSkeleton, TableSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getCurrentUser } from "@/lib/session";
 import { redirect, useRouter } from "next/navigation";
 import { Icons } from "@/components/shared/icons";
 import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading-sheet";
@@ -198,9 +197,9 @@ export default function ManageCopyTradingPage() {
   const [data, setData] = useState<any[]>([]);
   const router = useRouter();
 
-  if (!session || !session.user) {
-    redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   redirect("/login");
+  // }
 
   // const data = await getCopyTradingSetting(user?.id!);
   // const data = await getCopyTradingSetting(user?.id!);
@@ -273,31 +272,39 @@ export default function ManageCopyTradingPage() {
                 </div>
               )}
 
-            {data && data.length > 0 ? (
-              <div className="space-y-4">
-                {data.map((trader, index) => (
-                  <TraderCard key={index} trader={trader} />
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-medium">
-                      {"You haven't followed any traders yet"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Follow a trader to start copy-trading.
-                    </p>
-                  </div>
-                  <form action="/traders" method="get">
-                    <Button type="submit">
-                      Find Best Traders
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            )}
+              {isLoading ? (
+                <div>
+                  <CardSkeleton />
+                </div>
+              ) : (
+                <>
+                  {data && data.length > 0 ? (
+                    <div className="space-y-4">
+                      {data.map((trader, index) => (
+                        <TraderCard key={index} trader={trader} />
+                      ))}
+                    </div>
+                  ) : (
+                    <Card>
+                      <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-medium">
+                            {"You haven't followed any traders yet"}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            Follow a trader to start copy-trading.
+                          </p>
+                        </div>
+                        <form action="/traders" method="get">
+                          <Button type="submit">
+                            Find Best Traders
+                          </Button>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              )}
 
           </TabPanel>
           {/* <TabPanel value={TabSections.Identities}>

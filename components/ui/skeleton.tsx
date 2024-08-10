@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-
+import { Card, CardContent, CardFooter, CardHeader } from "./card";
 
 const TableSkeleton = () => (
   <div className="space-y-2">
@@ -49,4 +49,41 @@ function Skeleton({
   )
 }
 
-export { Skeleton, TableSkeleton }
+const CardSkeleton = () => {
+  return (
+    <Card className="mb-8 w-full">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Skeleton className="h-12 w-12 rounded-full" />
+            <div>
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="mt-2 h-4 w-60" />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-9 w-24" />
+            <Skeleton className="h-9 w-32" />
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Skeleton className="h-4 w-40 mb-2" />
+            <Skeleton className="h-4 w-60" />
+          </div>
+          <div>
+            <Skeleton className="h-4 w-40 mb-2" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Skeleton className="h-9 w-full" />
+      </CardFooter>
+    </Card>
+  );
+};
+
+export { Skeleton, TableSkeleton, CardSkeleton }
