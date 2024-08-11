@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { redirect, useRouter } from "next/navigation";
 import { Icons } from "@/components/shared/icons";
 import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading-sheet";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytrading-dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { CalendarIcon } from "lucide-react";
@@ -25,7 +25,7 @@ enum TabSections {
   Identities = "identities"
 }
 
-const TraderCard = ({ trader }) => {
+const TraderCard = ({ trader, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
@@ -37,13 +37,14 @@ const TraderCard = ({ trader }) => {
           open={showUpdateSheet}
           onOpenChange={setShowUpdateSheet}
           task={trader}
+          onSuccess={onSuccess}
         />
         <DeleteCopyTradingDialog
           open={showDeleteDialog}
           onOpenChange={setShowDeleteDialog}
           tasks={[trader]}
           showTrigger={false}
-          // onSuccess={() => row.toggleSelected(false)}
+          onSuccess={onSuccess}
         />
         <div className="flex items-center justify-between">
           <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
@@ -199,28 +200,48 @@ export default function ManageCopyTradingPage() {
   //   redirect("/login");
   // }
 
-  useEffect(() => {
-    document.title = "Manage Copy Trading – Moon Crypto";
-  }, []);
-
-  // const data = await getCopyTradingSetting(user?.id!);
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
     if (status !== "authenticated") return;
     // if (status === "loading") return;
     if (!session || !session.user) {
       router.push('/login');
       return;
     }
-
-    const fetchData = async () => {
+    try {
       const data = await getCopyTradingSetting(session.user.id!);
-      // console.log("data:", data);
       setData(data);
+      // console.log("result:", data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
       setIsLoading(false);
-    };
-
-    fetchData();
+    }
   }, [session, status]);
+
+  useEffect(() => {
+    document.title = "Manage Copy Trading – Moon Crypto";
+    fetchData();
+  }, [fetchData]);
+
+  // const data = await getCopyTradingSetting(user?.id!);
+  // useEffect(() => {
+  //   if (status !== "authenticated") return;
+  //   // if (status === "loading") return;
+  //   if (!session || !session.user) {
+  //     router.push('/login');
+  //     return;
+  //   }
+
+  //   const fetchData = async () => {
+  //     const data = await getCopyTradingSetting(session.user.id!);
+  //     // console.log("data:", data);
+  //     setData(data);
+  //     setIsLoading(false);
+  //   };
+
+  //   fetchData();
+  // }, [session, status]);
 
   return (
     <>
@@ -283,7 +304,7 @@ export default function ManageCopyTradingPage() {
                   {data && data.length > 0 ? (
                     <div className="space-y-4">
                       {data.map((trader, index) => (
-                        <TraderCard key={index} trader={trader} />
+                        <TraderCard key={index} trader={trader} onSuccess={fetchData} />
                       ))}
                     </div>
                   ) : (

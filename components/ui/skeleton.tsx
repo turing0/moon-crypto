@@ -51,6 +51,7 @@ function Skeleton({
 
 const CardSkeleton = () => {
   return (
+    <>
     <Card className="mb-8 w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
@@ -83,6 +84,22 @@ const CardSkeleton = () => {
         <Skeleton className="h-9 w-full" />
       </CardFooter>
     </Card>
+
+    <div className="space-y-4 py-2">
+      <Skeleton className="h-2 w-full" />
+      <Skeleton className="h-2 w-full" />
+      <Skeleton className="h-2 w-full" />
+      {/* <Skeleton className="h-2 w-5/6 mx-auto" /> */}
+      {/* <Skeleton className="h-2 w-4/6 mx-auto" /> */}
+    </div>
+
+    {/* <div className="space-y-4">
+      <Skeleton className="h-1 w-full" />
+      <Skeleton className="h-1 w-full" />
+      <Skeleton className="h-1 w-full" />
+    </div> */}
+    </>
+
   );
 };
 

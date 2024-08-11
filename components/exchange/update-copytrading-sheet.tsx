@@ -43,9 +43,10 @@ import { updateCopyTradingSetting } from "@/actions/copy-trading"
 interface UpdateCopyTradingSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
   task: CopyTradingSettingInfo
+  onSuccess?: () => void
 }
 
-export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingSheetProps) {
+export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopyTradingSheetProps) {
   const [isUpdatePending, startUpdateTransition] = React.useTransition()
   const [secretUpdated, setSecretUpdated] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState( task.fixedAmount? 'fixed':'multiplier');
@@ -104,6 +105,7 @@ export function UpdateCopyTradingSheet({ task, ...props }: UpdateCopyTradingShee
       form.reset()
       props.onOpenChange?.(false)
       toast.success("Copy-Trading setting updated", {position: "top-center"})
+      onSuccess?.()
     })
   }
   
