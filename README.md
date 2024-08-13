@@ -1,5 +1,5 @@
 <a href="https://next-saas-stripe-starter.vercel.app">
-  <img alt="Moon Crypto" src="public/_static/og.jpg">
+  <img alt="Moon Crypto" src="public/_static/og.png">
 
   <h1 align="center">Moon Crypto</h1>
 
@@ -35,12 +35,12 @@ All seamlessly integrated with the SaaS Starter to accelerate your development a
 Clone & create this repo locally with the following command:
 
 ```bash
-npx create-next-app my-saas-project --example "https://github.com/mickasmt/next-saas-stripe-starter"
+npx create-next-app my-moon-crypto --example "https://github.com/turing0/moon-crypto.git"
 ```
 
 Or, deploy with Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmickasmt%2Fnext-saas-stripe-starter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fturing0%2Fmoon-crypto)
 
 ### Steps
 
