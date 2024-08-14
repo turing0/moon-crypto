@@ -3,19 +3,17 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tab, TabList, TabPanel, Tabs as Tabs2 } from "@/components/v2/tabs/tabs"
 import { Search } from "lucide-react"
-import { Suspense, useEffect, useMemo, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { toast } from "sonner"
 // import { Input } from "@/components/ui/input-table"
-import { Separator } from "@/components/ui/separator"
 import { usePathname, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/table/data-table"
-import { okxOrderColumns, orderColumns } from "@/components/table/columns"
+import { bitgetCurrentOrderColumns, okxOrderColumns, orderColumns } from "@/components/table/columns"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CopyTradeDialog } from "@/components/exchange/copy-trade-dialog"
 import { Button } from "@/components/ui/button"
 
 // export const metadata = constructMetadata({
@@ -41,6 +39,24 @@ export type BitGetHistoryOrder = {
   marginMode: string;
   followCount: string;
   marginAmount: string;
+  cTime: string;
+  traderId: string;
+};
+export type BitGetCurrentOrder = {
+  trackingNo: string;
+  symbol: string;
+  openOrderId: string;
+  posSide: string;
+  openLeverage: string;
+  openPriceAvg: string;
+  openTime: string;
+  openSize: string;
+  openFee: string;
+  marginMode: string;
+  followCount: string;
+  marginAmount: string;
+  stopSurplusPrice: string;
+  stopLossPrice	: string;
   cTime: string;
   traderId: string;
 };
@@ -180,12 +196,14 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   const okxTraderIdParam = searchParams.okxTraderId
 
   const [traderInfo, setTraderInfo] = useState<any>();
-  const [bitgetOrder, setBitgetOrder] = useState<BitGetHistoryOrder[]>([]);
+  const [bitgetHistoryOrder, setBitgetHistoryOrder] = useState<BitGetHistoryOrder[]>([]);
+  const [bitgetCurrentOrder, setBitgetCurrentOrder] = useState<BitGetCurrentOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
   const [bitgetTraderId, setBitgetTraderId] = useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
   const [okxTraderId, setOkxTraderId] = useState<string>(okxTraderIdParam?okxTraderIdParam:'');
   const [isLoading, setIsLoading] = useState<boolean>(bitgetTraderId?true:false);
+  const [isCurrentOrderLoading, setIsCurrentOrderLoading] = useState<boolean>(bitgetTraderId?true:false);
 
   // const searchParams = useSearchParams()
   // const bitgetTraderId = searchParams.get('bitgetTraderId')
@@ -229,7 +247,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
         }
       })
       getBitgetHistoryOrder(bitgetTraderId).then(data => {
-        setBitgetOrder(data);
+        setBitgetHistoryOrder(data);
         setIsLoading(false);
       });
       // router.replace(`${pathname}?${newSearchParams.toString()}`, {
@@ -250,6 +268,19 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     }
   }, [okxTraderId]);
 
+  const getActiveOrders = async () => {
+    setIsCurrentOrderLoading(true);
+    try {
+      const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/current?traderId=${bitgetTraderId}`);
+      const data = await response.json();
+      console.log("data:", data)
+      setBitgetCurrentOrder(data.data);
+    } catch (error) {
+      console.error('Error fetching active trades data:', error);
+    } finally {
+      setIsCurrentOrderLoading(false);
+    }
+  };
   const handleBitgetOrderSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
@@ -336,7 +367,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                 <Tabs defaultValue="history" className="space-y-4">
                   <TabsList>
                     <TabsTrigger value="history">History</TabsTrigger>
-                    <TabsTrigger value="current">Activate trades</TabsTrigger>
+                    <TabsTrigger value="current">Active trades</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="history" className="space-y-4">
@@ -346,12 +377,20 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                       </div>
                     ) : (
                       <>
-                        <DataTable data={bitgetOrder} columns={orderColumns} />
+                        <DataTable data={bitgetHistoryOrder} columns={orderColumns} />
                       </>
                     )}
                   </TabsContent>
                   <TabsContent value="current" className="space-y-4">
-                    coming soon
+                    {isCurrentOrderLoading ? (
+                      <div>
+                        <TableSkeleton />
+                      </div>
+                    ) : (
+                      <>
+                        <DataTable data={bitgetCurrentOrder} columns={bitgetCurrentOrderColumns} />
+                      </>
+                    )}
                   </TabsContent>
                 </Tabs>
 

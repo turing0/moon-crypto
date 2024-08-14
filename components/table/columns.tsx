@@ -25,7 +25,7 @@ import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
 import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 import { format } from "date-fns"
-import { BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(protected)/analysis/page"
+import { BitGetCurrentOrder, BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(protected)/analysis/page"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -117,9 +117,10 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     header: "Close Price",
     cell: function Cell({ row }) {
       const datarow = row.original
-      const valueStr = datarow.closePriceAvg as string;
+      const valueStr = datarow.closePriceAvg as string || "None";
       const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
-      const formattedDate = format(new Date(parseInt(datarow.closeTime)), 'yyyy-MM-dd HH:mm:ss');
+      // const formattedDate = format(new Date(parseInt(datarow.closeTime)), 'yyyy-MM-dd HH:mm:ss');
+      const formattedDate = datarow.closeTime ? format(new Date(parseInt(datarow.closeTime)), 'yyyy-MM-dd HH:mm:ss') : "None";
       
       return (
         <div className="flex flex-col">
@@ -206,6 +207,126 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
   //     return <div className="text-right font-medium">{formatted}</div>
   //   },
   // },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const datarow = row.original
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(datarow.trackingNo)}
+            >
+              Copy TrackingNo
+            </DropdownMenuItem>
+            {/* <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View datarow details</DropdownMenuItem> */}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
+  },
+]
+export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
+  {
+    header: "Position",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+
+      return (
+        <div className="flex flex-col">
+          <div className="max-w-xs truncate font-semibold">
+            {datarow.symbol}
+          </div>
+          <div className="text-gray-500">
+            {datarow.posSide}
+          </div>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "openSize",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Size" />
+    ),
+    cell: ({ row }) => (
+      <div>{row.getValue("openSize")}</div>
+    ),
+  },
+  {
+    header: "Open Price",
+    cell: function Cell({ row }) {
+      const datarow = row.original
+      const valueStr = datarow.openPriceAvg as string;
+      const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
+      const formattedDate = format(new Date(parseInt(datarow.openTime)), 'yyyy-MM-dd HH:mm:ss');
+      
+      return (
+        <div className="flex flex-col">
+          <div className="max-w-xs truncate font-semibold">
+            {truncatedValue}USDT
+          </div>
+          <div className="text-xs text-gray-500">
+            {formattedDate}
+          </div>
+        </div>
+      )
+    },
+  },
+  {
+    header: "ROI",
+    cell: function Cell({ row }) {
+      // const datarow = row.original
+      // const margin2 = parseFloat(datarow.closePriceAvg);
+      // const margin1 = parseFloat(datarow.openPriceAvg);
+      // const size = parseFloat(datarow.openSize);
+      // var margin = size*(margin2 - margin1);
+      // if (datarow.posSide=="short") {
+      //   margin = -margin;
+      // }
+      // const marginFormatted = margin.toFixed(2);
+      // const textColor = margin >= 0 ? "text-green-500" : "text-red-500";
+      // const formattedMarginAmount = margin >= 0 ? `+${marginFormatted}` : marginFormatted;
+
+      // return (
+      //   <div className="w-5 whitespace-nowrap">
+      //     <span className={textColor}>{formattedMarginAmount}</span> USDT
+      //   </div>
+      // )
+    },
+    // enableSorting: false,
+  },
+  {
+    accessorKey: "trackingNo",
+    // header: ({ column }) => (
+    //       <DataTableColumnHeader column={column} title="trackingNo" />
+    //     ),
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          TrackingNo
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="text-xs">{row.getValue("trackingNo")}</div>
+    ),
+  },
   {
     id: "actions",
     enableHiding: false,
