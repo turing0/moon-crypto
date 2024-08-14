@@ -319,12 +319,12 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
             )
             }
 
-            <Tabs2 defaultValue="order">
+            <Tabs2 defaultValue="orders">
               <TabList>
                 <Tab value="overview">Overview</Tab>
-                <Tab value="order">
+                <Tab value="orders">
                   <div className="flex items-center">
-                    <p>History Order</p>
+                    <p>Orders</p>
                   </div>
                 </Tab>
                 {/* <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
@@ -332,16 +332,29 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
               <TabPanel value="overview">
                   Coming soon
               </TabPanel>
-              <TabPanel value="order">
-                {isLoading ? (
-                  <div>
-                    <TableSkeleton />
-                  </div>
-                ) : (
-                  <>
-                    <DataTable data={bitgetOrder} columns={orderColumns} />
-                  </>
-                )}
+              <TabPanel value="orders">
+                <Tabs defaultValue="history" className="space-y-4">
+                  <TabsList>
+                    <TabsTrigger value="history">History</TabsTrigger>
+                    <TabsTrigger value="current">Activate trades</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="history" className="space-y-4">
+                    {isLoading ? (
+                      <div>
+                        <TableSkeleton />
+                      </div>
+                    ) : (
+                      <>
+                        <DataTable data={bitgetOrder} columns={orderColumns} />
+                      </>
+                    )}
+                  </TabsContent>
+                  <TabsContent value="current" className="space-y-4">
+                    coming soon
+                  </TabsContent>
+                </Tabs>
+
               </TabPanel>
               {/* <TabPanel value={TabSections.Roles}>
                 Roles
