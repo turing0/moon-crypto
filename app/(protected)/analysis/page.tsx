@@ -15,6 +15,8 @@ import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Icons } from "@/components/shared/icons"
 
 // export const metadata = constructMetadata({
 //   title: "Analysis – Moon Crypto",
@@ -273,7 +275,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     try {
       const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/current?traderId=${bitgetTraderId}`);
       const data = await response.json();
-      console.log("data:", data)
+      console.log("ActiveOrders data:", data)
       setBitgetCurrentOrder(data.data);
     } catch (error) {
       console.error('Error fetching active trades data:', error);
@@ -337,7 +339,12 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                       <AvatarFallback>Avatar</AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
-                      <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
+                      <div className="flex items-center">
+                        <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
+                        <Link href={`https://www.bitget.com/zh-CN/copy-trading/trader/${bitgetTraderId}/futures`} target="_blank">
+                          <Icons.exteralLink className="ml-2 size-4 cursor-pointer" />
+                        </Link>
+                      </div>
                       <p className="text-sm text-muted-foreground">Experienced trader with a keen eye for market trends.</p>
                     </div>
                   </div>

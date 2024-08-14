@@ -285,6 +285,25 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
     },
   },
   {
+    header: "Market Price",
+    cell: function Cell({ row }) {
+      // TODO: get market price
+      const valueStr = "None";
+      const truncatedValue = valueStr.length > 9 ? valueStr.substring(0, 9) : valueStr;
+      
+      return (
+        <div className="flex flex-col">
+          {/* <div className="max-w-xs truncate font-semibold">
+            {truncatedValue}USDT
+          </div>
+          <div className="text-xs text-gray-500">
+            --
+          </div> */}
+        </div>
+      )
+    },
+  },
+  {
     header: "ROI",
     cell: function Cell({ row }) {
       // const datarow = row.original

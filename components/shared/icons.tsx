@@ -42,6 +42,7 @@ import {
   ChevronDown,
   ChevronUp,
   CandlestickChart,
+  ExternalLink,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -65,6 +66,7 @@ export const Icons = {
   clock: Clock,
   dashboard: LayoutPanelLeft,
   ellipsis: MoreVertical,
+  exteralLink: ExternalLink,
   fileBarChart: FileBarChart,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
