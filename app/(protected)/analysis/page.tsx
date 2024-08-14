@@ -364,7 +364,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   Coming soon
               </TabPanel>
               <TabPanel value="orders">
-                <Tabs defaultValue="history" className="space-y-4">
+                <Tabs defaultValue="history" className="space-y-4" onValueChange={getActiveOrders}>
                   <TabsList>
                     <TabsTrigger value="history">History</TabsTrigger>
                     <TabsTrigger value="current">Active trades</TabsTrigger>
