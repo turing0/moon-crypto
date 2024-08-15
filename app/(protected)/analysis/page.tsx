@@ -238,14 +238,11 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   };
 
   useEffect(() => {
-    document.title = "Analysis – Moon Crypto";
-  }, []);
-
-  useEffect(() => {
     if (bitgetTraderId) {
       getBitgetTrader(bitgetTraderId).then(data => {
         if (data.length > 0) {
-          setTraderInfo(data[0])
+          setTraderInfo(data[0]);
+          document.title = `${data[0]['traderName']} - Analysis – MoonCrypto`;
         }
       })
       getBitgetHistoryOrder(bitgetTraderId).then(data => {
@@ -301,7 +298,6 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   };
   
   return (
-    // <DashboardShell>
     <>
       <DashboardHeader
         heading="Analysis"

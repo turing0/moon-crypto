@@ -43,6 +43,7 @@ import {
   ChevronUp,
   CandlestickChart,
   ExternalLink,
+  Calendar,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -57,6 +58,7 @@ export const Icons = {
   chevronUp: ChevronUp,
   chevronDown: ChevronDown,
   bookOpen: BookOpen,
+  calendar: Calendar,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   check: Check,
