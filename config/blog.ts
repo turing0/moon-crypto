@@ -1,6 +1,6 @@
 export const BLOG_CATEGORIES: {
   title: string;
-  slug: "news" | "education";
+  slug: "news" | "tips";
   description: string;
 }[] = [
   {
@@ -9,9 +9,9 @@ export const BLOG_CATEGORIES: {
     description: "Updates and announcements from MoonCrypto.",
   },
   {
-    title: "Education",
-    slug: "education",
-    description: "Educational content about SaaS management.",
+    title: "Tips",
+    slug: "tips",
+    description: "Crypto trading tips.",
   },
 ];
 
