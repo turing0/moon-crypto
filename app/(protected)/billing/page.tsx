@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 
 export const metadata = constructMetadata({
-  title: "Billing – Moon Crypto",
+  title: "Billing – MoonCrypto",
   description: "Manage billing and your subscription plan.",
 });
 

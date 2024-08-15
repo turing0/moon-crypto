@@ -9,7 +9,7 @@ import { constructMetadata } from "@/lib/utils";
 import { redirect } from "next/navigation";
 
 export const metadata = constructMetadata({
-  title: "Exchanges – Moon Crypto",
+  title: "Exchanges – MoonCrypto",
   description: "Setting your exchange account.",
 });
 

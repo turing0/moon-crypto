@@ -35,7 +35,7 @@ export async function generateMetadata({
   const { title, description } = guide;
 
   return constructMetadata({
-    title: `${title} – Moon Crypto`,
+    title: `${title} – MoonCrypto`,
     description: description,
   });
 }

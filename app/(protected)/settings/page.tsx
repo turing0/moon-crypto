@@ -8,7 +8,7 @@ import { UserNameForm } from "@/components/forms/user-name-form";
 import { UserRoleForm } from "@/components/forms/user-role-form";
 
 export const metadata = constructMetadata({
-  title: "Settings – Moon Crypto",
+  title: "Settings – MoonCrypto",
   description: "Configure your account and website settings.",
 });
 

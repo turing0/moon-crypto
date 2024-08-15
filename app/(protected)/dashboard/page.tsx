@@ -8,7 +8,7 @@ import { ProfitChart } from "@/components/charts/profit-chart";
 import { AssetAreaChart } from "@/components/charts/area-chart-stacked";
 
 export const metadata = constructMetadata({
-  title: "Dashboard – Moon Crypto",
+  title: "Dashboard – MoonCrypto",
   description: "Streamline your crypto trading management.",
 });
 

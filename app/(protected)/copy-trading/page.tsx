@@ -15,7 +15,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 // export const metadata = constructMetadata({
-//   title: "Traders – Moon Crypto",
+//   title: "Traders – MoonCrypto",
 //   description: "Find the best crypto trader.",
 // });
 
@@ -130,7 +130,7 @@ export default function TradersPage() {
     fetchBitgetData();
   }, []);
   useEffect(() => {
-    document.title = "Copy Trading – Moon Crypto";
+    document.title = "Copy Trading – MoonCrypto";
   }, []);
 
   const {data:session} = useSession();

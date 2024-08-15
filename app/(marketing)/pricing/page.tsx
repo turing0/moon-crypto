@@ -9,7 +9,7 @@ import { PricingCards } from "@/components/pricing/pricing-cards";
 import { PricingFaq } from "@/components/pricing/pricing-faq";
 
 export const metadata = constructMetadata({
-  title: "Pricing – Moon Crypto",
+  title: "Pricing – MoonCrypto",
   description: "Explore our subscription plans.",
 });
 

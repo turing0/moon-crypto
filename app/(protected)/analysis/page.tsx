@@ -19,7 +19,7 @@ import Link from "next/link"
 import { Icons } from "@/components/shared/icons"
 
 // export const metadata = constructMetadata({
-//   title: "Analysis – Moon Crypto",
+//   title: "Analysis – MoonCrypto",
 //   description: "In-depth trader analysis.",
 // });
 

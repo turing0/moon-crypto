@@ -115,7 +115,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
       getBitgetTrader(bitgetTraderId).then(data => {
         if (data.length > 0) {
           setTraderInfo(data[0]);
-          document.title = `${data[0]['traderName']} – Moon Crypto`;
+          document.title = `${data[0]['traderName']} – MoonCrypto`;
         }
       })
     }

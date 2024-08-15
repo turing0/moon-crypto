@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Positions – Moon Crypto",
+  title: "Positions – MoonCrypto",
   description: "Check your positions.",
 });
 

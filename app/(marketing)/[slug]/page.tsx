@@ -28,7 +28,7 @@ export async function generateMetadata({
   const { title, description } = page;
 
   return constructMetadata({
-    title: `${title} – Moon Crypto`,
+    title: `${title} – MoonCrypto`,
     description: description,
   });
 }

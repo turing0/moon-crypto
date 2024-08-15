@@ -6,7 +6,7 @@ export const BLOG_CATEGORIES: {
   {
     title: "News",
     slug: "news",
-    description: "Updates and announcements from Moon Crypto.",
+    description: "Updates and announcements from MoonCrypto.",
   },
   {
     title: "Education",

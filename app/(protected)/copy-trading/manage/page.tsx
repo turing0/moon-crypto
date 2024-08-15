@@ -220,7 +220,7 @@ export default function ManageCopyTradingPage() {
   }, [session, status]);
 
   useEffect(() => {
-    document.title = "Manage Copy Trading – Moon Crypto";
+    document.title = "Manage Copy Trading – MoonCrypto";
     fetchData();
   }, [fetchData]);
 
