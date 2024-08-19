@@ -1,12 +1,10 @@
 "use client"
 
 import { getCopyTradingSetting } from "@/actions/copy-trading";
-import { DashboardHeader } from "@/components/dashboard/header";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CardSkeleton } from "@/components/ui/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { redirect, useRouter } from "next/navigation";
@@ -57,7 +55,6 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
                   day: '2-digit',
                   hour: '2-digit',
                   minute: '2-digit',
-                  second: '2-digit',
                   hour12: false
                 })}
               </CardDescription>
@@ -212,7 +209,6 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
                   day: '2-digit',
                   hour: '2-digit',
                   minute: '2-digit',
-                  second: '2-digit',
                   hour12: false
                 })}
                 {" - "}
@@ -222,7 +218,6 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
                   day: '2-digit',
                   hour: '2-digit',
                   minute: '2-digit',
-                  second: '2-digit',
                   hour12: false
                 })}
               </CardDescription>
@@ -429,8 +424,8 @@ export default function ManageCopyTradingPage() {
             )} */}
 
               {isLoading ? (
-                <div>
-                  <CardSkeleton />
+                <div className="flex h-40 items-center justify-center">
+                  <Icons.spinner className="size-8 animate-spin text-gray-500" />
                 </div>
               ) : (
                 <>
@@ -489,8 +484,8 @@ export default function ManageCopyTradingPage() {
           </TabPanel>
           <TabPanel value="ended">
             {isEndedLoading ? (
-              <div>
-                <CardSkeleton />
+              <div className="flex h-40 items-center justify-center">
+                <Icons.spinner className="size-8 animate-spin text-gray-500" />
               </div>
               ) : (
               <>
