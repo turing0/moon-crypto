@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -53,11 +53,22 @@ export function ProfitChart() {
               // tickFormatter={(value) => value.slice(0, 3)}
               tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              tickFormatter={(value) => `${value.toLocaleString()}`}
+            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="pnl" fill="var(--color-pnl)" radius={8} />
+            <Bar 
+              dataKey="pnl" 
+              fill="var(--color-pnl)" 
+              radius={[8, 8, 0, 0]}
+              // barSize={30}
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>

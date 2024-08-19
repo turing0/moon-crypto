@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -18,13 +18,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { day: "2024-07-09", assets: 55 },
-  { day: "2024-07-10", assets: 78 },
-  { day: "2024-07-11", assets: 90 },
-  { day: "2024-07-12", assets: 83 },
-  { day: "2024-07-13", assets: 106 },
-  { day: "2024-07-14", assets: 130 },
-  { day: "2024-07-15", assets: 135 },
+  { day: "2024-07-09", assets: 550 },
+  { day: "2024-07-10", assets: 780 },
+  { day: "2024-07-11", assets: 900 },
+  { day: "2024-07-12", assets: 760 },
+  { day: "2024-07-13", assets: 896 },
+  { day: "2024-07-14", assets: 996 },
+  { day: "2024-07-15", assets: 1350 },
 ]
 
 const chartConfig = {
@@ -49,8 +49,10 @@ export function AssetAreaChart() {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              // top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -61,13 +63,19 @@ export function AssetAreaChart() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(5, 10)}
             />
+            <YAxis 
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => `${value.toLocaleString()}`}
+            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Area
               dataKey="assets"
-              type="natural"
+              type="monotone" // natural
               fill="var(--color-assets)"
               fillOpacity={0.4}
               stroke="var(--color-assets)"

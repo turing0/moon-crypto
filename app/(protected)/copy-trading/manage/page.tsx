@@ -104,7 +104,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
         >
           {isExpanded ? (
             <>
-              Hide Details
+              Collapse Details
               <Icons.chevronUp className="ml-2 h-4 w-4" />
             </>
           ) : (
@@ -263,7 +263,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
         >
           {isExpanded ? (
             <>
-              Hide Details
+              Collapse Details
               <Icons.chevronUp className="ml-2 h-4 w-4" />
             </>
           ) : (
