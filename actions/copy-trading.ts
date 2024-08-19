@@ -104,6 +104,7 @@ export async function getCopyTradingSetting(userId: string) {
         userId: true, 
         traderName: true, 
         traderId: true, 
+        avatarUrl: true, 
         fixedAmount: true, 
         multiplierAmount: true, 
         takeProfit: true, 
