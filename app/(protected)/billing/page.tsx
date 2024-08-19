@@ -27,7 +27,6 @@ export default async function BillingPage() {
   }
 
   return (
-    // <DashboardShell>
     <>
       <DashboardHeader
         heading="Billing"

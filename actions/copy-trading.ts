@@ -85,7 +85,7 @@ export async function createCopyTradingAPI(traderId: string, traderName: string,
 }
 
 // export async function getCopyTradingSetting(userId: string): Promise<ExchangeApiInfo[]> {
-export async function getCopyTradingSetting(userId: string) {
+export async function getCopyTradingSetting(userId: string, status: string = 'active') {
   noStore()
   try {
     const session = await auth()
@@ -97,7 +97,8 @@ export async function getCopyTradingSetting(userId: string) {
     // Retrieve  
     const exchangeAPIs = await prisma.copyTradingSetting.findMany({
       where: {
-        userId: userId
+        userId: userId,
+        status: status
       },
       select: { // 选择要返回的字段
         id: true, 
@@ -110,6 +111,8 @@ export async function getCopyTradingSetting(userId: string) {
         takeProfit: true, 
         stopLoss: true, 
         createdAt: true, 
+        endDate: true, 
+        status: true, 
         followedApis: {select: {
           copyTradingSettingId: true,   // Replace with the actual field names you need
           exchangeAccountId: true,
@@ -168,6 +171,36 @@ export async function updateCopyTradingSetting(input: UpdateCopyTradingSchema & 
 
     // Call the function to fetch Redis update
     await redisUpdate([input.id], undefined);
+    
+    return {
+      data: null,
+      error: null,
+    }
+  } catch (err) {
+    return {
+      data: null,
+      error: (err),
+    }
+  }
+}
+
+export async function stopCopyTradingSetting(input: { ids: string[] }) {
+  try {
+    await prisma.copyTradingSetting
+    .update({
+      where: {
+        id: input.ids[0],
+      },
+      data: {
+        endDate: new Date().toISOString(),
+        status: "ended"
+      },
+    })
+
+    revalidatePath("/copy-trading/manage")
+
+    // Call the function to fetch Redis update
+    await redisUpdate([input.ids[0]], undefined);
     
     return {
       data: null,

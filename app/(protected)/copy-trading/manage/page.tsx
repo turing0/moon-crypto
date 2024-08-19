@@ -15,15 +15,8 @@ import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading
 import { useCallback, useEffect, useState } from "react";
 import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytrading-dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-
-enum TabSections {
-  Following = "following",
-  Roles = "roles",
-  Identities = "identities"
-}
 
 const TraderCard = ({ trader, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
@@ -56,7 +49,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
             <div>
               <CardTitle>{trader.traderName}</CardTitle>
               <CardDescription className="mt-1 flex items-center">
-                <CalendarIcon className="mr-1 h-4 w-4" />
+                <Icons.calendar className="mr-1 h-4 w-4" />
                 Started: {trader.createdAt.toLocaleString('zh-CN', {
                   year: 'numeric',
                   month: '2-digit',
@@ -186,6 +179,142 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
   );
 };
 
+const EndedTraderCard = ({ trader, onSuccess  }) => {
+  const [showUpdateSheet, setShowUpdateSheet] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <Card className="mb-8 w-full">
+      <CardHeader>
+        <DeleteCopyTradingDialog
+          open={showDeleteDialog}
+          onOpenChange={setShowDeleteDialog}
+          tasks={[trader]}
+          showTrigger={false}
+          onSuccess={onSuccess}
+        />
+        <div className="flex items-center justify-between">
+        <Link href={`/ana?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+          <div className="flex cursor-pointer items-center space-x-4">
+            <Avatar>
+              <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
+              {/* <AvatarFallback>{trader.name.charAt(0)}</AvatarFallback> */}
+            </Avatar>
+            <div>
+              <CardTitle>{trader.traderName}</CardTitle>
+              <CardDescription className="mt-1 flex items-center">
+                {/* <CalendarIcon className="mr-1 h-4 w-4" /> */}
+                {trader.createdAt.toLocaleString('zh-CN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false
+                })}
+                {" - "}
+                {trader.endDate.toLocaleString('zh-CN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false
+                })}
+              </CardDescription>
+            </div>
+          </div>
+          </Link>
+          <div className="flex items-center space-x-2">
+            {/* <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
+              <Icons.trash2 className="mr-2 size-4" />
+              Delete
+            </Button> */}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p><strong>Realized PNL:</strong> {trader.pnl}</p>
+            <p><strong>Followed APIs:</strong>{' '}
+              {trader.followedApis.map((api, index) => (
+                  <span>{api.exchangeAccount.accountName}{' '}</span>
+              ))}
+            </p>
+          </div>
+          <div>
+            <p><strong>Mode:</strong> {" "}
+              {trader.fixedAmount && (
+                <>FixedAmount: {trader.fixedAmount} USDT</>
+              )}
+              {trader.multiplierAmount && (
+                <>MultiplierAmount: {trader.multiplierAmount} X</>
+              )}
+            </p>
+            {/* <p><strong>Risk Level:</strong> {trader.riskLevel}</p> */}
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex items-center justify-between">
+        <Button 
+          variant="ghost" 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full"
+        >
+          {isExpanded ? (
+            <>
+              Hide Details
+              <Icons.chevronUp className="ml-2 h-4 w-4" />
+            </>
+          ) : (
+            <>
+              Expand Details
+              <Icons.chevronDown className="ml-2 h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </CardFooter>
+      {isExpanded && (
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <h4 className="mb-2 font-semibold">Position History</h4>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Symbol</TableHead>
+                    <TableHead>Entry Date</TableHead>
+                    <TableHead>Exit Date</TableHead>
+                    <TableHead>Entry Price</TableHead>
+                    <TableHead>Exit Price</TableHead>
+                    <TableHead>PNL</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* {trader.historicalPositions.map((position, index) => (
+                    <TableRow key={index}>
+                      <TableCell>position.symbol</TableCell>
+                      <TableCell>position.entryDate</TableCell>
+                      <TableCell>position.exitDate</TableCell>
+                      <TableCell>position.entryPrice</TableCell>
+                      <TableCell>position.exitPrice</TableCell>
+                      <TableCell>position.pnl</TableCell>
+                    </TableRow>
+                  ))} */}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
 export default function ManageCopyTradingPage() {
   // const user = await getCurrentUser();
   // if (!user) {
@@ -193,7 +322,9 @@ export default function ManageCopyTradingPage() {
   // }
   const {data:session, status} = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEndedLoading, setIsEndedLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
+  const [endedData, setEndedData] = useState<any[]>([]);
   const router = useRouter();
 
   // if (!session || !session.user) {
@@ -246,13 +377,14 @@ export default function ManageCopyTradingPage() {
   return (
     <>
       <DashboardHeader
-        heading="Manage Copy-Trading"
+        heading="Manage Copy Trading"
         text=""
       />
       <div className='overflow-x-auto'>
-        <Tabs defaultValue={TabSections.Following}>
+        <Tabs defaultValue="following">
           <TabList>
-            <Tab value={TabSections.Following}>Following</Tab>
+            <Tab value="following">Following</Tab>
+            <Tab value="ended">Ended</Tab>
             {/* <Tab value={TabSections.Identities}>
               <div className="flex items-center">
                 <p>Machine Identities</p>
@@ -260,7 +392,7 @@ export default function ManageCopyTradingPage() {
             </Tab>
             <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
           </TabList>
-          <TabPanel value={TabSections.Following}>
+          <TabPanel value="following">
             {/* {isLoading ? (
               <div>
                 <TableSkeleton />
@@ -268,8 +400,6 @@ export default function ManageCopyTradingPage() {
             ) : (
               <DataTable data={data} columns={copyTradingSettingColumns} />
             )} */}
-
-              {/* <DataTable data={data} columns={copyTradingSettingColumns} /> */}
 
               {isLoading ? (
                 <div>
@@ -330,10 +460,37 @@ export default function ManageCopyTradingPage() {
               )}
 
           </TabPanel>
-          {/* <TabPanel value={TabSections.Identities}>
-            Identities
+          <TabPanel value="ended">
+            {isEndedLoading ? (
+              <div>
+                <CardSkeleton />
+              </div>
+              ) : (
+              <>
+                {endedData && endedData.length > 0 ? (
+                  <div className="space-y-4">
+                    {endedData.map((trader, index) => (
+                      <EndedTraderCard key={index} trader={trader} onSuccess={fetchData} />
+                    ))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                      <div className="space-y-2">
+                        {/* <h3 className="text-lg font-medium">
+                          {"You haven't followed any traders yet"}
+                        </h3> */}
+                        <p className="text-sm text-muted-foreground">
+                          No records
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            )}
           </TabPanel>
-          <TabPanel value={TabSections.Roles}>
+          {/* <TabPanel value="roles">
             Roles
           </TabPanel> */}
         </Tabs>

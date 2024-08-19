@@ -10,7 +10,6 @@ export const metadata = constructMetadata({
 
 export default function PositionPage() {
   return (
-    // <DashboardShell>
     <>
       <DashboardHeader
         heading="Positions"

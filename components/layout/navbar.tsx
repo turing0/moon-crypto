@@ -60,7 +60,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
       href: "/copy-trading",
     },
     {
-      title: "Manage Copy-Trading",
+      title: "Manage Copy Trading",
       href: "/copy-trading/manage",
     },
   ]

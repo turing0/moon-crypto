@@ -48,7 +48,6 @@ export default async function ExchangePage() {
   const whitelistIPs = ["coming soon"]
 
   return (
-    // <DashboardShell>
     <>
       <div className="flex items-center justify-between">
         <DashboardHeader

@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { CopyTradingSettingInfo } from "../table/columns"
-import { deleteCopyTradingSetting } from "@/actions/copy-trading"
+import { deleteCopyTradingSetting, stopCopyTradingSetting } from "@/actions/copy-trading"
 
 interface DeleteCopyTradingDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
@@ -62,7 +62,8 @@ export function DeleteCopyTradingDialog({
             variant="destructive"
             onClick={() => {
               startDeleteTransition(async () => {
-                const { error } = await deleteCopyTradingSetting({
+                // const { error } = await deleteCopyTradingSetting({
+                const { error } = await stopCopyTradingSetting({
                   ids: tasks.map((task) => task.id),
                 })
 
@@ -72,7 +73,7 @@ export function DeleteCopyTradingDialog({
                 }
 
                 props.onOpenChange?.(false)
-                toast.success("API deleted", {position: "top-center"})
+                toast.success("Stopped", {position: "top-center"})
                 onSuccess?.()
               })
             }}
