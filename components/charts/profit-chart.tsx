@@ -43,7 +43,13 @@ export function ProfitChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart 
+            accessibilityLayer 
+            data={chartData}             
+            margin={{
+              // top: 10,
+              // right: 30,
+            }}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="day"
