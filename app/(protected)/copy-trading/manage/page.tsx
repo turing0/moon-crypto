@@ -204,10 +204,10 @@ export default function ManageCopyTradingPage() {
     setIsLoading(true);
     if (status !== "authenticated") return;
     // if (status === "loading") return;
-    if (!session || !session.user) {
-      router.push('/login');
-      return;
-    }
+    // if (!session || !session.user) {
+    //   router.push('/login');
+    //   return;
+    // }
     try {
       const data = await getCopyTradingSetting(session.user.id!);
       setData(data);
@@ -217,7 +217,7 @@ export default function ManageCopyTradingPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [session, status]);
+  }, [status]);
 
   useEffect(() => {
     document.title = "Manage Copy Trading – MoonCrypto";
