@@ -127,7 +127,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
 
   function onSubmit(input: CreateCopyTradingSchema) {
     startCreateTransition(async () => {
-      const { error } = await createCopyTradingAPI(bitgetTraderId, traderInfo.traderName, input)
+      const { error } = await createCopyTradingAPI(bitgetTraderId, traderInfo.traderName, traderInfo.traderPic, input)
 
       if (error) {
         toast.error(error, {position: "top-center"})

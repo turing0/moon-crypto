@@ -318,7 +318,7 @@ export default function ManageCopyTradingPage() {
                             Follow a trader to start copy-trading.
                           </p>
                         </div>
-                        <form action="/traders" method="get">
+                        <form action="/copy-trading" method="get">
                           <Button type="submit">
                             Find Best Traders
                           </Button>

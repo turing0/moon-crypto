@@ -33,7 +33,7 @@ import { createCopyTradingAPI } from "@/actions/copy-trading"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Icons } from "../shared/icons"
 
-export function CopyTradeDialog({traderId, traderName, userApi}) {
+export function CopyTradeDialog({traderId, traderName, avatarUrl, userApi}) {
     const [open, setOpen] = React.useState(false)
     const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);    
     const [activeTab, setActiveTab] = React.useState('fixed');
@@ -48,7 +48,7 @@ export function CopyTradeDialog({traderId, traderName, userApi}) {
     function onSubmit(input: CreateCopyTradingSchema) {
       // console.log("input:", input)
       startCreateTransition(async () => {
-        const { error } = await createCopyTradingAPI(traderId, traderName, input)
+        const { error } = await createCopyTradingAPI(traderId, traderName, avatarUrl, input)
   
         if (error) {
           toast.error(error, {position: "top-center"})

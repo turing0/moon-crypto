@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
 import { redisDelete, redisUpdate } from "./redis-sync";
 
-export async function createCopyTradingAPI(traderId: string, traderName:string, input: CreateCopyTradingSchema) {
+export async function createCopyTradingAPI(traderId: string, traderName: string, avatarUrl: string, input: CreateCopyTradingSchema) {
   // noStore()
   try {
     const session = await auth()
@@ -20,6 +20,7 @@ export async function createCopyTradingAPI(traderId: string, traderName:string, 
       // userId: "clyd0tn8l00006iyf02pppphd",
       traderName: traderName,
       traderId: traderId,
+      avatarUrl: avatarUrl,
     };
     if (input.fixedAmount && input.multiplierAmount) {
       return {
