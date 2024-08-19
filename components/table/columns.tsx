@@ -26,6 +26,7 @@ import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
 import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 import { format } from "date-fns"
 import { BitGetCurrentOrder, BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(protected)/analysis/page"
+import PNLDisplay from "../shared/common"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -138,20 +139,17 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     header: "Realized PNL",
     cell: function Cell({ row }) {
       const datarow = row.original
-      const margin2 = parseFloat(datarow.closePriceAvg);
-      const margin1 = parseFloat(datarow.openPriceAvg);
+      const closePrice = parseFloat(datarow.closePriceAvg);
+      const openPrice = parseFloat(datarow.openPriceAvg);
       const size = parseFloat(datarow.openSize);
-      var margin = size*(margin2 - margin1);
+      var pnl = size*(closePrice - openPrice);
       if (datarow.posSide=="short") {
-        margin = -margin;
+        pnl = -pnl;
       }
-      const marginFormatted = margin.toFixed(2);
-      const textColor = margin >= 0 ? "text-green-500" : "text-red-500";
-      const formattedMarginAmount = margin >= 0 ? `+${marginFormatted}` : marginFormatted;
 
       return (
         <div className="w-5 whitespace-nowrap">
-          <span className={textColor}>{formattedMarginAmount}</span> USDT
+          <PNLDisplay pnl={pnl} decimalPlaces={2} /> USDT
         </div>
       )
     },
