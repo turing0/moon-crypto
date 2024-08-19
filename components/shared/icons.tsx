@@ -1,9 +1,15 @@
 import {
   AlertTriangle,
+  ArrowLeft,
   ArrowRight,
+  ArrowRightLeft,
   ArrowUpRight,
   Bitcoin,
   BookOpen,
+  Calendar,
+  CandlestickChart,
+  ChevronDown,
+  ChevronUp,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -11,6 +17,7 @@ import {
   CircleDollarSign,
   Clock,
   CreditCard,
+  ExternalLink,
   File,
   FileText,
   HelpCircle,
@@ -35,21 +42,16 @@ import {
   Trash,
   User,
   X,
-  ArrowRightLeft,
   FileBarChart,
   PencilLine,
   Trash2,
-  ChevronDown,
-  ChevronUp,
-  CandlestickChart,
-  ExternalLink,
-  Calendar,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
   add: Plus,
+  arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   arrowUpRight: ArrowUpRight,
   arrowRightLeft: ArrowRightLeft,

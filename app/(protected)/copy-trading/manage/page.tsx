@@ -372,6 +372,9 @@ export default function ManageCopyTradingPage() {
     }
   };
 
+  const handleBack = () => {
+    router.push('/copy-trading');
+  };
   // const data = await getCopyTradingSetting(user?.id!);
   // useEffect(() => {
   //   if (status !== "authenticated") return;
@@ -393,10 +396,17 @@ export default function ManageCopyTradingPage() {
 
   return (
     <>
-      <DashboardHeader
+      <div 
+        className="mb-2 flex cursor-pointer items-center text-sm text-gray-600 hover:text-gray-800"
+        onClick={handleBack}
+      >
+        <Icons.arrowLeft className="mr-1 h-4 w-4" />
+        <span>Copy Trading</span>
+      </div>
+      {/* <DashboardHeader
         heading="Manage Copy Trading"
         text=""
-      />
+      /> */}
       <div className='overflow-x-auto'>
         <Tabs defaultValue="following" onValueChange={getEndedData}>
           <TabList>
