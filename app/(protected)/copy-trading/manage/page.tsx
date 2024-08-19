@@ -78,7 +78,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> {trader.pnl}</p>
+            <p><strong>Realized PNL:</strong> {trader.rpnl}</p>
             <p><strong>Followed APIs:</strong>{' '}
               {trader.followedApis.map((api, index) => (
                   <span>{api.exchangeAccount.accountName}{' '}</span>
@@ -239,7 +239,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> {trader.pnl}</p>
+            <p><strong>Realized PNL:</strong> {trader.rpnl}</p>
             <p><strong>Followed APIs:</strong>{' '}
               {trader.followedApis.map((api, index) => (
                   <span>{api.exchangeAccount.accountName}{' '}</span>
@@ -355,6 +355,22 @@ export default function ManageCopyTradingPage() {
     fetchData();
   }, [fetchData]);
 
+  const getEndedData = async () => {
+    if (!isEndedLoading) {
+      return
+    }
+    // setIsEndedLoading(true);
+    try {
+      const data = await getCopyTradingSetting(session?.user?.id!, "ended");
+      // console.log("ended data:", data)
+      setEndedData(data);
+    } catch (error) {
+      console.error('Error fetching ended data:', error);
+    } finally {
+      setIsEndedLoading(false);
+    }
+  };
+
   // const data = await getCopyTradingSetting(user?.id!);
   // useEffect(() => {
   //   if (status !== "authenticated") return;
@@ -381,7 +397,7 @@ export default function ManageCopyTradingPage() {
         text=""
       />
       <div className='overflow-x-auto'>
-        <Tabs defaultValue="following">
+        <Tabs defaultValue="following" onValueChange={getEndedData}>
           <TabList>
             <Tab value="following">Following</Tab>
             <Tab value="ended">Ended</Tab>
