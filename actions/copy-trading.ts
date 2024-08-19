@@ -110,6 +110,7 @@ export async function getCopyTradingSetting(userId: string, status: string = 'ac
         multiplierAmount: true, 
         takeProfit: true, 
         stopLoss: true, 
+        rpnl: true, 
         createdAt: true, 
         endDate: true, 
         status: true, 

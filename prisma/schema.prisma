@@ -106,7 +106,10 @@ model CopyTradingSetting {
   multiplierAmount  Float?
   takeProfit        Int?
   stopLoss          Int?
-  createdAt         DateTime @default(now()) @map(name: "created_at")
+  rpnl              Float     @default(0)
+  createdAt         DateTime  @default(now()) @map(name: "created_at")
+  endDate           DateTime? @map(name: "end_date")
+  status            String    @default("active") // active ended
 
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   // exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)
