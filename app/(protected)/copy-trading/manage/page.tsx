@@ -86,10 +86,10 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           <div>
             <p><strong>Mode:</strong> {" "}
               {trader.fixedAmount && (
-                <>FixedAmount: {trader.fixedAmount} USDT</>
+                <>Fixed: {trader.fixedAmount} USDT</>
               )}
               {trader.multiplierAmount && (
-                <>MultiplierAmount: {trader.multiplierAmount} X</>
+                <>Multiplier: {trader.multiplierAmount} X</>
               )}
             </p>
             <p><strong>Risk Level:</strong> {trader.riskLevel}</p>
@@ -245,10 +245,10 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
           <div>
             <p><strong>Mode:</strong> {" "}
               {trader.fixedAmount && (
-                <>FixedAmount: {trader.fixedAmount} USDT</>
+                <>Fixed: {trader.fixedAmount} USDT</>
               )}
               {trader.multiplierAmount && (
-                <>MultiplierAmount: {trader.multiplierAmount} X</>
+                <>Multiplier: {trader.multiplierAmount} X</>
               )}
             </p>
             {/* <p><strong>Risk Level:</strong> {trader.riskLevel}</p> */}
@@ -392,7 +392,7 @@ export default function ManageCopyTradingPage() {
   return (
     <>
       <div 
-        className="mb-2 flex cursor-pointer items-center text-sm text-gray-600 hover:text-gray-800"
+        className="mb-2 flex cursor-pointer items-center text-sm text-gray-600 dark:text-gray-400"
         onClick={handleBack}
       >
         <Icons.arrowLeft className="mr-1 h-4 w-4" />
