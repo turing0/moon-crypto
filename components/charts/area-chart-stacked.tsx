@@ -18,13 +18,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { day: "2024-07-09", assets: 550 },
-  { day: "2024-07-10", assets: 780 },
-  { day: "2024-07-11", assets: 900 },
-  { day: "2024-07-12", assets: 760 },
-  { day: "2024-07-13", assets: 896 },
-  { day: "2024-07-14", assets: 996 },
-  { day: "2024-07-15", assets: 1350 },
+  { day: "2024-08-09", assets: 7500 },
+  { day: "2024-08-10", assets: 7903 },
+  { day: "2024-08-11", assets: 9000 },
+  { day: "2024-08-12", assets: 8600 },
+  { day: "2024-08-13", assets: 11906 },
+  { day: "2024-08-14", assets: 13960 },
+  { day: "2024-08-15", assets: 15050 },
 ]
 
 const chartConfig = {
