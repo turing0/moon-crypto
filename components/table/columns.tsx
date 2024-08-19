@@ -782,17 +782,30 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
     cell: function Cell({ row }) {
       const datarow = row.original
       const balance = row.getValue("balance");
+      const [isRefreshing, setIsRefreshing] = useState(false);
 
+      // const refreshBalance = async () => {
+      //   await refreshAPIBalance(datarow.id)
+      // };
       const refreshBalance = async () => {
-        await refreshAPIBalance(datarow.id)
-        
+        setIsRefreshing(true);
+        try {
+          await refreshAPIBalance(datarow.id);
+        } finally {
+          setIsRefreshing(false);
+        }
       };
       return (
         <div className="flex items-center">
           {balance ? `${balance} USDT` : null}
+          {/* <div className="ml-1 cursor-pointer" onClick={refreshBalance}>
+            <Icons.refreshCw className={`size-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          </div> */}
+          {balance ? 
           <div className="ml-1 cursor-pointer" onClick={refreshBalance}>
-            <Icons.refreshCw className="size-4" />
-          </div>
+            <Icons.refreshCw className={`size-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          </div> : null}
+
         </div>
       )
     },
