@@ -183,6 +183,54 @@ export async function updateExchangeAPI(input: UpdateExchangeApiSchema & { id: s
   }
 }
 
+export async function refreshAPIBalance(id: string) {
+  noStore()
+  try {
+    const oringinApi = await prisma.exchangeAccount.findUnique({
+      where: {
+        id: id
+      },
+      select: { // 选择要返回的字段
+        exchangeName: true, 
+        apiKey: true, 
+        secretKey: true, 
+        passphrase: true, 
+      },
+    })
+    if (!oringinApi) {
+      return {
+        data: null,
+        error: null,
+      }
+    }
+    // api verify
+    const {verified, balance, msg} = await exchangeApiVerify(oringinApi.exchangeName, oringinApi.apiKey, oringinApi.secretKey, oringinApi.passphrase?oringinApi.passphrase:undefined);
+
+    await prisma.exchangeAccount
+    .update({
+      where: {
+        id: id,
+      },
+      data: {
+        balance: balance
+      },
+    })
+
+    revalidatePath("/exchanges")
+
+    return {
+      data: null,
+      error: null,
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      data: null,
+      error: (err),
+    }
+  }
+}
+
 export async function deleteExchangeAPI(input: { ids: string[] }) {
   const session = await auth()
     

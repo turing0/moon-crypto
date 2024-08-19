@@ -19,6 +19,7 @@ export type ExchangeApiInfo = {
   accountName: string;
   exchangeName: string;
   apiKey: string;
+  // balance: string | null;
   // secretKey: string;
   // passphrase: string | null;
   // description: string | null;

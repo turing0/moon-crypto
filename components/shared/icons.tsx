@@ -45,6 +45,7 @@ import {
   FileBarChart,
   PencilLine,
   Trash2,
+  RefreshCw,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -135,6 +136,7 @@ export const Icons = {
   page: File,
   pencilLine: PencilLine,
   post: FileText,
+  refreshCw: RefreshCw,
   search: Search,
   settings: Settings,
   shield: Shield,

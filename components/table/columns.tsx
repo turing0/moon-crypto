@@ -21,7 +21,7 @@ import { Icons } from "../shared/icons"
 import { CopyTradeDialog } from "../exchange/copy-trade-dialog"
 import { Switch } from "../ui/switch"
 import { EnabledExchangeApiDialog } from "../exchange/enabled-api-dialog"
-import { toggleEnabledExchangeAPI } from "@/actions/exchange"
+import { refreshAPIBalance, toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { DeleteCopyTradingDialog } from "../exchange/delete-copytrading-dialog"
 import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 import { format } from "date-fns"
@@ -768,9 +768,33 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   {
     accessorKey: "balance",
     header: "Balance",
-    cell: ({ row }) => {
+    // cell: ({ row }) => {
+    //   const balance = row.getValue("balance");
+    //   return (
+    //     <div className="flex items-center">
+    //       {balance ? `${balance} USDT` : null}
+    //       <div className="ml-1 cursor-pointer">
+    //         <Icons.refreshCw className="size-4" />
+    //       </div>
+    //     </div>
+    //   )
+    // },
+    cell: function Cell({ row }) {
+      const datarow = row.original
       const balance = row.getValue("balance");
-      return <div>{balance ? `${balance} USDT` : null}</div>;
+
+      const refreshBalance = async () => {
+        await refreshAPIBalance(datarow.id)
+        
+      };
+      return (
+        <div className="flex items-center">
+          {balance ? `${balance} USDT` : null}
+          <div className="ml-1 cursor-pointer" onClick={refreshBalance}>
+            <Icons.refreshCw className="size-4" />
+          </div>
+        </div>
+      )
     },
   },
   {
@@ -787,20 +811,6 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
       return <div>{displayApiKey}</div>;
     },
   },
-  // {
-  //   accessorKey: "secretKey",
-  //   header: "SecretKey",
-  //   cell: ({ row }) => (
-  //     <div>{row.getValue("secretKey")}</div>
-  //   ),
-  // },
-  // {
-  //   accessorKey: "passphrase",
-  //   header: "Passphrase",
-  //   cell: ({ row }) => (
-  //     <div>{row.getValue("passphrase")}</div>
-  //   ),
-  // },
   {
     // accessorKey: "enabled",
     header: "Enabled",
