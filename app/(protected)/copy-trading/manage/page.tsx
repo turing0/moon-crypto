@@ -17,6 +17,7 @@ import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytradin
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import PNLDisplay from "@/components/shared/common";
 
 const TraderCard = ({ trader, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
@@ -78,7 +79,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> {trader.rpnl}</p>
+            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={trader.rpnl} /> USDT </p>
             <p><strong>Followed APIs:</strong>{' '}
               {trader.followedApis.map((api, index) => (
                   <span>{api.exchangeAccount.accountName}{' '}</span>
@@ -195,7 +196,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
           onSuccess={onSuccess}
         />
         <div className="flex items-center justify-between">
-        <Link href={`/ana?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
           <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
               <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
@@ -239,7 +240,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> {trader.rpnl}</p>
+            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={trader.rpnl} /> USDT </p>
             <p><strong>Followed APIs:</strong>{' '}
               {trader.followedApis.map((api, index) => (
                   <span>{api.exchangeAccount.accountName}{' '}</span>
