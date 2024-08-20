@@ -42,7 +42,7 @@ const pricingFaqData = [
     id: "item-6",
     question: "What will happen once my paid plan is over?",
     answer:
-      "Once your paid plan is over, if you did not renew it, you will be downgraded to the free plan, any copy-trading and live positions depending on your expired paid plan will be stopped.",
+      "Once your paid plan is over, if you did not renew it, you will be downgraded to the free plan, any copy trading and live positions depending on your expired paid plan will be stopped.",
   },
   {
     id: "item-7",

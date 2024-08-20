@@ -104,7 +104,7 @@ export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopy
 
       form.reset()
       props.onOpenChange?.(false)
-      toast.success("Copy-Trading setting updated", {position: "top-center"})
+      toast.success("Copy Trading setting updated", {position: "top-center"})
       onSuccess?.()
     })
   }

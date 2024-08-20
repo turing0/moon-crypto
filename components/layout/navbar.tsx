@@ -112,7 +112,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
                 <Link href="/positions" className="flex items-center">
-                  Copy-Trading <Icons.chevronDown size="12"/>
+                  Copy Trading <Icons.chevronDown size="12"/>
                 </Link>
                 {isDropdownOpen && (
                   <div

@@ -431,7 +431,7 @@ export default function ManageCopyTradingPage() {
                             {"You haven't followed any traders yet"}
                           </h3>
                           <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
-                            Follow a trader to start copy-trading.
+                            Follow a trader to start copy trading.
                           </p>
                         </div>
                         <form action="/copy-trading" method="get">
@@ -459,7 +459,7 @@ export default function ManageCopyTradingPage() {
                             {"You haven't followed any traders yet"}
                           </h3>
                           <p className="text-sm text-muted-foreground">
-                            Follow a trader to start copy-trading.
+                            Follow a trader to start copy trading.
                           </p>
                         </div>
                         <div>

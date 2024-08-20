@@ -69,7 +69,7 @@ export default async function ExchangePage() {
               <div className="space-y-2">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{"You don't have any exchange APIs yet"}</h3>
                 <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
-                  {"Add an exchange API to start copy-trading."}
+                  {"Add an exchange API to start copy trading."}
                 </p>
               </div>
               <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
