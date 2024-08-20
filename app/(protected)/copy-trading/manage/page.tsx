@@ -37,36 +37,36 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           showTrigger={false}
           onSuccess={onSuccess}
         />
-        <div className="flex items-center justify-between">
-        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
-          <div className="flex cursor-pointer items-center space-x-4">
-            <Avatar>
-              <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
-              {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
-            </Avatar>
-            <div>
-              <CardTitle>{trader.traderName}</CardTitle>
-              <CardDescription className="mt-1 flex items-center">
-                {/* <Icons.calendar className="mr-1 h-4 w-4" /> */}
-                Started: {trader.createdAt.toLocaleString('zh-CN', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false
-                })}
-              </CardDescription>
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+            <div className="flex cursor-pointer items-center space-x-4">
+              <Avatar>
+                <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
+                {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
+              </Avatar>
+              <div>
+                <CardTitle>{trader.traderName}</CardTitle>
+                <CardDescription className="mt-1 flex items-center">
+                  {/* <Icons.calendar className="mr-1 h-4 w-4" /> */}
+                  Started: {trader.createdAt.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                  })}
+                </CardDescription>
+              </div>
             </div>
-          </div>
           </Link>
-          <div className="flex items-center space-x-2">
-            <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
-              <Icons.settings className="h-4 w-4 sm:hidden" />
-              <span className="hidden sm:inline">Settings</span>
+          <div className="flex w-full space-x-2 sm:w-auto">
+            <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex-1 sm:flex-initial">
+              {/* <Icons.settings className="h-4 w-4 sm:hidden" />
+              <span className="hidden sm:inline">Settings</span> */}
+              Settings
             </Button>
-            <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
-              {/* <StopIcon className="mr-2 h-4 w-4" /> */}
+            <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex-1 sm:flex-initial">
               Stop Copying
             </Button>
           </div>

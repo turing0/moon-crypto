@@ -49,8 +49,8 @@ export function DeleteCopyTradingDialog({
         <DialogHeader>
           <DialogTitle>Stop Copying</DialogTitle>
           <DialogDescription>
-            {"This action cannot be undone. You will no longer copy this trader's orders."}<br />
-            {"If the trader has open positions, this action will close them all at market price."}
+            {/* {"This action cannot be undone. You will no longer copy this trader's orders."}<br /> */}
+            {"If the trader has open positions, the positions will be closed at the market price."}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:space-x-0">
