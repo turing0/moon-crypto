@@ -63,7 +63,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           <div className="flex items-center space-x-2">
             <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
               <Icons.settings className="mr-2 h-4 w-4" />
-              Settings
+              <span className="ml-2 hidden sm:inline">Settings</span>
             </Button>
             <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
               {/* <StopIcon className="mr-2 h-4 w-4" /> */}
