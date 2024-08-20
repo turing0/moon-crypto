@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { redirect, useRouter } from "next/navigation";
 import { Icons } from "@/components/shared/icons";
 import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading-sheet";
 import { useCallback, useEffect, useState } from "react";
@@ -321,7 +320,6 @@ export default function ManageCopyTradingPage() {
   const [isEndedLoading, setIsEndedLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
   const [endedData, setEndedData] = useState<any[]>([]);
-  const router = useRouter();
 
   // if (!session || !session.user) {
   //   redirect("/login");
@@ -367,9 +365,6 @@ export default function ManageCopyTradingPage() {
     }
   };
 
-  const handleBack = () => {
-    router.push('/copy-trading');
-  };
   // const data = await getCopyTradingSetting(user?.id!);
   // useEffect(() => {
   //   if (status !== "authenticated") return;
@@ -391,13 +386,12 @@ export default function ManageCopyTradingPage() {
 
   return (
     <>
-      <div 
-        className="mb-2 flex cursor-pointer items-center text-sm text-gray-600 dark:text-gray-400"
-        onClick={handleBack}
-      >
-        <Icons.arrowLeft className="mr-1 h-4 w-4" />
-        <span>Copy Trading</span>
-      </div>
+      <div className="text-sm text-gray-600 dark:text-gray-400">
+        <Link href="/copy-trading" className="mb-2 flex cursor-pointer items-center">
+          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <span>Copy Trading</span>
+        </Link>
+      </div >
       {/* <DashboardHeader
         heading="Manage Copy Trading"
         text=""
@@ -469,11 +463,13 @@ export default function ManageCopyTradingPage() {
                             Follow a trader to start copy-trading.
                           </p>
                         </div>
-                        <form action="/copy-trading" method="get">
-                          <Button type="submit">
-                            Find Best Traders
-                          </Button>
-                        </form>
+                        <div>
+                          <Link href="/copy-trading">
+                            <Button>
+                              Find Best Traders
+                            </Button>
+                          </Link>
+                        </div>
                       </CardContent>
                     </Card>
                   )}
@@ -497,17 +493,15 @@ export default function ManageCopyTradingPage() {
                 ) : (
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                      <div className="space-y-4">
-                        <p className="text-sm text-muted-foreground">
-                          No records.
-                        </p>
-                        <div>
-                          <Link href="/copy-trading">
-                            <Button>
-                              Find Best Traders
-                            </Button>
-                          </Link>
-                        </div>
+                      <p className="text-sm text-muted-foreground">
+                        No records.
+                      </p>
+                      <div>
+                        <Link href="/copy-trading">
+                          <Button>
+                            Find Best Traders
+                          </Button>
+                        </Link>
                       </div>
                     </CardContent>
                   </Card>
