@@ -61,14 +61,16 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
     // ),
     cell: function Cell({ row }) {
       const datarow = row.original
+      const side = datarow.posSide
+      const textColor = side === 'long' ? 'text-green-500' : 'text-red-500';
 
       return (
         <div className="flex flex-col">
-          <div className="max-w-xs truncate font-semibold">
+          <div className="max-w-xs truncate">
             {datarow.symbol}
           </div>
-          <div className="text-gray-500">
-            {datarow.posSide}
+          <div className={`text-xs capitalize ${textColor}`}>
+            {side}
           </div>
         </div>
       )
@@ -104,7 +106,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
       
       return (
         <div className="flex flex-col">
-          <div className="max-w-xs truncate font-semibold">
+          <div className="max-w-xs truncate">
             {truncatedValue}USDT
           </div>
           <div className="text-xs text-gray-500">
@@ -125,7 +127,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
       
       return (
         <div className="flex flex-col">
-          <div className="max-w-xs truncate font-semibold">
+          <div className="max-w-xs truncate">
             {truncatedValue}USDT
           </div>
           <div className="text-xs text-gray-500">
@@ -240,14 +242,16 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
     header: "Position",
     cell: function Cell({ row }) {
       const datarow = row.original
+      const side = datarow.posSide
+      const textColor = side === 'long' ? 'text-green-500' : 'text-red-500';
 
       return (
         <div className="flex flex-col">
-          <div className="max-w-xs truncate font-semibold">
+          <div className="max-w-xs truncate">
             {datarow.symbol}
           </div>
-          <div className="text-gray-500">
-            {datarow.posSide}
+          <div className={`text-xs capitalize ${textColor}`}>
+            {side}
           </div>
         </div>
       )
@@ -272,7 +276,7 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
       
       return (
         <div className="flex flex-col">
-          <div className="max-w-xs truncate font-semibold">
+          <div className="max-w-xs truncate">
             {truncatedValue}USDT
           </div>
           <div className="text-xs text-gray-500">
@@ -291,7 +295,7 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
       
       return (
         <div className="flex flex-col">
-          {/* <div className="max-w-xs truncate font-semibold">
+          {/* <div className="max-w-xs truncate">
             {truncatedValue}USDT
           </div>
           <div className="text-xs text-gray-500">
