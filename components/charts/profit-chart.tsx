@@ -48,7 +48,9 @@ export function ProfitChart() {
             data={chartData}             
             margin={{
               // top: 10,
+              left: 0,
               // right: 30,
+              bottom: 0,
             }}>
             <CartesianGrid vertical={false} />
             <XAxis
