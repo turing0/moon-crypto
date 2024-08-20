@@ -109,7 +109,7 @@ export type UserSubscriptionPlan = SubscriptionPlan &
 
 // compare plans
 export type ColumnType = string | boolean | null;
-export type PlansRow = { feature: string; tooltip?: string } & {
+export type PlansRow = { feature: string; tooltip?: string; link?: string } & {
   [key in (typeof plansColumns)[number]]: ColumnType;
 };
 

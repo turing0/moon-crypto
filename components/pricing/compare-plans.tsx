@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/popover";
 import { HeaderSection } from "@/components/shared/header-section";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
+import { Icons } from "../shared/icons";
+import Link from "next/link";
 
 export function ComparePlans() {
   const renderCell = (value: string | boolean | null) => {
@@ -49,9 +51,16 @@ export function ComparePlans() {
                   className="sticky left-0 bg-accent md:bg-transparent"
                 >
                   <div className="flex items-center justify-between space-x-2 p-4">
-                    <span className="text-[15px] font-medium lg:text-base">
-                      {row.feature}
-                    </span>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-[15px] font-medium lg:text-base">
+                        {row.feature}
+                      </span>
+                      {row.link && (
+                        <Link href={row.link} target="_blank">
+                          <Icons.exteralLink className="size-4 cursor-pointer" />
+                        </Link>
+                      )}
+                    </div>
                     {row.tooltip && (
                       <Popover>
                         <PopoverTrigger className="rounded p-1 hover:bg-muted">

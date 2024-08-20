@@ -6,14 +6,14 @@ export const pricingData: SubscriptionPlan[] = [
     title: "Starter",
     description: "For Beginners",
     benefits: [
-      "Up to 100 monthly posts",
-      "Basic analytics and reporting",
+      // "Up to 0 copy trading",
       "Test with virtual money",
+      "Basic analytics and reporting",
     ],
     limitations: [
-      "No priority access to new features.",
+      "No live copy trading",
       "Limited customer support",
-      "Limited access to premium resources.",
+      "Limited access to premium resources",
     ],
     prices: {
       monthly: 0,
@@ -26,15 +26,15 @@ export const pricingData: SubscriptionPlan[] = [
   },
   {
     title: "Pro",
-    description: "Unlock Advanced Features",
+    description: "Elevate Your Trading Strategy",
     benefits: [
-      "Up to 500 monthly posts",
+      "Up to 10 copy trading",
       "Advanced analytics and reporting",
-      "Access to premium templates",
+      "Access to pro trader strategies",
       "Priority customer support",
     ],
     limitations: [
-      "Limited access to premium resources.",
+      "Limited access to premium resources",
     ],
     prices: {
       monthly: 15,
@@ -47,13 +47,13 @@ export const pricingData: SubscriptionPlan[] = [
   },
   {
     title: "Premium",
-    description: "For Power Users",
+    description: "Unleash Your Trading Potential",
     benefits: [
-      "Unlimited posts",
+      "Unlimited copy trading",
       "Real-time analytics and reporting",
-      "Access to all templates, including custom branding",
+      "Access to all top-performing strategies",
       "24/7 premium customer support",
-      "Personalized onboarding and account management.",
+      "Personalized onboarding and account management",
     ],
     limitations: [],
     prices: {
@@ -83,13 +83,28 @@ export const comparePlans: PlansRow[] = [
     enterprise: "Custom",
     tooltip: "All plans include basic analytics for tracking performance.",
   },
+  // {
+  //   feature: "Custom Branding",
+  //   starter: null,
+  //   pro: "500/mo",
+  //   premium: "1,500/mo",
+  //   enterprise: "Unlimited",
+  //   tooltip: "Custom branding is available from the Pro plan onwards.",
+  // },
   {
-    feature: "Custom Branding",
-    starter: null,
-    pro: "500/mo",
-    premium: "1,500/mo",
+    feature: "Paper Trading",
+    starter: true,
+    pro: true,
+    premium: true,
+    enterprise: true,
+    // link: "/",
+  },
+  {
+    feature: "Maximum Copy Trading",
+    starter: "0",
+    pro: "10",
+    premium: "Unlimited",
     enterprise: "Unlimited",
-    tooltip: "Custom branding is available from the Pro plan onwards.",
   },
   {
     feature: "Priority Support",
@@ -107,29 +122,29 @@ export const comparePlans: PlansRow[] = [
     tooltip:
       "Advanced reporting is available in Premium and Enterprise plans.",
   },
-  {
-    feature: "Dedicated Manager",
-    starter: null,
-    pro: null,
-    premium: null,
-    enterprise: true,
-    tooltip: "Enterprise plan includes a dedicated account manager.",
-  },
-  {
-    feature: "API Access",
-    starter: "Limited",
-    pro: "Standard",
-    premium: "Enhanced",
-    enterprise: "Full",
-  },
-  {
-    feature: "Monthly Webinars",
-    starter: false,
-    pro: true,
-    premium: true,
-    enterprise: "Custom",
-    tooltip: "Pro and higher plans include access to monthly webinars.",
-  },
+  // {
+  //   feature: "Dedicated Manager",
+  //   starter: null,
+  //   pro: null,
+  //   premium: null,
+  //   enterprise: true,
+  //   tooltip: "Enterprise plan includes a dedicated account manager.",
+  // },
+  // {
+  //   feature: "API Access",
+  //   starter: "Limited",
+  //   pro: "Standard",
+  //   premium: "Enhanced",
+  //   enterprise: "Full",
+  // },
+  // {
+  //   feature: "Monthly Webinars",
+  //   starter: false,
+  //   pro: true,
+  //   premium: true,
+  //   enterprise: "Custom",
+  //   tooltip: "Pro and higher plans include access to monthly webinars.",
+  // },
   {
     feature: "Custom Integrations",
     starter: false,
@@ -139,15 +154,15 @@ export const comparePlans: PlansRow[] = [
     tooltip:
       "Custom integrations are available in Premium and Enterprise plans.",
   },
-  {
-    feature: "Roles and Permissions",
-    starter: null,
-    pro: "Basic",
-    premium: "Advanced",
-    enterprise: "Advanced",
-    tooltip:
-      "User roles and permissions management improves with higher plans.",
-  },
+  // {
+  //   feature: "Roles and Permissions",
+  //   starter: null,
+  //   pro: "Basic",
+  //   premium: "Advanced",
+  //   enterprise: "Advanced",
+  //   tooltip:
+  //     "User roles and permissions management improves with higher plans.",
+  // },
   {
     feature: "Onboarding Assistance",
     starter: false,
