@@ -66,7 +66,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
               <span className="hidden sm:inline">Settings</span> */}
               Settings
             </Button>
-            <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex-1 sm:flex-initial">
+            <Button onClick={() => setShowDeleteDialog(true)} variant="outline" size="sm" className="flex-1 sm:flex-initial">
               Stop Copying
             </Button>
           </div>
@@ -422,7 +422,7 @@ export default function ManageCopyTradingPage() {
         <Tabs defaultValue="ongoing" onValueChange={getEndedData}>
           <TabList>
             <Tab value="ongoing">Ongoing</Tab>
-            <Tab value="closed">Ended</Tab>
+            <Tab value="closed">Closed</Tab>
             {/* <Tab value="identities">
               <div className="flex items-center">
                 <p>Machine Identities</p>
