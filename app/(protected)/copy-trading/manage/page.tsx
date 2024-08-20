@@ -47,7 +47,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
             <div>
               <CardTitle>{trader.traderName}</CardTitle>
               <CardDescription className="mt-1 flex items-center">
-                <Icons.calendar className="mr-1 h-4 w-4" />
+                {/* <Icons.calendar className="mr-1 h-4 w-4" /> */}
                 Started: {trader.createdAt.toLocaleString('zh-CN', {
                   year: 'numeric',
                   month: '2-digit',
@@ -67,7 +67,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
             </Button>
             <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
               {/* <StopIcon className="mr-2 h-4 w-4" /> */}
-              Stop Following
+              Stop Copying
             </Button>
           </div>
         </div>
@@ -396,17 +396,17 @@ export default function ManageCopyTradingPage() {
         text=""
       /> */}
       <div className='overflow-x-auto'>
-        <Tabs defaultValue="following" onValueChange={getEndedData}>
+        <Tabs defaultValue="ongoing" onValueChange={getEndedData}>
           <TabList>
-            <Tab value="following">Following</Tab>
-            <Tab value="ended">Ended</Tab>
+            <Tab value="ongoing">Ongoing</Tab>
+            <Tab value="closed">Ended</Tab>
             {/* <Tab value="identities">
               <div className="flex items-center">
                 <p>Machine Identities</p>
               </div>
             </Tab> */}
           </TabList>
-          <TabPanel value="following">
+          <TabPanel value="ongoing">
             {/* {isLoading ? (
               <div>
                 <TableSkeleton />
@@ -476,7 +476,7 @@ export default function ManageCopyTradingPage() {
               )}
 
           </TabPanel>
-          <TabPanel value="ended">
+          <TabPanel value="closed">
             {isEndedLoading ? (
               <div className="flex h-40 items-center justify-center">
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
