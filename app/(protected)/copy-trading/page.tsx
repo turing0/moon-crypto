@@ -202,6 +202,7 @@ export default function TradersPage() {
             <TabsTrigger value="Bitget">Bitget</TabsTrigger>
             <TabsTrigger value="binance">Binance</TabsTrigger>
             <TabsTrigger value="okx">OKX</TabsTrigger>
+            {/* <TabsTrigger value="favorites" className="bg-yellow-300 text-black hover:bg-yellow-400">Favorites</TabsTrigger> */}
           </TabsList>
           <TabsContent value="Bitget" className="space-y-4">
             {/* <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
@@ -248,8 +249,13 @@ export default function TradersPage() {
             </div>
             {/* <DataTable data={okxOrder} columns={okxOrderColumns} /> */}
           </TabsContent>
-        </Tabs>
+          <TabsContent value="favorites" className="space-y-4">
+            <p className="text-sm text-muted-foreground">Coming soon.</p>
+            <div>
 
+            </div>
+          </TabsContent>
+        </Tabs>
 
       {/* </div> */}
 

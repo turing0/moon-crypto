@@ -211,7 +211,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   // const okxTraderId = searchParams.get('okxTraderId')
   // console.log("params:", searchParams)
 
-  const defaultTabValue = okxTraderIdParam ? "okx":"bitget";
+  const defaultTabValue = bitgetTraderIdParam?"bitget": (binanceTraderIdParam?"binance":"okx");
 
   // useEffect(() => {
   //   if (bitgetTraderIdParam) {
