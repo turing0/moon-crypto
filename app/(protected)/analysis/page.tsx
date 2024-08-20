@@ -299,9 +299,12 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   
   return (
     <>
-      <DashboardHeader
-        heading="Analysis"
-      />
+      <div className="text-sm text-gray-600 dark:text-gray-400">
+        <Link href="/copy-trading" className="mb-2 flex cursor-pointer items-center">
+          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <span>Explor Traders</span>
+        </Link>
+      </div >
       <div className="overflow-x-auto">
       {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue={defaultTabValue} className="space-y-4">
