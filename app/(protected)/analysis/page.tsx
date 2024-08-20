@@ -10,7 +10,6 @@ import { usePathname, useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/table/data-table"
 import { bitgetCurrentOrderColumns, okxOrderColumns, orderColumns } from "@/components/table/columns"
-import { DashboardHeader } from "@/components/dashboard/header"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -268,6 +267,9 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   }, [okxTraderId]);
 
   const getActiveOrders = async () => {
+    if (!bitgetTraderId) {
+      return
+    }
     setIsCurrentOrderLoading(true);
     try {
       const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/current?traderId=${bitgetTraderId}`);
