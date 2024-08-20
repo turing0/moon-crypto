@@ -54,11 +54,11 @@ export const infos: InfoLdg[] = [
 
 export const features: FeatureLdg[] = [
   {
-    title: "Consistent Profits",
+    title: "Advanced Copy Trading",
     description:
-      "Leverage the expertise of successful traders and enjoy consistent returns on your investments.",
+      "Automatically replicate trades from top-performing traders in real-time, customizing your risk and investment levels.",
     link: "/",
-    icon: "circleDollarSign",
+    icon: "candlestickChart",
   },
   {
     title: "Save Time",
@@ -68,33 +68,33 @@ export const features: FeatureLdg[] = [
     icon: "clock",
   },
   {
+    title: "Consistent Profits",
+    description:
+      "Leverage the expertise of successful traders and enjoy consistent returns on your investments.",
+    link: "/",
+    icon: "circleDollarSign",
+  },
+  {
     title: "Secure Trading",
     description:
       "Our platform prioritizes security, ensuring your funds and personal information are protected.",
     link: "/",
     icon: "shield",
   },
-  // {
-  //   title: "Feature 4",
-  //   description:
-  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-  //   link: "/",
-  //   icon: "laptop",
-  // },
-  // {
-  //   title: "Feature 5",
-  //   description:
-  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-  //   link: "/",
-  //   icon: "user",
-  // },
-  // {
-  //   title: "Feature 6",
-  //   description:
-  //     "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
-  //   link: "/",
-  //   icon: "copy",
-  // },
+  {
+    title: "Multi-Exchange Support",
+    description:
+      "Trade across multiple cryptocurrency exchanges from a single, unified interface.",
+    link: "/",
+    icon: "globe",
+  },
+  {
+    title: "Risk Management",
+    description:
+      "Set stop-loss and take-profit levels, and use our advanced risk assessment algorithms to protect your investments.",
+    link: "/",
+    icon: "shieldPlus",
+  },
 ];
 
 export const testimonials: TestimonialType[] = [

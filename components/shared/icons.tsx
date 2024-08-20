@@ -46,6 +46,8 @@ import {
   PencilLine,
   Trash2,
   RefreshCw,
+  ShieldPlus,
+  Globe,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -73,6 +75,7 @@ export const Icons = {
   ellipsis: MoreVertical,
   exteralLink: ExternalLink,
   fileBarChart: FileBarChart,
+  globe: Globe,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
@@ -140,6 +143,7 @@ export const Icons = {
   search: Search,
   settings: Settings,
   shield: Shield,
+  shieldPlus: ShieldPlus,
   spinner: Loader2,
   sun: SunMedium,
   trash: Trash,
