@@ -62,7 +62,7 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           </Link>
           <div className="flex items-center space-x-2">
             <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
-              {/* <GearIcon className="mr-2 h-4 w-4" /> */}
+              <Icons.settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
             <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
@@ -177,7 +177,6 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
 };
 
 const EndedTraderCard = ({ trader, onSuccess  }) => {
-  const [showUpdateSheet, setShowUpdateSheet] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -196,7 +195,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
           <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
               <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
-              {/* <AvatarFallback>{trader.name.charAt(0)}</AvatarFallback> */}
+              {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
             </Avatar>
             <div>
               <CardTitle>{trader.traderName}</CardTitle>

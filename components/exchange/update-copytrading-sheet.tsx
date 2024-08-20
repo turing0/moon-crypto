@@ -133,7 +133,7 @@ export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopy
     <Sheet {...props}>
       <SheetContent className="flex flex-col gap-6 sm:max-w-md">
         <SheetHeader className="text-left">
-          <SheetTitle>Update Copy-Trading</SheetTitle>
+          <SheetTitle>Update Copy Trading</SheetTitle>
           {/* <SheetDescription>
             Update the exchange API and save the changes
           </SheetDescription> */}
