@@ -407,12 +407,11 @@ export default function ManageCopyTradingPage() {
           <TabList>
             <Tab value="following">Following</Tab>
             <Tab value="ended">Ended</Tab>
-            {/* <Tab value={TabSections.Identities}>
+            {/* <Tab value="identities">
               <div className="flex items-center">
                 <p>Machine Identities</p>
               </div>
-            </Tab>
-            <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
+            </Tab> */}
           </TabList>
           <TabPanel value="following">
             {/* {isLoading ? (
@@ -498,13 +497,17 @@ export default function ManageCopyTradingPage() {
                 ) : (
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                      <div className="space-y-2">
-                        {/* <h3 className="text-lg font-medium">
-                          {"You haven't followed any traders yet"}
-                        </h3> */}
+                      <div className="space-y-4">
                         <p className="text-sm text-muted-foreground">
-                          No records
+                          No records.
                         </p>
+                        <div>
+                          <Link href="/copy-trading">
+                            <Button>
+                              Find Best Traders
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
