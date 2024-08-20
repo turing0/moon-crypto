@@ -2,7 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InteractiveBarChart } from "@/components/charts/interactive-bar-chart";
 import { ProfitChart } from "@/components/charts/profit-chart";
 import { AssetAreaChart } from "@/components/charts/area-chart-stacked";
