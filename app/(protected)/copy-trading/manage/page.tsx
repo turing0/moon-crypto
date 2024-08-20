@@ -38,11 +38,11 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           onSuccess={onSuccess}
         />
         <div className="flex items-center justify-between">
-          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
           <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
               <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
-              {/* <AvatarFallback>{trader.name.charAt(0)}</AvatarFallback> */}
+              {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
             </Avatar>
             <div>
               <CardTitle>{trader.traderName}</CardTitle>
@@ -62,8 +62,8 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
           </Link>
           <div className="flex items-center space-x-2">
             <Button onClick={() => setShowUpdateSheet(true)} variant="outline" size="sm" className="flex items-center">
-              <Icons.settings className="h-4 w-4" />
-              <span className="ml-2 hidden sm:inline">Settings</span>
+              <Icons.settings className="h-4 w-4 sm:hidden" />
+              <span className="hidden sm:inline">Settings</span>
             </Button>
             <Button onClick={() => setShowDeleteDialog(true)} variant="destructive" size="sm" className="flex items-center">
               {/* <StopIcon className="mr-2 h-4 w-4" /> */}
@@ -116,58 +116,81 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
       </CardFooter>
       {isExpanded && (
         <CardContent>
+          <div>
+            <Tabs defaultValue="positions">
+              <TabList>
+                <Tab value="positions">Positions</Tab>
+                <Tab value="histroy">Position History</Tab>
+                {/* <Tab value="order">
+                  <div className="flex items-center">
+                    <p>order</p>
+                  </div>
+                </Tab> */}
+              </TabList>
+
+              <TabPanel value="positions">
+                <div>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Symbol</TableHead>
+                        <TableHead>Size</TableHead>
+                        <TableHead>Entry Price</TableHead>
+                        <TableHead>Mark Price</TableHead>
+                        <TableHead>PNL</TableHead>
+                        <TableHead>TP/SL</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {/* {trader.currentPositions.map((position, index) => (
+                        <TableRow key={index}>
+                          <TableCell>position.symbol</TableCell>
+                          <TableCell>position.size</TableCell>
+                          <TableCell>position.entryPrice</TableCell>
+                          <TableCell>position.currentPrice</TableCell>
+                          <TableCell>position.pnl</TableCell>
+                        </TableRow>
+                      ))} */}
+                    </TableBody>
+                  </Table>
+                </div>
+              </TabPanel>
+              <TabPanel value="histroy">
+                <div>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Symbol</TableHead>
+                        <TableHead>Entry Date</TableHead>
+                        <TableHead>Exit Date</TableHead>
+                        <TableHead>Entry Price</TableHead>
+                        <TableHead>Exit Price</TableHead>
+                        <TableHead>PNL</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {/* {trader.historicalPositions.map((position, index) => (
+                        <TableRow key={index}>
+                          <TableCell>position.symbol</TableCell>
+                          <TableCell>position.entryDate</TableCell>
+                          <TableCell>position.exitDate</TableCell>
+                          <TableCell>position.entryPrice</TableCell>
+                          <TableCell>position.exitPrice</TableCell>
+                          <TableCell>position.pnl</TableCell>
+                        </TableRow>
+                      ))} */}
+                    </TableBody>
+                  </Table>
+                </div>
+              </TabPanel>
+            </Tabs>
+
+          </div>
+
           <div className="space-y-4">
             <div>
-              <h4 className="mb-2 font-semibold">Current Positions</h4>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Symbol</TableHead>
-                    <TableHead>Size</TableHead>
-                    <TableHead>Entry Price</TableHead>
-                    <TableHead>Current Price</TableHead>
-                    <TableHead>PNL</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {/* {trader.currentPositions.map((position, index) => (
-                    <TableRow key={index}>
-                      <TableCell>position.symbol</TableCell>
-                      <TableCell>position.size</TableCell>
-                      <TableCell>position.entryPrice</TableCell>
-                      <TableCell>position.currentPrice</TableCell>
-                      <TableCell>position.pnl</TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
-              </Table>
             </div>
             <div>
-              <h4 className="mb-2 font-semibold">Historical Positions</h4>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Symbol</TableHead>
-                    <TableHead>Entry Date</TableHead>
-                    <TableHead>Exit Date</TableHead>
-                    <TableHead>Entry Price</TableHead>
-                    <TableHead>Exit Price</TableHead>
-                    <TableHead>PNL</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {/* {trader.historicalPositions.map((position, index) => (
-                    <TableRow key={index}>
-                      <TableCell>position.symbol</TableCell>
-                      <TableCell>position.entryDate</TableCell>
-                      <TableCell>position.exitDate</TableCell>
-                      <TableCell>position.entryPrice</TableCell>
-                      <TableCell>position.exitPrice</TableCell>
-                      <TableCell>position.pnl</TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
-              </Table>
             </div>
           </div>
         </CardContent>
