@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -43,41 +43,43 @@ export function ProfitChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart 
-            accessibilityLayer 
-            data={chartData}             
-            margin={{
-              // top: 10,
-              left: 0,
-              // right: 30,
-              bottom: 0,
-            }}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="day"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              // tickFormatter={(value) => value.slice(0, 3)}
-              tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              tickFormatter={(value) => `${value.toLocaleString()}`}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar 
-              dataKey="pnl" 
-              fill="var(--color-pnl)" 
-              radius={[8, 8, 0, 0]}
-              // barSize={30}
-            />
-          </BarChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart 
+              accessibilityLayer 
+              data={chartData}             
+              margin={{
+                // top: 10,
+                left: 0,
+                // right: 30,
+                bottom: 0,
+              }}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="day"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                // tickFormatter={(value) => value.slice(0, 3)}
+                tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                tickFormatter={(value) => `${value.toLocaleString()}`}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar 
+                dataKey="pnl" 
+                fill="var(--color-pnl)" 
+                radius={[8, 8, 0, 0]}
+                // barSize={30}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
       {/* <CardFooter className="flex-col items-start gap-2 text-sm">
