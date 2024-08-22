@@ -101,7 +101,6 @@ model CopyTradingSetting {
   traderName        String
   traderId          String
   avatarUrl         String
-  // exchangeAccountId String
   fixedAmount       Int?
   multiplierAmount  Float?
   takeProfit        Int?
@@ -112,11 +111,11 @@ model CopyTradingSetting {
   status            String    @default("active") // active ended
 
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // exchangeAccount   ExchangeAccount @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)
   followedApis   CopyTradingAccount[]
+  activePositions   ActiveCopyTradingPosition[]
+  historyPositions  CopyTradingPositionHistory[]
   
   @@index([userId, traderId])
-  // @@index([exchangeAccountId])
   @@map(name: "copy_trading_settings")
 }
 
@@ -129,6 +128,39 @@ model CopyTradingAccount {
 
   @@id([copyTradingSettingId, exchangeAccountId])
   @@map(name: "copy_trading_accounts")
+}
+
+model ActiveCopyTradingPosition {
+  id                    String   @id @default(cuid())
+  copyTradingSettingId  String
+  symbol                String
+  side                  String   // long, short
+  entryPrice            Float
+  size                  Float
+  leverage              Int?
+  openTime              DateTime @default(now())
+  copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
+
+  @@index([copyTradingSettingId])
+  @@map(name: "active_copy_trading_positions")
+}
+
+model CopyTradingPositionHistory {
+  id                    String   @id @default(cuid())
+  copyTradingSettingId  String
+  symbol                String
+  side                  String   // long, short
+  entryPrice            Float
+  exitPrice             Float
+  size                  Float
+  leverage              Int?
+  openTime              DateTime
+  closeTime             DateTime
+  realizedPnl           Float
+  copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
+
+  @@index([copyTradingSettingId])
+  @@map(name: "copy_trading_position_history")
 }
 
 model VerificationToken {

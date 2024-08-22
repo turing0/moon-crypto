@@ -102,9 +102,7 @@ async function getBitgetHistoryOrder(traderId: string) {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      toast.error("An unknown error occurred, check console for more message", {
-        position: "top-center",
-      });
+      toast.error("An unknown error occurred, check console for more message");
     }
     console.error("Failed to fetch order data:", error);
     return [];
@@ -124,9 +122,7 @@ async function getBitgetTrader(traderId: string) {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      toast.error("An unknown error occurred, check console for more message", {
-        position: "top-center",
-      });
+      toast.error("An unknown error occurred, check console for more message");
     }
     console.error("Failed to fetch order data:", error);
     return [];
@@ -146,9 +142,7 @@ async function getOkxHistoryOrder(traderId: string) {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      toast.error("An unknown error occurred, check console for more message", {
-        position: "top-center",
-      });
+      toast.error("An unknown error occurred, check console for more message");
     }
     console.error("Failed to fetch order data:", error);
     return [];

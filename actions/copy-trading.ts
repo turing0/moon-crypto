@@ -250,3 +250,37 @@ export async function deleteCopyTradingSetting(input: { ids: string[] }) {
     }
   }
 }
+
+export async function getActiveCopyTradingPositions(copyTradingSettingId: string) {
+  noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Retrieve  
+    const positions = await prisma.activeCopyTradingPosition.findMany({
+      where: {
+        copyTradingSettingId: copyTradingSettingId,
+      },
+      // select: { // 选择要返回的字段
+      //   id: true, 
+      //   symbol: true, 
+      //   stopLoss: true, 
+      //   followedApis: {select: {
+      //     copyTradingSettingId: true,   // Replace with the actual field names you need
+      //     exchangeAccountId: true,
+      //     copyTradingSetting: true,
+      //     exchangeAccount: true,
+      //   }, }
+      // },
+    })
+
+    return positions
+  } catch (err) {
+    console.log(err)
+    return []
+  }
+}

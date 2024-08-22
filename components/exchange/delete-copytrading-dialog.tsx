@@ -68,12 +68,12 @@ export function DeleteCopyTradingDialog({
                 })
 
                 if (error) {
-                  toast.error(error, {position: "top-center"})
+                  toast.error(error)
                   return
                 }
 
                 props.onOpenChange?.(false)
-                toast.success("Stopped", {position: "top-center"})
+                toast.success("Stopped")
                 onSuccess?.()
               })
             }}

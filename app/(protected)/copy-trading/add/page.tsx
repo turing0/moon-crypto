@@ -41,9 +41,7 @@ async function getBitgetTrader(traderId: string) {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      toast.error("An unknown error occurred, check console for more message", {
-        position: "top-center",
-      });
+      toast.error("An unknown error occurred, check console for more message");
     }
     console.error("Failed to fetch order data:", error);
     return [];
@@ -130,12 +128,12 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
       const { error } = await createCopyTradingAPI(bitgetTraderId, traderInfo.traderName, traderInfo.traderPic, input)
 
       if (error) {
-        toast.error(error, {position: "top-center"})
+        toast.error(error)
         return
       }
 
       form.reset()
-      toast.success("Copy Trading added", {position: "top-center"})
+      toast.success("Copy Trading added")
       router.push('/copy-trading/manage')
     })
   }

@@ -84,9 +84,7 @@ async function getBitgetTraders(traderId: string) {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      toast.error("An unknown error occurred, check console for more message", {
-        position: "top-center",
-      });
+      toast.error("An unknown error occurred, check console for more message");
     }
     console.error("Failed to fetch order data:", error);
     return [];

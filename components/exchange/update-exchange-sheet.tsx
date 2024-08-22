@@ -98,13 +98,13 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
       const { error } = await updateExchangeAPI(updateData, task.exchangeName);
 
       if (error) {
-        toast.error(error, {position: "top-center"})
+        toast.error(error)
         return
       }
 
       form.reset()
       props.onOpenChange?.(false)
-      toast.success("API updated", {position: "top-center"})
+      toast.success("API updated")
     })
   }
 

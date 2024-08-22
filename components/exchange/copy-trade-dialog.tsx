@@ -51,13 +51,13 @@ export function CopyTradeDialog({traderId, traderName, avatarUrl, userApi}) {
         const { error } = await createCopyTradingAPI(traderId, traderName, avatarUrl, input)
   
         if (error) {
-          toast.error(error, {position: "top-center"})
+          toast.error(error)
           return
         }
   
         form.reset()
         setOpen(false)
-        toast.success("Copy Trading added", {position: "top-center"})
+        toast.success("Copy Trading added")
       })
     }
 

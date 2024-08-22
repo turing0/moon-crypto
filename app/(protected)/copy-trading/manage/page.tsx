@@ -1,6 +1,6 @@
 "use client"
 
-import { getCopyTradingSetting } from "@/actions/copy-trading";
+import { getActiveCopyTradingPositions, getCopyTradingSetting } from "@/actions/copy-trading";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,37 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import PNLDisplay from "@/components/shared/common";
+import { toast } from "sonner";
+import { format } from "date-fns";
 
-const TraderCard = ({ trader, onSuccess=() => {} }) => {
+const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isActiveLoading, setIsActiveLoading] = useState(true);
+  const [activePositionData, setActivePositionData] = useState<any[]>([]);
+  
+  const getActivePostions = async () => {
+    if (!isActiveLoading) {
+      return
+    }
+    try {
+      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      setActivePositionData(data);
+      console.log("getActiveCopyTradingPositions:", data)
+    } catch (error) {
+      console.error('Error getActivePostions:', error);
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      setIsActiveLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (!isActiveLoading || !isExpanded) {
+      return
+    }
+    getActivePostions();
+  }, [isExpanded]);
 
   return (
     <Card className="mb-8 w-full">
@@ -27,28 +53,28 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
         <UpdateCopyTradingSheet
           open={showUpdateSheet}
           onOpenChange={setShowUpdateSheet}
-          task={trader}
+          task={ctSetting}
           onSuccess={onSuccess}
         />
         <DeleteCopyTradingDialog
           open={showDeleteDialog}
           onOpenChange={setShowDeleteDialog}
-          tasks={[trader]}
+          tasks={[ctSetting]}
           showTrigger={false}
           onSuccess={onSuccess}
         />
         <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+          <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(ctSetting.traderId)}`} className="block" target="_blank">
             <div className="flex cursor-pointer items-center space-x-4">
               <Avatar>
-                <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
+                <AvatarImage src={ctSetting.avatarUrl} alt={ctSetting.traderName} />
                 {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
               </Avatar>
               <div>
-                <CardTitle>{trader.traderName}</CardTitle>
+                <CardTitle>{ctSetting.traderName}</CardTitle>
                 <CardDescription className="mt-1 flex items-center">
                   {/* <Icons.calendar className="mr-1 h-4 w-4" /> */}
-                  Started: {trader.createdAt.toLocaleString('zh-CN', {
+                  Started: {ctSetting.createdAt.toLocaleString('zh-CN', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -75,23 +101,23 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={trader.rpnl} /> USDT </p>
+            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={ctSetting.rpnl} /> USDT </p>
             <p><strong>Followed APIs:</strong>{' '}
-              {trader.followedApis.map((api, index) => (
+              {ctSetting.followedApis.map((api, index) => (
                   <span>{api.exchangeAccount.accountName}{' '}</span>
               ))}
             </p>
           </div>
           <div>
             <p><strong>Mode:</strong> {" "}
-              {trader.fixedAmount && (
-                <>Fixed: {trader.fixedAmount} USDT</>
+              {ctSetting.fixedAmount && (
+                <>Fixed: {ctSetting.fixedAmount} USDT</>
               )}
-              {trader.multiplierAmount && (
-                <>Multiplier: {trader.multiplierAmount} X</>
+              {ctSetting.multiplierAmount && (
+                <>Multiplier: {ctSetting.multiplierAmount} X</>
               )}
             </p>
-            <p><strong>Risk Level:</strong> {trader.riskLevel}</p>
+            <p><strong>Risk Level:</strong> {ctSetting.riskLevel}</p>
           </div>
         </div>
       </CardContent>
@@ -107,10 +133,10 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
               <Icons.chevronUp className="ml-2 h-4 w-4" />
             </>
           ) : (
-            <>
+            <div className="flex items-center">
               Expand Details
               <Icons.chevronDown className="ml-2 h-4 w-4" />
-            </>
+            </div>
           )}
         </Button>
       </CardFooter>
@@ -142,15 +168,64 @@ const TraderCard = ({ trader, onSuccess=() => {} }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {/* {trader.currentPositions.map((position, index) => (
-                        <TableRow key={index}>
-                          <TableCell>position.symbol</TableCell>
-                          <TableCell>position.size</TableCell>
-                          <TableCell>position.entryPrice</TableCell>
-                          <TableCell>position.currentPrice</TableCell>
-                          <TableCell>position.pnl</TableCell>
+                      {isActiveLoading ? (
+                        <TableRow>
+                          <TableCell colSpan={6} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <Icons.spinner className="size-8 animate-spin text-gray-500" />
+                            </div>
+                          </TableCell>
                         </TableRow>
-                      ))} */}
+                      ) : (
+                      <>
+                        {activePositionData && activePositionData.length>0 ? (
+                          <>
+                          {activePositionData.map((position, index) => (
+                            <TableRow key={index}>
+                              <TableCell>
+                                <div className="max-w-xs truncate">
+                                  {position.symbol}
+                                </div>
+                                {/* <div className={`text-xs capitalize ${textColor}`}> */}
+                                <div className={`text-xs capitalize ${
+                                  position.side === 'long' ? 'text-green-500' : 'text-red-500'
+                                }`}>
+                                  {position.side}
+                                </div>
+                              </TableCell>
+                              <TableCell>{position.size}</TableCell>
+                              <TableCell>
+                                {position.entryPrice}USDT
+                                <div className="text-xs text-gray-500">
+                                  {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
+                                </div>
+                                </TableCell>
+                              <TableCell>{position.currentPrice}</TableCell>
+                              <TableCell>{position.pnl}</TableCell>
+                            </TableRow>
+                          ))}
+                          </>
+                        ) : (
+                          <>
+                            <TableRow>
+                              <TableCell colSpan={6} className="h-40 text-center">
+                                <div className="flex w-full h-full items-center justify-center">
+                                  <p className="text-sm text-muted-foreground">
+                                    No records found.
+                                  </p>
+                                </div>
+                                {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                                  <p className="text-sm text-muted-foreground">
+                                    No records found.
+                                  </p>
+                                </CardContent> */}
+                              </TableCell>
+                            </TableRow>
+
+                          </>
+                        )}
+                      </>
+                      )}
                     </TableBody>
                   </Table>
                 </div>
@@ -358,9 +433,9 @@ export default function ManageCopyTradingPage() {
     try {
       const data = await getCopyTradingSetting(session.user.id!);
       setData(data);
-      // console.log("result:", data);
+      // console.log("getCopyTradingSetting:", data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error getCopyTradingSetting:', error);
     } finally {
       setIsLoading(false);
     }
@@ -381,7 +456,7 @@ export default function ManageCopyTradingPage() {
       // console.log("ended data:", data)
       setEndedData(data);
     } catch (error) {
-      console.error('Error fetching ended data:', error);
+      console.error('Error getEndedData:', error);
     } finally {
       setIsEndedLoading(false);
     }
@@ -470,8 +545,8 @@ export default function ManageCopyTradingPage() {
 
                   {data && data.length > 0 ? (
                     <div className="space-y-4">
-                      {data.map((trader, index) => (
-                        <TraderCard key={index} trader={trader} onSuccess={fetchData} />
+                      {data.map((ctSetting, index) => (
+                        <TraderCard key={index} ctSetting={ctSetting} onSuccess={fetchData} />
                       ))}
                     </div>
                   ) : (
