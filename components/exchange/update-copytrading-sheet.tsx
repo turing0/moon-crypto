@@ -213,7 +213,7 @@ export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopy
                 )}
               /> */}
             
-            <Tabs defaultValue={task.fixedAmount? "fixed":"multiplier"} className="space-y-4" onValueChange={handleTabChange}>
+            <Tabs defaultValue={task.fixedAmount? "fixed":"multiplier"} className="space-y-2" onValueChange={handleTabChange}>
                 <div>
                   <FormLabel className="text-base">Mode</FormLabel>
                 </div>
