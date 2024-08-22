@@ -327,7 +327,8 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
             
             {traderInfo && (
               <Card className="w-full rounded-lg bg-background p-6 shadow-lg">
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between"> */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-16 w-16">
                       <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
@@ -344,11 +345,13 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                     </div>
                   </div>
                   {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
-                  <Link href={`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`}>
-                    <Button>
-                      Copy Trade
-                    </Button> 
-                  </Link>
+                  <div className="mt-4 sm:mt-0">
+                    <Link href={`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`}>
+                      <Button className="w-full sm:w-auto sm:px-8">
+                        Copy
+                      </Button> 
+                    </Link>
+                  </div>
                 </div>
               </Card>
             )
