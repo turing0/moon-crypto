@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { BitGetHistoryOrder } from "@/app/(protected)/analysis/page"
 import { Loader2 } from "lucide-react"
+import { DashboardHeader } from "@/components/dashboard/header"
 
 async function getBitgetTrader(traderId: string) {
   try {
@@ -168,9 +169,13 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
         </Link>
       </div >
 
-      <h1 className="mb-6 text-2xl font-bold">Copy Trading: {traderInfo.traderName}</h1>
+      {/* <h1 className="mb-6 text-2xl font-bold">Copy Trading: {traderInfo.traderName}</h1> */}
+      <DashboardHeader
+        heading={`Copy Trading: ${traderInfo.traderName}`}
+        text=""
+      />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="apis"
@@ -226,7 +231,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
             )}
           />
 
-          <Tabs defaultValue="fixed" className="space-y-6" onValueChange={setActiveTab}>
+          <Tabs defaultValue="fixed" className="space-y-2" onValueChange={setActiveTab}>
             <div>
               <FormLabel className="text-lg">Mode</FormLabel>
             </div>
