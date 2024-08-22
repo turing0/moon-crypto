@@ -209,7 +209,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                           <>
                             <TableRow>
                               <TableCell colSpan={6} className="h-40 text-center">
-                                <div className="flex w-full h-full items-center justify-center">
+                                <div className="flex h-full w-full items-center justify-center">
                                   <p className="text-sm text-muted-foreground">
                                     No records found.
                                   </p>
