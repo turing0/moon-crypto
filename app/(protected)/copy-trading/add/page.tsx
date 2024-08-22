@@ -62,17 +62,31 @@ interface AddCopyTradePageProps {
 }
 
 export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps) {
-  const router = useRouter()
+  const router = useRouter();
+  const {data:session} = useSession();
   const [activeTab, setActiveTab] = React.useState('fixed');
   const [isAdvancedOpen, setIsAdvancedOpen] = React.useState(false);
   const [isCreatePending, startCreateTransition] = React.useTransition()
   const [userApi, setUserApi] = React.useState<any[]>([]);
   const [apiLoading, setApiLoading] = React.useState<boolean>(true);
   const [traderInfo, setTraderInfo] = React.useState<any>({});
-  
-  console.log("searchParams", searchParams)
+  const bitgetTraderIdParam = searchParams.bitgetTraderId
+  const [bitgetTraderId, setBitgetTraderId] = React.useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
+  const [isLoading, setIsLoading] = React.useState<boolean>(bitgetTraderId?true:false);
 
-  const {data:session} = useSession();
+  console.log("searchParams", searchParams)
+  // if (!bitgetTraderIdParam) {
+  //   router.push('/copy-trading')
+  //   return
+  // }
+  useEffect(() => {
+    if (!bitgetTraderIdParam) {
+      router.push('/copy-trading');
+    } else {
+      setBitgetTraderId(bitgetTraderIdParam);
+    }
+  }, [bitgetTraderIdParam, router]);
+
   useEffect(() => {
     if (!session?.user?.id) {
       // console.log('Session not loaded yet or user ID not available');
@@ -102,11 +116,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
 
     fetchUserApiData();
   }, [session]);
-
-  const bitgetTraderIdParam = searchParams.bitgetTraderId
   
-  const [bitgetTraderId, setBitgetTraderId] = React.useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
-  const [isLoading, setIsLoading] = React.useState<boolean>(bitgetTraderId?true:false);
 
   useEffect(() => {
     if (bitgetTraderId) {
@@ -149,7 +159,15 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
   }, [activeTab, form]);
 
   return (
-    <div className="container mx-auto p-6">
+    // <div className="container mx-auto p-6">
+    <>
+      <div className="text-sm text-gray-600 dark:text-gray-400">
+        <Link href="/copy-trading" className="mb-2 flex cursor-pointer items-center">
+          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <span>Explor Traders</span>
+        </Link>
+      </div >
+
       <h1 className="mb-6 text-2xl font-bold">Copy Trading: {traderInfo.traderName}</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -370,6 +388,6 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
           </div>
         </form>
       </Form>
-    </div>
+    </>
   )
 }

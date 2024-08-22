@@ -1,4 +1,4 @@
-<a href="https://next-saas-stripe-starter.vercel.app">
+<a href="https://mooncrpy.to">
   <img alt="Moon Crypto" src="public/_static/og.png">
 
   <h1 align="center">Moon Crypto</h1>

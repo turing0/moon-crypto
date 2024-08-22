@@ -289,9 +289,9 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     const id = formData.get('okxTraderId') as string;
     setOkxTraderId(id);
   };
-  const handleCopyTrade = () => {
-    router.push(`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`); // 替换成你要跳转的页面路径
-  };
+  // const handleCopyTrade = () => {
+  //   router.push(`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`);
+  // };
   
   return (
     <>
@@ -344,9 +344,11 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                     </div>
                   </div>
                   {/* <CopyTradeDialog traderId={bitgetTraderId} traderName={traderInfo['traderName']} userApi={[]} /> */}
-                  <Button onClick={handleCopyTrade}>
-                    Copy Trade
-                  </Button>
+                  <Link href={`/copy-trading/add?bitgetTraderId=${bitgetTraderId}`}>
+                    <Button>
+                      Copy Trade
+                    </Button> 
+                  </Link>
                 </div>
               </Card>
             )
