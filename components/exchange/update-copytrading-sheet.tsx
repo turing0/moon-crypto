@@ -304,7 +304,7 @@ export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopy
               </Tabs>
               
               <FormLabel className="text-base">Position Risk</FormLabel>
-              <div className="flex gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="takeProfit"
