@@ -133,7 +133,7 @@ export default function TradersPage() {
 
   const {data:session} = useSession();
   useEffect(() => {
-    if (!session?.user?.id) {
+    if (!session?.user?.id || !isLoading) {
       // console.log('Session not loaded yet or user ID not available');
       return;
     }
@@ -160,7 +160,6 @@ export default function TradersPage() {
 
     fetchUserApiData();
   }, [session]);
-
 
   // const user = await getCurrentUser();
   // if (!user) {
