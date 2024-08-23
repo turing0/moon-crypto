@@ -276,6 +276,39 @@ export async function getActiveCopyTradingPositions(copyTradingSettingId: string
       //     exchangeAccount: true,
       //   }, }
       // },
+      include: {
+        // copyTradingSetting: true,
+        exchangeAccount: {
+          select: {
+            accountName: true,
+            exchangeName: true,
+          }
+        }
+      }
+      
+    })
+
+    return positions
+  } catch (err) {
+    console.log(err)
+    return []
+  }
+}
+
+export async function getCopyTradingPositionHistory(copyTradingSettingId: string) {
+  noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Retrieve  
+    const positions = await prisma.copyTradingPositionHistory.findMany({
+      where: {
+        copyTradingSettingId: copyTradingSettingId,
+      },
     })
 
     return positions

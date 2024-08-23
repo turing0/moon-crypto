@@ -90,7 +90,8 @@ model ExchangeAccount {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   // copyTradingSettings CopyTradingSetting[]
   copyTradingAccount CopyTradingAccount[]
-  
+  activeCopyTradingPositions ActiveCopyTradingPosition[]
+
   @@index([userId])
   @@map(name: "exchange_accounts")
 }
@@ -133,6 +134,7 @@ model CopyTradingAccount {
 model ActiveCopyTradingPosition {
   id                    String   @id @default(cuid())
   copyTradingSettingId  String
+  exchangeAccountId     String
   symbol                String
   side                  String   // long, short
   entryPrice            Float
@@ -140,8 +142,9 @@ model ActiveCopyTradingPosition {
   leverage              Int?
   openTime              DateTime @default(now())
   copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
+  exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade) // New relation
 
-  @@index([copyTradingSettingId])
+  @@index([copyTradingSettingId, exchangeAccountId])
   @@map(name: "active_copy_trading_positions")
 }
 
