@@ -746,7 +746,7 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
   //   ),
   // },  
   {
-    header: "Exchange",
+    header: "API Name",
     cell: function Cell({ row }) {
       const datarow = row.original
 

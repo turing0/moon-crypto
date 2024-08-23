@@ -11,11 +11,12 @@ import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/table/data-table"
 import { bitgetCurrentOrderColumns, okxOrderColumns, orderColumns } from "@/components/table/columns"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Icons } from "@/components/shared/icons"
+import { Badge } from "@/components/ui/badge"
 
 // export const metadata = constructMetadata({
 //   title: "Analysis – MoonCrypto",
@@ -190,14 +191,14 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   const binanceTraderIdParam = searchParams.binanceTraderId
   const okxTraderIdParam = searchParams.okxTraderId
 
-  const [traderInfo, setTraderInfo] = useState<any>();
+  const [trader, setTrader] = useState<any>();
   const [bitgetHistoryOrder, setBitgetHistoryOrder] = useState<BitGetHistoryOrder[]>([]);
   const [bitgetCurrentOrder, setBitgetCurrentOrder] = useState<BitGetCurrentOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
   const [bitgetTraderId, setBitgetTraderId] = useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
   const [okxTraderId, setOkxTraderId] = useState<string>(okxTraderIdParam?okxTraderIdParam:'');
-  const [isLoading, setIsLoading] = useState<boolean>(bitgetTraderId?true:false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState<boolean>(bitgetTraderId?true:false);
   const [isCurrentOrderLoading, setIsCurrentOrderLoading] = useState<boolean>(bitgetTraderId?true:false);
 
   // const searchParams = useSearchParams()
@@ -234,14 +235,14 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     if (bitgetTraderId) {
       getBitgetTrader(bitgetTraderId).then(data => {
         if (data.length > 0) {
-          setTraderInfo(data[0]);
+          setTrader(data[0]);
           document.title = `${data[0]['traderName']} - Analysis – MoonCrypto`;
         }
       })
-      getBitgetHistoryOrder(bitgetTraderId).then(data => {
-        setBitgetHistoryOrder(data);
-        setIsLoading(false);
-      });
+      // getBitgetHistoryOrder(bitgetTraderId).then(data => {
+      //   setBitgetHistoryOrder(data);
+      //   setIsLoading(false);
+      // });
       // router.replace(`${pathname}?${newSearchParams.toString()}`, {
       router.replace(`${pathname}?bitgetTraderId=${bitgetTraderId}`, {
         scroll: false,
@@ -252,13 +253,28 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     if (okxTraderId) {
       getOkxHistoryOrder(okxTraderId).then(data => {
         setOkxOrder(data);
-        setIsLoading(false);
+        setIsHistoryLoading(false);
       });
       router.replace(`${pathname}?okxTraderId=${okxTraderId}`, {
         scroll: false,
       });
     }
   }, [okxTraderId]);
+
+  const getBitgetHistoryData = async () => {
+    if (!isHistoryLoading) {
+      return
+    }
+    try {
+      getBitgetHistoryOrder(bitgetTraderId).then(data => {
+        setBitgetHistoryOrder(data);
+      });
+    } catch (error) {
+      console.error('Error getBitgetHistoryData:', error);
+    } finally {
+      setIsHistoryLoading(false);
+    }
+  };
 
   const getActiveOrders = async () => {
     if (!bitgetTraderId) {
@@ -325,18 +341,23 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
               </form>
             </div>
             
-            {traderInfo && (
+            {trader==undefined ? (
+              <div className="flex h-40 w-full items-center justify-center">
+                <Icons.spinner className="size-8 animate-spin text-gray-500" />
+              </div>
+            ) : (
+              <>
               <Card className="w-full rounded-lg bg-background p-6 shadow-lg">
                 {/* <div className="flex items-center justify-between"> */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-16 w-16">
-                      <AvatarImage src={traderInfo['traderPic']} alt="John Doe" />
+                      <AvatarImage src={trader['traderPic']} alt="John Doe" />
                       <AvatarFallback>Avatar</AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
                       <div className="flex items-center">
-                        <h3 className="text-lg font-medium">{traderInfo['traderName']}</h3>
+                        <h3 className="text-lg font-medium">{trader['traderName']}</h3>
                         <Link href={`https://www.bitget.com/zh-CN/copy-trading/trader/${bitgetTraderId}/futures`} target="_blank">
                           <Icons.exteralLink className="ml-2 size-4 cursor-pointer" />
                         </Link>
@@ -354,58 +375,148 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   </div>
                 </div>
               </Card>
-            )
-            }
 
-            <Tabs2 defaultValue="orders">
-              <TabList>
-                <Tab value="overview">Overview</Tab>
-                <Tab value="orders">
-                  <div className="flex items-center">
-                    <p>Orders</p>
+              <Tabs2 defaultValue="overview">
+                <TabList>
+                  <Tab value="overview">Overview</Tab>
+                  <Tab value="orders" onClick={getBitgetHistoryData}>
+                    <div className="flex items-center">
+                      <p>Orders</p>
+                    </div>
+                  </Tab>
+                  {/* <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
+                </TabList>
+                <TabPanel value="overview">
+                  <div className="mx-auto">
+                    {/* <div className="flex items-center mb-6">
+                      <Avatar className="h-20 w-20 mr-4">
+                        <AvatarImage src={trader.traderPic} alt={trader.traderName} />
+                        <AvatarFallback>{trader.traderName[0]}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h1 className="text-3xl font-bold">{trader.traderName}</h1>
+                        <p className="text-gray-500">Trader ID: {trader.traderId}</p>
+                        <Badge variant={trader.traderStatus === "Yes" ? "default" : "destructive"}>
+                          {trader.traderStatus === "Yes" ? "Active" : "Inactive"}
+                        </Badge>
+                      </div>
+                    </div> */}
+
+                    <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                      {trader.columnList.map((item, index) => (
+                        <Card key={index}>
+                          <CardHeader>
+                            <CardTitle>{item.describe}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-2xl font-bold">{item.value}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+
+                    <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Total Followers</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">{trader.totalFollowers}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Win Rate</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">{trader.averageWinRate}%</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Total Trades</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">{trader.tradeCount}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Trading Days</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">{trader.tradeDays}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* <Card className="mb-6">
+                      <CardHeader>
+                        <CardTitle>Daily Profit Rate</CardTitle>
+                      </CardHeader>
+                      <CardContent className="h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={trader.dailyProfitRateList}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="cTime" tickFormatter={formatDate} />
+                            <YAxis />
+                            <Tooltip labelFormatter={formatDate} />
+                            <Line type="monotone" dataKey="rate" stroke="#8884d8" />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </CardContent>
+                    </Card> */}
+
+                    <div>
+                      <h2 className="mb-2 text-2xl font-bold">Asset allocation</h2>
+                      <div className="flex flex-wrap gap-2">
+                        {trader.currentTradingList.map((item, index) => (
+                          <Badge key={index} variant="outline">{item}</Badge>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </Tab>
-                {/* <Tab value={TabSections.Roles}>Organization Roles</Tab> */}
-              </TabList>
-              <TabPanel value="overview">
-                  Coming soon
-              </TabPanel>
-              <TabPanel value="orders">
-                <Tabs defaultValue="history" className="space-y-4" onValueChange={getActiveOrders}>
-                  <TabsList>
-                    <TabsTrigger value="history">History</TabsTrigger>
-                    <TabsTrigger value="current">Active trades</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="history" className="space-y-4">
-                    {isLoading ? (
-                      <div>
-                        <TableSkeleton />
-                      </div>
-                    ) : (
-                      <>
-                        <DataTable data={bitgetHistoryOrder} columns={orderColumns} />
-                      </>
-                    )}
-                  </TabsContent>
-                  <TabsContent value="current" className="space-y-4">
-                    {isCurrentOrderLoading ? (
-                      <div>
-                        <TableSkeleton />
-                      </div>
-                    ) : (
-                      <>
-                        <DataTable data={bitgetCurrentOrder} columns={bitgetCurrentOrderColumns} />
-                      </>
-                    )}
-                  </TabsContent>
-                </Tabs>
+                </TabPanel>
+                <TabPanel value="orders">
+                  <Tabs defaultValue="history" className="space-y-4">
+                    <TabsList>
+                      <TabsTrigger value="history">History</TabsTrigger>
+                      <TabsTrigger value="current" onClick={getActiveOrders}>Active trades</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="history" className="space-y-4">
+                      {isHistoryLoading ? (
+                        <div>
+                          <TableSkeleton />
+                        </div>
+                      ) : (
+                        <>
+                          <DataTable data={bitgetHistoryOrder} columns={orderColumns} />
+                        </>
+                      )}
+                    </TabsContent>
+                    <TabsContent value="current" className="space-y-4">
+                      {isCurrentOrderLoading ? (
+                        <div>
+                          <TableSkeleton />
+                        </div>
+                      ) : (
+                        <>
+                          <DataTable data={bitgetCurrentOrder} columns={bitgetCurrentOrderColumns} />
+                        </>
+                      )}
+                    </TabsContent>
+                  </Tabs>
 
-              </TabPanel>
-              {/* <TabPanel value={TabSections.Roles}>
-                Roles
-              </TabPanel> */}
-            </Tabs2>
+                </TabPanel>
+                {/* <TabPanel value={TabSections.Roles}>
+                  Roles
+                </TabPanel> */}
+              </Tabs2>
+
+              </>
+            )}
+
           </TabsContent>
 
           <TabsContent value="binance" className="space-y-4">
