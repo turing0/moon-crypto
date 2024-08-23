@@ -423,9 +423,8 @@ export default function ManageCopyTradingPage() {
   // }
   const {data:session, status} = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isEndedLoading, setIsEndedLoading] = useState<boolean>(true);
   const [data, setData] = useState<any[]>([]);
-  const [endedData, setEndedData] = useState<any[]>([]);
+  const [endedData, setEndedData] = useState<any[] | undefined>(undefined);
 
   // if (!session || !session.user) {
   //   redirect("/login");
@@ -456,18 +455,15 @@ export default function ManageCopyTradingPage() {
   }, [fetchData]);
 
   const getEndedData = async () => {
-    if (!isEndedLoading) {
+    if (endedData) {
       return
     }
-    // setIsEndedLoading(true);
     try {
       const data = await getCopyTradingSetting(session?.user?.id!, "ended");
       // console.log("ended data:", data)
       setEndedData(data);
     } catch (error) {
       console.error('Error getEndedData:', error);
-    } finally {
-      setIsEndedLoading(false);
     }
   };
 
@@ -584,35 +580,31 @@ export default function ManageCopyTradingPage() {
 
           </TabPanel>
           <TabPanel value="closed">
-            {isEndedLoading ? (
+            {endedData===undefined ? (
               <div className="flex h-40 items-center justify-center">
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
               </div>
-              ) : (
-              <>
-                {endedData && endedData.length > 0 ? (
-                  <div className="space-y-4">
-                    {endedData.map((ctSetting, index) => (
-                      <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
-                    ))}
+            ) : endedData.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    No records.
+                  </p>
+                  <div>
+                    <Link href="/copy-trading">
+                      <Button>
+                        Find Best Traders
+                      </Button>
+                    </Link>
                   </div>
-                ) : (
-                  <Card>
-                    <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                      <p className="text-sm text-muted-foreground">
-                        No records.
-                      </p>
-                      <div>
-                        <Link href="/copy-trading">
-                          <Button>
-                            Find Best Traders
-                          </Button>
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-              </>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {endedData.map((ctSetting, index) => (
+                  <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
+                ))}
+              </div>
             )}
           </TabPanel>
           {/* <TabPanel value="roles">
