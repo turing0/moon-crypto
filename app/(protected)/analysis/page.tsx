@@ -115,7 +115,7 @@ async function getBitgetTrader(traderId: string) {
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
-    const {data, pageCount} = await response.json() as { data: BitGetHistoryOrder[], pageCount: number }
+    const {data, pageCount} = await response.json() as { data: any[], pageCount: number }
     console.log("getBitgetTrader data:", data);
     
     return data;
@@ -192,13 +192,12 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   const okxTraderIdParam = searchParams.okxTraderId
 
   const [trader, setTrader] = useState<any>(undefined);
-  const [bitgetHistoryOrder, setBitgetHistoryOrder] = useState<BitGetHistoryOrder[]>([]);
+  const [bitgetHistoryOrder, setBitgetHistoryOrder] = useState<BitGetHistoryOrder[] | undefined>(undefined);
   const [bitgetCurrentOrder, setBitgetCurrentOrder] = useState<BitGetCurrentOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
   const [okxOrder, setOkxOrder] = useState<OkxHistoryOrder[]>([]);
   const [bitgetTraderId, setBitgetTraderId] = useState<string>(bitgetTraderIdParam?bitgetTraderIdParam:'');
   const [okxTraderId, setOkxTraderId] = useState<string>(okxTraderIdParam?okxTraderIdParam:'');
-  const [isHistoryLoading, setIsHistoryLoading] = useState<boolean>(bitgetTraderId?true:false);
   const [isCurrentOrderLoading, setIsCurrentOrderLoading] = useState<boolean>(bitgetTraderId?true:false);
 
   // const searchParams = useSearchParams()
@@ -256,7 +255,6 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     if (okxTraderId) {
       getOkxHistoryOrder(okxTraderId).then(data => {
         setOkxOrder(data);
-        setIsHistoryLoading(false);
       });
       router.replace(`${pathname}?okxTraderId=${okxTraderId}`, {
         scroll: false,
@@ -265,7 +263,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   }, [okxTraderId]);
 
   const getBitgetHistoryData = async () => {
-    if (!isHistoryLoading) {
+    if (bitgetHistoryOrder) {
       return
     }
     try {
@@ -274,8 +272,6 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
       });
     } catch (error) {
       console.error('Error getBitgetHistoryData:', error);
-    } finally {
-      setIsHistoryLoading(false);
     }
   };
 
@@ -494,7 +490,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                     </TabsList>
                     
                     <TabsContent value="history" className="space-y-4">
-                      {isHistoryLoading ? (
+                      {bitgetHistoryOrder===undefined ? (
                         <div>
                           <TableSkeleton />
                         </div>

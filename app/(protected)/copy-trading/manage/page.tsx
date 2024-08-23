@@ -2,7 +2,6 @@
 
 import { getActiveCopyTradingPositions, getCopyTradingSetting } from "@/actions/copy-trading";
 import { copyTradingSettingColumns } from "@/components/table/columns";
-import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/v2/tabs/tabs";
@@ -104,7 +103,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <p><strong>Realized PNL:</strong> <PNLDisplay pnl={ctSetting.rpnl} /> USDT </p>
             <p><strong>Followed APIs:</strong>{' '}
               {ctSetting.followedApis.map((api, index) => (
-                  <span>{api.exchangeAccount.accountName}{' '}</span>
+                  <span key={index}>{api.exchangeAccount.accountName}{' '}</span>
               ))}
             </p>
           </div>
@@ -284,7 +283,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   );
 };
 
-const EndedTraderCard = ({ trader, onSuccess  }) => {
+const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -294,22 +293,22 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
         <DeleteCopyTradingDialog
           open={showDeleteDialog}
           onOpenChange={setShowDeleteDialog}
-          tasks={[trader]}
+          tasks={[ctSetting]}
           showTrigger={false}
           onSuccess={onSuccess}
         />
         <div className="flex items-center justify-between">
-        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(trader.traderId)}`} className="block" target="_blank">
+        <Link href={`/analysis?bitgetTraderId=${encodeURIComponent(ctSetting.traderId)}`} className="block" target="_blank">
           <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
-              <AvatarImage src={trader.avatarUrl} alt={trader.traderName} />
+              <AvatarImage src={ctSetting.avatarUrl} alt={ctSetting.traderName} />
               {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
             </Avatar>
             <div>
-              <CardTitle>{trader.traderName}</CardTitle>
+              <CardTitle>{ctSetting.traderName}</CardTitle>
               <CardDescription className="mt-1 flex items-center">
                 {/* <CalendarIcon className="mr-1 h-4 w-4" /> */}
-                {trader.createdAt.toLocaleString('zh-CN', {
+                {ctSetting.createdAt.toLocaleString('zh-CN', {
                   year: 'numeric',
                   month: '2-digit',
                   day: '2-digit',
@@ -318,7 +317,7 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
                   hour12: false
                 })}
                 {" - "}
-                {trader.endDate.toLocaleString('zh-CN', {
+                {ctSetting.endDate.toLocaleString('zh-CN', {
                   year: 'numeric',
                   month: '2-digit',
                   day: '2-digit',
@@ -341,20 +340,20 @@ const EndedTraderCard = ({ trader, onSuccess  }) => {
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={trader.rpnl} /> USDT </p>
+            <p><strong>Realized PNL:</strong> <PNLDisplay pnl={ctSetting.rpnl} /> USDT </p>
             <p><strong>Followed APIs:</strong>{' '}
-              {trader.followedApis.map((api, index) => (
-                  <span>{api.exchangeAccount.accountName}{' '}</span>
+              {ctSetting.followedApis.map((api, index) => (
+                  <span key={index}>{api.exchangeAccount.accountName}{' '}</span>
               ))}
             </p>
           </div>
           <div>
             <p><strong>Mode:</strong> {" "}
-              {trader.fixedAmount && (
-                <>Fixed: {trader.fixedAmount} USDT</>
+              {ctSetting.fixedAmount && (
+                <>Fixed: {ctSetting.fixedAmount} USDT</>
               )}
-              {trader.multiplierAmount && (
-                <>Multiplier: {trader.multiplierAmount} X</>
+              {ctSetting.multiplierAmount && (
+                <>Multiplier: {ctSetting.multiplierAmount} X</>
               )}
             </p>
             {/* <p><strong>Risk Level:</strong> {trader.riskLevel}</p> */}
@@ -504,10 +503,10 @@ export default function ManageCopyTradingPage() {
         text=""
       /> */}
       <div className='overflow-x-auto'>
-        <Tabs defaultValue="ongoing" onValueChange={getEndedData}>
+        <Tabs defaultValue="ongoing">
           <TabList>
             <Tab value="ongoing">Ongoing</Tab>
-            <Tab value="closed">Closed</Tab>
+            <Tab value="closed" onClick={getEndedData}>Closed</Tab>
             {/* <Tab value="identities">
               <div className="flex items-center">
                 <p>Machine Identities</p>
@@ -556,7 +555,7 @@ export default function ManageCopyTradingPage() {
                   {data && data.length > 0 ? (
                     <div className="space-y-4">
                       {data.map((ctSetting, index) => (
-                        <TraderCard key={index} ctSetting={ctSetting} onSuccess={fetchData} />
+                        <TraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
                       ))}
                     </div>
                   ) : (
@@ -593,8 +592,8 @@ export default function ManageCopyTradingPage() {
               <>
                 {endedData && endedData.length > 0 ? (
                   <div className="space-y-4">
-                    {endedData.map((trader, index) => (
-                      <EndedTraderCard key={index} trader={trader} onSuccess={fetchData} />
+                    {endedData.map((ctSetting, index) => (
+                      <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
                     ))}
                   </div>
                 ) : (
