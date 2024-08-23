@@ -159,6 +159,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>API Name</TableHead>
                         <TableHead>Symbol</TableHead>
                         <TableHead>Size</TableHead>
                         <TableHead>Entry Price</TableHead>
@@ -170,7 +171,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                     <TableBody>
                       {isActiveLoading ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="h-40 text-center">
+                          <TableCell colSpan={7} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
                               <Icons.spinner className="size-8 animate-spin text-gray-500" />
                             </div>
@@ -182,6 +183,14 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                           <>
                           {activePositionData.map((position, index) => (
                             <TableRow key={index}>
+                              <TableCell>
+                                <div className="max-w-xs truncate">
+                                  {position.exchangeAccount.accountName}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {position.exchangeAccount.exchangeName}
+                                </div>
+                              </TableCell>
                               <TableCell>
                                 <div className="max-w-xs truncate">
                                   {position.symbol}
@@ -202,13 +211,14 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                 </TableCell>
                               <TableCell>{position.currentPrice}</TableCell>
                               <TableCell>{position.pnl}</TableCell>
+                              <TableCell></TableCell>
                             </TableRow>
                           ))}
                           </>
                         ) : (
                           <>
                             <TableRow>
-                              <TableCell colSpan={6} className="h-40 text-center">
+                              <TableCell colSpan={7} className="h-40 text-center">
                                 <div className="flex h-full w-full items-center justify-center">
                                   <p className="text-sm text-muted-foreground">
                                     No records found.
