@@ -191,7 +191,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
   const binanceTraderIdParam = searchParams.binanceTraderId
   const okxTraderIdParam = searchParams.okxTraderId
 
-  const [trader, setTrader] = useState<any>();
+  const [trader, setTrader] = useState<any>(undefined);
   const [bitgetHistoryOrder, setBitgetHistoryOrder] = useState<BitGetHistoryOrder[]>([]);
   const [bitgetCurrentOrder, setBitgetCurrentOrder] = useState<BitGetCurrentOrder[]>([]);
   // const [binanceOrder, setBinanceOrder] = useState<BinanceHistoryOrder[]>([]);
@@ -237,6 +237,9 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
         if (data.length > 0) {
           setTrader(data[0]);
           document.title = `${data[0]['traderName']} - Analysis – MoonCrypto`;
+        } else {
+          setTrader([]);
+          document.title = `Analysis – MoonCrypto`;
         }
       })
       // getBitgetHistoryOrder(bitgetTraderId).then(data => {
@@ -341,9 +344,15 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
               </form>
             </div>
             
-            {trader==undefined ? (
+            {trader===undefined ? (
               <div className="flex h-40 w-full items-center justify-center">
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
+              </div>
+            ) : trader.length === 0 ? (
+              <div className="flex h-40 w-full flex-col items-center justify-center text-gray-500">
+                {/* <Icons.alertTriangle className="w-8 h-8 mb-2 text-red-500" /> */}
+                <p className="text-lg font-semibold">No Data Available</p>
+                <p className="text-sm">Please check bitgetTraderId and try again.</p>
               </div>
             ) : (
               <>
@@ -509,9 +518,6 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   </Tabs>
 
                 </TabPanel>
-                {/* <TabPanel value={TabSections.Roles}>
-                  Roles
-                </TabPanel> */}
               </Tabs2>
 
               </>
