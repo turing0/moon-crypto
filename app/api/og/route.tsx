@@ -26,11 +26,12 @@ export async function GET(req: Request) {
         : values.heading
 
     const { mode } = values
+    console.log("values.heading.length", values.heading.length)
     const paint = mode === "dark" ? "#fff" : "#000"
 
     const fontSize = heading.length > 80 ? "60px" : "80px"
 
-    const githubName = "mickasmt";
+    const githubName = "turing0";
 
     return new ImageResponse(
       (
@@ -86,7 +87,7 @@ export async function GET(req: Request) {
               style={{ fontFamily: "Inter", fontWeight: "normal" }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              {/* <img
                 alt="avatar"
                 width="65"
                 src={`https://github.com/${githubName}.png`}
@@ -103,14 +104,14 @@ export async function GET(req: Request) {
                   {githubName}
                 </div>
                 <div>Open Source Designer</div>
-              </div>
+              </div> */}
             </div>
 
             <div
               tw="flex items-center text-xl"
               style={{ fontFamily: "Inter", fontWeight: "normal" }}
             >
-              <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+              {/* <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
                 <path
                   d="M30 44v-8a9.6 9.6 0 0 0-2-7c6 0 12-4 12-11 .16-2.5-.54-4.96-2-7 .56-2.3.56-4.7 0-7 0 0-2 0-6 3-5.28-1-10.72-1-16 0-4-3-6-3-6-3-.6 2.3-.6 4.7 0 7a10.806 10.806 0 0 0-2 7c0 7 6 11 12 11a9.43 9.43 0 0 0-1.7 3.3c-.34 1.2-.44 2.46-.3 3.7v8"
                   stroke={paint}
@@ -125,8 +126,12 @@ export async function GET(req: Request) {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
+              </svg> */}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-link">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
               </svg>
-              <div tw="flex ml-2">github.com/mickasmt/next-saas-stripe-starter</div>
+              <div tw="flex ml-2">mooncryp.to</div>
             </div>
           </div>
         </div>
