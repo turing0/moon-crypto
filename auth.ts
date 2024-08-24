@@ -2,10 +2,11 @@ import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 import NextAuth, { type DefaultSession } from "next-auth";
-
+import { Adapter} from "next-auth/adapters";
 import { prisma } from "@/lib/db";
 import { getUserById } from "@/lib/user";
 import { headers } from "next/headers";
+import { generateUserId } from "./lib/utils";
 
 // More info: https://authjs.dev/getting-started/typescript#module-augmentation
 declare module "next-auth" {
@@ -20,7 +21,46 @@ export const {
   handlers: { GET, POST },
   auth,
 } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
+  adapter: {
+    ...PrismaAdapter(prisma),
+    createUser: async (data) => {
+      console.log("default createUser", data);
+      let userId: string;
+      let user: any;
+      let attempts = 0;
+      const maxAttempts = 3;
+      while (!user && attempts < maxAttempts) {
+        try {
+          userId = generateUserId(data.email);
+          user = await prisma.user.create({
+            data: {
+              ...data,
+              id: userId,
+            },
+          });
+    
+          console.log("User created successfully:", user);
+          return user;
+        } catch (error) {
+          if ((error as any).code === 'P2002') {
+            console.log("Duplicate ID detected, retrying...");
+            attempts++;
+          } else {
+            throw error;
+          }
+        }
+      }
+
+      console.log("All attempts failed, using cuid as userId");
+      return prisma.user.create({
+        data: {
+          ...data,
+          id: crypto.randomUUID(),
+        },
+      });
+    },
+  } as Adapter,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
