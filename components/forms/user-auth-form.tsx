@@ -80,7 +80,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
             )}
           </div>
           {/* <button className={cn(buttonVariants())} disabled={isLoading}> */}
-          <button className={cn(buttonVariants())} disabled>
+          <button className={cn(buttonVariants())} onClick={() => alert("Please use Google to sign in")}>
             {isLoading && (
               <Icons.spinner className="mr-2 size-4 animate-spin" />
             )}
