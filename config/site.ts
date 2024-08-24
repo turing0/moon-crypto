@@ -13,6 +13,11 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/nosnos0408",
     github: "https://github.com/turing0/moon-crypto",
   },
+  icons: {
+    icon: "/_static/favicons/favicon.ico",
+    shortcut: "/_static/favicons/favicon-16x16.png",
+    apple: "/_static/favicons/apple-touch-icon.png",
+  },
   mailSupport: "support@mooncryp.to",
 };
 

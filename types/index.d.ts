@@ -49,6 +49,7 @@ export type SiteConfig = {
   url: string;
   ogImage: string;
   mailSupport: string;
+  icons: any;
   links: {
     twitter: string;
     github: string;
