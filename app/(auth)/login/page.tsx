@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <Alert className="!pl-14">
           <Icons.warning />
           <AlertTitle>Please use Google sign in.</AlertTitle>
@@ -24,7 +24,7 @@ export default function LoginPage() {
             Currently not support email login.{" "}
           </AlertDescription>
         </Alert>
-      </div>
+      </div> */}
       
       <Link
         href="/"

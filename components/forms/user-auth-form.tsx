@@ -79,7 +79,8 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
               </p>
             )}
           </div>
-          <button className={cn(buttonVariants())} disabled={isLoading}>
+          {/* <button className={cn(buttonVariants())} disabled={isLoading}> */}
+          <button className={cn(buttonVariants())} disabled>
             {isLoading && (
               <Icons.spinner className="mr-2 size-4 animate-spin" />
             )}
