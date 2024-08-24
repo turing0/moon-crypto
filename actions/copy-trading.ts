@@ -17,7 +17,6 @@ export async function createCopyTradingAPI(traderId: string, traderName: string,
     
     const data: any = {
       userId: session?.user.id,
-      // userId: "clyd0tn8l00006iyf02pppphd",
       traderName: traderName,
       traderId: traderId,
       avatarUrl: avatarUrl,

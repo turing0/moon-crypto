@@ -42,6 +42,19 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
       callbackUrl: searchParams?.get("from") || "/dashboard",
     });
 
+    // Send the POST request to your API route
+    // const response = await fetch('/api/send', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     toEmail: data.email.toLowerCase(),
+    //   }),
+    // });
+    // const signInResult = await response.json();
+
+    console.log("signInResult", signInResult)
     setIsLoading(false);
 
     if (!signInResult?.ok) {
