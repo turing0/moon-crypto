@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: 'MoonCrypto <notify@mooncryp.to>',
       to: [toEmail],
-      subject: 'Hello world',
+      subject: 'Sign in to MoonCrypto',
       react: MagicLinkEmail({ 
         firstName: 'John',
         actionUrl: 'https://mooncryp.to',
