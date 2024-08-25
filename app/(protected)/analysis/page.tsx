@@ -341,9 +341,17 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
             </div>
             
             {trader===undefined ? (
-              <div className="flex h-40 w-full items-center justify-center">
-                <Icons.spinner className="size-8 animate-spin text-gray-500" />
-              </div>
+              <>
+                {bitgetTraderId ? (
+                  <div className="flex h-40 w-full items-center justify-center">
+                    <Icons.spinner className="size-8 animate-spin text-gray-500" />
+                  </div>
+                ) : (
+                  <div>
+
+                  </div>
+                )}
+              </>
             ) : trader.length === 0 ? (
               <div className="flex h-40 w-full flex-col items-center justify-center text-gray-500">
                 {/* <Icons.alertTriangle className="w-8 h-8 mb-2 text-red-500" /> */}
