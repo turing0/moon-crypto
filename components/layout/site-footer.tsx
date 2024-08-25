@@ -4,14 +4,8 @@ import Link from "next/link";
 import { footerLinks, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/layout/mode-toggle";
-
 import { NewsletterForm } from "../forms/newsletter-form";
 import { Icons } from "../shared/icons";
-
-const socialLinks = [
-  { icon: Icons.twitter, href: 'https://twitter.com/yourcompany' },
-  { icon: Icons.twitter, href: 'https://linkedin.com/company/yourcompany' },
-];
 
 export function SiteFooter({ className, showLinks = false }: React.HTMLAttributes<HTMLElement >& { showLinks?: boolean }) {
   return (
@@ -104,23 +98,27 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
             </Link> */}
           </p>
 
-          <div className="flex items-center gap-3">
-            {/* <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              <Icons.gitHub className="size-5" />
-            </Link> */}
-            {/* <div className="flex space-x-4">
-              {socialLinks.map((link, index) => (
-                <Link key={index} href={link.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                  <link.icon className="h-5 w-5" />
-                  <span className="sr-only">{link.icon.name}</span>
-                </Link>
-              ))}
-            </div> */}
+          <div className="flex items-center gap-2">
+            <div className="flex space-x-4">
+              {/* <Link href="https://twitter.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
+                <Icons.telegram className="size-5" />
+              </Link> */}
+              <Link href="#" target="_blank" rel="noreferrer" className="">
+                <Icons.telegram className="size-5" />
+              </Link>
+              <Link href="#" target="_blank" rel="noreferrer" className="font-medium underline underline-offset-4">
+                <Icons.twitter className="size-5" />
+              </Link>
+              {/* <Link
+                href={siteConfig.links.github}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium underline underline-offset-4"
+              >
+                <Icons.gitHub className="size-5" />
+              </Link> */}
+            </div>
+            <div className="ml-2 h-6 border-l"></div>
             <ModeToggle />
           </div>
         </div>
