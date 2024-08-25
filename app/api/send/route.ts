@@ -12,12 +12,13 @@ export async function POST(request: NextRequest) {
       from: from || 'MoonCrypto <notify@mooncryp.to>',
       to: [to],
       subject: subject || 'default subject',
-      react: react || MagicLinkEmail({ 
-        firstName: 'John',
-        actionUrl: 'https://mooncryp.to',
-        mailType: 'login',
-        siteName: 'MoonCrypto',
-    }),
+      react: react,
+      // react: react || MagicLinkEmail({ 
+      //   firstName: 'John',
+      //   actionUrl: 'https://mooncryp.to',
+      //   mailType: 'login',
+      //   siteName: 'MoonCrypto',
+      // }),
     });
 
     if (error) {
