@@ -7,6 +7,7 @@ import Powered from "@/components/sections/powered";
 import PreviewLanding from "@/components/sections/preview-landing";
 import Testimonials from "@/components/sections/testimonials";
 import Exchanges from "@/components/sections/exchanges";
+import FinalCTA from "@/components/sections/final-cta";
 
 export default function IndexPage() {
   return (
@@ -21,6 +22,7 @@ export default function IndexPage() {
       <InfoLanding data={infos[1]} />
       <Features />
       {/* <Testimonials /> */}
+      <FinalCTA />
     </>
   );
 }
