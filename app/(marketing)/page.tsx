@@ -17,8 +17,7 @@ export default function IndexPage() {
       {/* <Powered /> */}
       <Exchanges />
       <BentoGrid />
-      {/* <InfoLanding data={infos[0]} reverse={true} /> */}
-      {/* <InfoLanding data={infos[1]} /> */}
+      <InfoLanding data={infos[0]} reverse={true} />
       <InfoLanding data={infos[1]} />
       <Features />
       {/* <Testimonials /> */}

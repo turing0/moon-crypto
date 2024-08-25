@@ -10,7 +10,8 @@ export default function FinalCTA() {
     <section className="from-primary/10 via-primary/5 to-background py-10 sm:py-16">
       <div className="container flex max-w-5xl flex-col items-center text-center">
         <h2 className="mb-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-          Expert Moves, Your Gains
+          {/* Expert Moves, Your Gains */}
+          Ready, Set, Auto Trading!
         </h2>
         <p className="mb-6 max-w-2xl text-balance text-muted-foreground sm:text-xl sm:leading-8">
           Copy top traders. Optimize your strategy. Boost your returns.
