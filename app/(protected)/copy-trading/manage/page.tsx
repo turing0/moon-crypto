@@ -489,7 +489,7 @@ export default function ManageCopyTradingPage() {
   return (
     <>
       <div className="text-sm text-gray-600 dark:text-gray-400">
-        <Link href="/copy-trading" className="mb-2 flex cursor-pointer items-center">
+        <Link href="/copy-trading" className="mb-2 inline-flex cursor-pointer items-center">
           <Icons.arrowLeft className="mr-1 h-4 w-4" />
           <span>Copy Trading</span>
         </Link>
