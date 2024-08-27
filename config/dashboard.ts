@@ -14,12 +14,6 @@ export const sidebarLinks: SidebarNavItem[] = [
       },
       { href: "/dashboard", icon: "dashboard", title: "Dashboard" },
       { href: "/exchanges", icon: "arrowRightLeft", title: "Exchanges" },
-      {
-        href: "/billing",
-        icon: "billing",
-        title: "Billing",
-        authorizeOnly: UserRole.USER,
-      },
       // { href: "/dashboard/charts", icon: "lineChart", title: "Charts" },
       {
         href: "/admin/orders",
@@ -30,7 +24,12 @@ export const sidebarLinks: SidebarNavItem[] = [
       },
       { href: "/copy-trading", icon: "candlestickChart", title: "Copy Trading" },
       { href: "/analysis", icon: "lineChart", title: "Analysis" },
-
+      // {
+      //   href: "/billing",
+      //   icon: "billing",
+      //   title: "Billing",
+      //   authorizeOnly: UserRole.USER,
+      // },
       // {
       //   href: "#/dashboard/posts",
       //   icon: "post",
@@ -43,6 +42,12 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "OPTIONS",
     items: [
+      {
+        href: "/billing",
+        icon: "billing",
+        title: "Billing",
+        authorizeOnly: UserRole.USER,
+      },
       { href: "/settings", icon: "settings", title: "Settings" },
       // { href: "/", icon: "home", title: "Homepage" },
       // { href: "/docs", icon: "bookOpen", title: "Documentation" },
