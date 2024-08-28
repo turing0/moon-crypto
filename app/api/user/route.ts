@@ -13,6 +13,8 @@ export const DELETE = auth(async (req) => {
   }
 
   try {
+    // TODO: stop all copy trading
+
     await prisma.user.delete({
       where: {
         id: currentUser.id,

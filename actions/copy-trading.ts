@@ -197,10 +197,11 @@ export async function stopCopyTradingSetting(input: { ids: string[] }) {
       },
     })
 
+    // TODO: 市价全平仓位
+
     revalidatePath("/copy-trading/manage")
 
-    // Call the function to fetch Redis update
-    await redisUpdate([input.ids[0]], undefined);
+    await redisDelete([input.ids[0]]);
     
     return {
       data: null,
