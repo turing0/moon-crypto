@@ -141,6 +141,7 @@ model ActiveCopyTradingPosition {
   entryPrice            Float
   size                  Float
   leverage              Int?
+  error                 String?
   openTime              DateTime @default(now())
   copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
   exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade) // New relation

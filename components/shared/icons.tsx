@@ -54,6 +54,7 @@ export type Icon = LucideIcon;
 
 export const Icons = {
   add: Plus,
+  alertTriangle: AlertTriangle,
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   arrowUpRight: ArrowUpRight,
