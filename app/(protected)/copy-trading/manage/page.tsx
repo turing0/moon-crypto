@@ -181,7 +181,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                         {activePositionData && activePositionData.length>0 ? (
                           <>
                           {activePositionData.map((position, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={index} className={position.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
                               <TableCell>
                                 <div className="max-w-xs truncate">
                                   {position.exchangeAccount.accountName}
@@ -201,16 +201,29 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                   {position.side}
                                 </div>
                               </TableCell>
-                              <TableCell>{position.size}</TableCell>
-                              <TableCell>
-                                {position.entryPrice}USDT
-                                <div className="text-xs text-gray-500">
-                                  {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
-                                </div>
+
+                              {position.error ? (
+                                <TableCell colSpan={5} className="p-2 text-red-600 dark:text-red-400">
+                                  <div className="flex items-center">
+                                    {/* <Icons.alertTriangle className="mr-2 size-8" /> */}
+                                    <span>Error: {position.error}</span>
+                                  </div>
                                 </TableCell>
-                              <TableCell>{position.currentPrice}</TableCell>
-                              <TableCell>{position.pnl}</TableCell>
-                              <TableCell></TableCell>
+                              ) : (
+                                <>
+                                  <TableCell>{position.size}</TableCell>
+                                  <TableCell>
+                                    {position.entryPrice}USDT
+                                    <div className="text-xs text-gray-500">
+                                      {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell>{position.currentPrice}</TableCell>
+                                  <TableCell>{position.pnl}</TableCell>
+                                  <TableCell></TableCell>
+                                </>
+                              )}
+                              
                             </TableRow>
                           ))}
                           </>

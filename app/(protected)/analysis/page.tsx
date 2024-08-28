@@ -365,8 +365,10 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-16 w-16">
-                      <AvatarImage src={trader['traderPic']} alt="John Doe" />
-                      <AvatarFallback>Avatar</AvatarFallback>
+                      <AvatarImage src={trader['traderPic']} alt="Trader Avatar" />
+                      <AvatarFallback className="text-violet11 text-[25px]">
+                        {trader['traderName'][0]}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="space-y-1">
                       <div className="flex items-center">
