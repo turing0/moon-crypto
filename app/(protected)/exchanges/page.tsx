@@ -53,7 +53,6 @@ export default async function ExchangePage() {
       <div className="flex items-center justify-between">
         <DashboardHeader
           heading="Exchanges"
-          // text="Create and manage exchange accounts."
         />
         <CreateExchangeDialog userid={user?.id} ipdata={whitelistIPs} />
       </div>
@@ -64,7 +63,7 @@ export default async function ExchangePage() {
         {data && data.length > 0 ? (
           <DataTable data={data} columns={exchangeApiInfoColumns} />
         ) : (
-          <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
+          <div className="rounded-lg border border-gray-300 dark:border-gray-700">
             <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
               <div className="space-y-2">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{"You don't have any exchange APIs yet"}</h3>

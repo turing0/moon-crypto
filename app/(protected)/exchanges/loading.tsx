@@ -6,10 +6,10 @@ export default function DashboardLoading() {
     <>
       <DashboardHeader
         heading="Exchanges"
-        // text=""
+        // text="Create and manage exchange accounts."
       />
       <div className="divide-border-200 divide-y rounded-md border">
-        <Skeleton className="h-[400px] w-full rounded-lg" />
+        <Skeleton className="h-80 w-full rounded-lg" />
       </div>
     </>
   );
