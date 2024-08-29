@@ -163,11 +163,6 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
               <TabList>
                 <Tab value="positions">Positions</Tab>
                 <Tab value="histroy" onClick={getPostionHistory}>Position History</Tab>
-                {/* <Tab value="order">
-                  <div className="flex items-center">
-                    <p>order</p>
-                  </div>
-                </Tab> */}
               </TabList>
 
               <TabPanel value="positions">
@@ -252,11 +247,6 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                 No records found.
                               </p>
                             </div>
-                            {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                              <p className="text-sm text-muted-foreground">
-                                No records found.
-                              </p>
-                            </CardContent> */}
                           </TableCell>
                         </TableRow>
                       )}
@@ -324,25 +314,10 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                 No records found.
                               </p>
                             </div>
-                            {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                              <p className="text-sm text-muted-foreground">
-                                No records found.
-                              </p>
-                            </CardContent> */}
                           </TableCell>
                         </TableRow>
                       )}
 
-                      {/* {trader.historicalPositions.map((position, index) => (
-                        <TableRow key={index}>
-                          <TableCell>position.symbol</TableCell>
-                          <TableCell>position.entryDate</TableCell>
-                          <TableCell>position.exitDate</TableCell>
-                          <TableCell>position.entryPrice</TableCell>
-                          <TableCell>position.exitPrice</TableCell>
-                          <TableCell>position.pnl</TableCell>
-                        </TableRow>
-                      ))} */}
                     </TableBody>
                   </Table>
                 </div>
@@ -651,13 +626,8 @@ export default function ManageCopyTradingPage() {
               </Card>
             )}
           </TabPanel>
-          {/* <TabPanel value="roles">
-            Roles
-          </TabPanel> */}
         </Tabs>
-
       </div>
-      
     </>
   );
 }

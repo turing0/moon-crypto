@@ -316,6 +316,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
           <span>Explore Traders</span>
         </Link>
       </div >
+
       <div className="overflow-x-auto">
       {/* <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex"> */}
         <Tabs defaultValue={defaultTabValue} className="space-y-4">
@@ -325,6 +326,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
             <TabsTrigger value="binance">Binance</TabsTrigger>
             <TabsTrigger value="okx">OKX</TabsTrigger>
           </TabsList>
+          
           <TabsContent value="bitget" className="space-y-4">
             {/* <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
             <div>
@@ -352,13 +354,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   </div>
                 )}
               </>
-            ) : trader.length === 0 ? (
-              <div className="flex h-40 w-full flex-col items-center justify-center text-gray-500">
-                {/* <Icons.alertTriangle className="w-8 h-8 mb-2 text-red-500" /> */}
-                <p className="text-lg font-semibold">No Data Available</p>
-                <p className="text-sm">Please check bitgetTraderId and try again.</p>
-              </div>
-            ) : (
+            ) : trader['traderId'] ? (
               <>
               <Card className="w-full rounded-lg bg-background p-6 shadow-lg">
                 {/* <div className="flex items-center justify-between"> */}
@@ -525,8 +521,13 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
 
                 </TabPanel>
               </Tabs2>
-
               </>
+            ) : (
+              <div className="flex h-40 w-full flex-col items-center justify-center text-gray-500">
+                {/* <Icons.alertTriangle className="w-8 h-8 mb-2 text-red-500" /> */}
+                <p className="text-lg font-semibold">No Data Available</p>
+                <p className="text-sm">Please check bitgetTraderId and try again.</p>
+              </div>
             )}
 
           </TabsContent>
