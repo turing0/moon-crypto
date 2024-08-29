@@ -73,8 +73,8 @@ export function DeleteCopyTradingDialog({
                 }
 
                 props.onOpenChange?.(false)
-                toast.success("Stopped")
                 onSuccess?.()
+                toast.success("Stopped")
               })
             }}
             disabled={isDeletePending}
