@@ -10,7 +10,7 @@ import { Icons } from "@/components/shared/icons";
 import { UpdateCopyTradingSheet } from "@/components/exchange/update-copytrading-sheet";
 import { useCallback, useEffect, useState } from "react";
 import { DeleteCopyTradingDialog } from "@/components/exchange/delete-copytrading-dialog";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import PNLDisplay from "@/components/shared/common";
@@ -82,7 +82,9 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <div className="flex cursor-pointer items-center space-x-4">
               <Avatar>
                 <AvatarImage src={ctSetting.avatarUrl} alt={ctSetting.traderName} />
-                {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
+                <AvatarFallback className="text-violet11 text-[25px]">
+                  {ctSetting.traderName[0]}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <CardTitle>{ctSetting.traderName}</CardTitle>
@@ -380,7 +382,9 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
           <div className="flex cursor-pointer items-center space-x-4">
             <Avatar>
               <AvatarImage src={ctSetting.avatarUrl} alt={ctSetting.traderName} />
-              {/* <AvatarFallback>{trader.traderName.charAt(0)}</AvatarFallback> */}
+              <AvatarFallback className="text-violet11 text-[25px]">
+                {ctSetting.traderName[0]}
+              </AvatarFallback>
             </Avatar>
             <div>
               <CardTitle>{ctSetting.traderName}</CardTitle>
@@ -500,8 +504,7 @@ export default function ManageCopyTradingPage() {
   //   redirect("/login");
   // }
   const {data:session, status} = useSession();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<any[] | undefined>(undefined);
   const [endedData, setEndedData] = useState<any[] | undefined>(undefined);
 
   // if (!session || !session.user) {
@@ -509,7 +512,7 @@ export default function ManageCopyTradingPage() {
   // }
 
   const fetchData = useCallback(async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (status !== "authenticated") return;
     // if (status === "loading") return;
     // if (!session || !session.user) {
@@ -522,9 +525,10 @@ export default function ManageCopyTradingPage() {
       // console.log("getCopyTradingSetting:", data);
     } catch (error) {
       console.error('Error getCopyTradingSetting:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
+    // finally {
+    //   setIsLoading(false);
+    // }
   }, [status]);
 
   useEffect(() => {
@@ -588,74 +592,37 @@ export default function ManageCopyTradingPage() {
             </Tab> */}
           </TabList>
           <TabPanel value="ongoing">
-            {/* {isLoading ? (
+            {data === undefined ? (
+              <div className="flex h-40 items-center justify-center">
+                <Icons.spinner className="size-8 animate-spin text-gray-500" />
+              </div>
+            ) : data.length > 0 ? (
               <div>
-                <TableSkeleton />
+                {data.map((ctSetting, index) => (
+                  <TraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
+                ))}
               </div>
             ) : (
-              <DataTable data={data} columns={copyTradingSettingColumns} />
-            )} */}
-
-              {isLoading ? (
-                <div className="flex h-40 items-center justify-center">
-                  <Icons.spinner className="size-8 animate-spin text-gray-500" />
-                </div>
-              ) : (
-                <>
-                  {/* {data && data.length > 0 ? (
-                    <DataTable data={data} columns={copyTradingSettingColumns} />
-                  ) : (
-                    <div className="mt-2 rounded-lg border border-gray-300 dark:border-gray-700">
-                      <div className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
-                        <div className="space-y-2">
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            {"You haven't followed any traders yet"}
-                          </h3>
-                          <p className="max-w-sm text-sm text-gray-500 dark:text-gray-400">
-                            Follow a trader to start copy trading.
-                          </p>
-                        </div>
-                        <form action="/copy-trading" method="get">
-                          <Button 
-                            type="submit"
-                          >
-                            Find Best Traders
-                          </Button>
-                        </form>
-                      </div>
-                    </div>
-                  )} */}
-
-                  {data && data.length > 0 ? (
-                    <div className="space-y-4">
-                      {data.map((ctSetting, index) => (
-                        <TraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
-                      ))}
-                    </div>
-                  ) : (
-                    <Card>
-                      <CardContent className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
-                        <div className="space-y-2">
-                          <h3 className="text-lg font-medium">
-                            {"You haven't followed any traders yet"}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            Follow a trader to start copy trading.
-                          </p>
-                        </div>
-                        <div>
-                          <Link href="/copy-trading">
-                            <Button>
-                              Find Best Traders
-                            </Button>
-                          </Link>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </>
-              )}
-
+              <Card>
+                <CardContent className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-medium">
+                      {"You haven't followed any traders yet"}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Follow a trader to start copy trading.
+                    </p>
+                  </div>
+                  <div>
+                    <Link href="/copy-trading">
+                      <Button>
+                        Find Best Traders
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabPanel>
           <TabPanel value="closed">
             {endedData===undefined ? (
@@ -663,7 +630,7 @@ export default function ManageCopyTradingPage() {
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
               </div>
             ) : endedData.length > 0 ? (
-              <div className="space-y-4">
+              <div>
                 {endedData.map((ctSetting, index) => (
                   <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
                 ))}

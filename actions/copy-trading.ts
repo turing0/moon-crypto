@@ -120,6 +120,9 @@ export async function getCopyTradingSetting(userId: string, status: string = 'ac
           exchangeAccount: true,
         }, }
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return exchangeAPIs
