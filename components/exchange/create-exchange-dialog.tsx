@@ -40,15 +40,32 @@ import { Icons } from "../shared/icons"
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
+// Define the IP addresses for each exchange
+const exchangeIPs = {
+  Binance: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  Bitget: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  Bybit: ["52.193.63.94"],
+  OKX: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  Bitfinex: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  // Add more exchanges and their IP addresses as needed
+};
+
 export function CreateExchangeDialog({userid, ipdata}) {
   const [open, setOpen] = React.useState(false)
   const [selectedExchange, setSelectedExchange] = React.useState("");
+  const [displayIPs, setDisplayIPs] = React.useState("Select exchange to see IP list");
   const [isCreatePending, startCreateTransition] = React.useTransition()
-  // const [isExpanded, setIsExpanded] = React.useState(false)
 
   const form = useForm<CreateExchangeApiSchema>({
     resolver: zodResolver(createExchangeApiSchema),
   })
+
+  React.useEffect(() => {
+    if (selectedExchange) {
+      // setDisplayIPs(exchangeIPs[selectedExchange].join(", "));
+      setDisplayIPs(exchangeIPs[selectedExchange].slice(0, 2).join(',') + (exchangeIPs[selectedExchange].length > 2 ? '...' : ''));
+    }
+  }, [selectedExchange]);
 
   function onSubmit(input: CreateExchangeApiSchema) {
     startCreateTransition(async () => {
@@ -70,11 +87,12 @@ export function CreateExchangeDialog({userid, ipdata}) {
   // const displayIPs = isExpanded 
   // ? whitelistIPsString 
   // : whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
-  const displayIPs = whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
+  // const displayIPs = whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
   const showPassphrase = exchangesRequiringPassphrase.includes(selectedExchange);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(whitelistIPsString)
+    // navigator.clipboard.writeText(whitelistIPsString)
+    navigator.clipboard.writeText(displayIPs)
     toast.success("IP addresses copied", {position: "top-center"})
   }
 
@@ -92,47 +110,35 @@ export function CreateExchangeDialog({userid, ipdata}) {
         <DialogHeader>
           <DialogTitle>Add exchange</DialogTitle>
           <DialogDescription className="hidden sm:block">
-            Fill in the details below to create a new exchange api.
+            Fill in the details below to connect your exchange api.
           </DialogDescription>
         </DialogHeader>
         
         <div className="rounded-md bg-gray-100 p-4 dark:bg-gray-800">
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Whitelist IP Addresses:</p>
           <div className="mt-1 flex items-start">
-            <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
-              {displayIPs}
-            </code>
-            <div className="ml-2 flex flex-col space-y-2">
-              <Button
-                onClick={copyToClipboard}
-                variant="outline"
-                size="sm"
-                className="shrink-0 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-              >
-                <Icons.copy className="mr-1 h-4 w-4" aria-hidden="true" />
-                Copy
-              </Button>
-              {/* {whitelistIPs.length > 3 && (
-                <Button
-                  onClick={toggleExpand}
-                  variant="outline"
-                  size="sm"
-                  className="flex-shrink-0"
-                >
-                  {isExpanded ? (
-                    <>
-                      <Icons.chevronDown className="mr-2 size-4" />
-                      Collapse
-                    </>
-                  ) : (
-                    <>
-                      <Icons.chevronDown className="mr-2 size-4" />
-                      Expand
-                    </>
-                  )}
-                </Button>
-              )} */}
-            </div>
+            {selectedExchange === "" ? (
+              <div className="text-sm text-gray-500 dark:text-gray-400 italic">
+                Please select an exchange to view the IP addresses.
+              </div>
+            ) : (
+              <>
+                <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                  {displayIPs}
+                </code>
+                <div className="ml-2 flex flex-col space-y-2">
+                  <Button
+                    onClick={copyToClipboard}
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    <Icons.copy className="mr-1 h-4 w-4" aria-hidden="true" />
+                    Copy
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
           <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{"Turn on IP whitelisting and copy/paste these IP addresses."}</p>
         </div>
