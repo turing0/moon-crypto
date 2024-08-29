@@ -1,6 +1,6 @@
 "use client"
 
-import { getActiveCopyTradingPositions, getCopyTradingSetting } from "@/actions/copy-trading";
+import { getActiveCopyTradingPositions, getCopyTradingPositionHistory, getCopyTradingSetting } from "@/actions/copy-trading";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,11 +21,12 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isActiveLoading, setIsActiveLoading] = useState(true);
-  const [activePositionData, setActivePositionData] = useState<any[]>([]);
+  // const [isActiveLoading, setIsActiveLoading] = useState(true);
+  const [activePositionData, setActivePositionData] = useState<any[] | undefined>(undefined);
+  const [positionHistoryData, setPositionHistoryData] = useState<any[] | undefined>(undefined);
   
   const getActivePostions = async () => {
-    if (!isActiveLoading) {
+    if (activePositionData) {
       return
     }
     try {
@@ -35,16 +36,30 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
     } catch (error) {
       console.error('Error getActivePostions:', error);
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
-    } finally {
-      setIsActiveLoading(false);
-    }
+    } 
+    // finally {
+    //   setIsActiveLoading(false);
+    // }
   };
   useEffect(() => {
-    if (!isActiveLoading || !isExpanded) {
+    if (!isExpanded || activePositionData) {
       return
     }
     getActivePostions();
   }, [isExpanded]);
+  const getPostionHistory = async () => {
+    if (positionHistoryData) {
+      return
+    }
+    try {
+      const data = await getCopyTradingPositionHistory(ctSetting.id);
+      setPositionHistoryData(data);
+      console.log("getCopyTradingPositionHistory:", data)
+    } catch (error) {
+      console.error('Error getPostionHistory:', error);
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    }
+  };
 
   return (
     <Card className="mb-8 w-full">
@@ -168,7 +183,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {isActiveLoading ? (
+                      {activePositionData === undefined ? (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
@@ -176,10 +191,8 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                             </div>
                           </TableCell>
                         </TableRow>
-                      ) : (
-                      <>
-                        {activePositionData && activePositionData.length>0 ? (
-                          <>
+                      ) : activePositionData.length>0 ? (
+                        <>
                           {activePositionData.map((position, index) => (
                             <TableRow key={index} className={position.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
                               <TableCell>
@@ -228,27 +241,22 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                               
                             </TableRow>
                           ))}
-                          </>
-                        ) : (
-                          <>
-                            <TableRow>
-                              <TableCell colSpan={7} className="h-40 text-center">
-                                <div className="flex h-full w-full items-center justify-center">
-                                  <p className="text-sm text-muted-foreground">
-                                    No records found.
-                                  </p>
-                                </div>
-                                {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
-                                  <p className="text-sm text-muted-foreground">
-                                    No records found.
-                                  </p>
-                                </CardContent> */}
-                              </TableCell>
-                            </TableRow>
-
-                          </>
-                        )}
-                      </>
+                        </>
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <p className="text-sm text-muted-foreground">
+                                No records found.
+                              </p>
+                            </div>
+                            {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                              <p className="text-sm text-muted-foreground">
+                                No records found.
+                              </p>
+                            </CardContent> */}
+                          </TableCell>
+                        </TableRow>
                       )}
                     </TableBody>
                   </Table>
@@ -259,6 +267,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>API Name</TableHead>
                         <TableHead>Symbol</TableHead>
                         <TableHead>Entry Date</TableHead>
                         <TableHead>Exit Date</TableHead>
@@ -268,6 +277,34 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
+                      {positionHistoryData === undefined ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <Icons.spinner className="size-8 animate-spin text-gray-500" />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ) : positionHistoryData.length > 0 ? (
+                        <>
+                        </>
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <p className="text-sm text-muted-foreground">
+                                No records found.
+                              </p>
+                            </div>
+                            {/* <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                              <p className="text-sm text-muted-foreground">
+                                No records found.
+                              </p>
+                            </CardContent> */}
+                          </TableCell>
+                        </TableRow>
+                      )}
+
                       {/* {trader.historicalPositions.map((position, index) => (
                         <TableRow key={index}>
                           <TableCell>position.symbol</TableCell>
