@@ -571,7 +571,7 @@ export default function ManageCopyTradingPage() {
                     </div>
                   ) : (
                     <Card>
-                      <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                      <CardContent className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
                         <div className="space-y-2">
                           <h3 className="text-lg font-medium">
                             {"You haven't followed any traders yet"}
@@ -599,9 +599,15 @@ export default function ManageCopyTradingPage() {
               <div className="flex h-40 items-center justify-center">
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
               </div>
-            ) : endedData.length === 0 ? (
+            ) : endedData.length > 0 ? (
+              <div className="space-y-4">
+                {endedData.map((ctSetting, index) => (
+                  <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
+                ))}
+              </div>
+            ) : (
               <Card>
-                <CardContent className="flex flex-col items-center justify-center space-y-4 p-8 text-center">
+                <CardContent className="flex h-80 flex-col items-center justify-center space-y-4 p-8 text-center">
                   <p className="text-sm text-muted-foreground">
                     No records.
                   </p>
@@ -614,12 +620,6 @@ export default function ManageCopyTradingPage() {
                   </div>
                 </CardContent>
               </Card>
-            ) : (
-              <div className="space-y-4">
-                {endedData.map((ctSetting, index) => (
-                  <EndedTraderCard key={ctSetting.id} ctSetting={ctSetting} onSuccess={fetchData} />
-                ))}
-              </div>
             )}
           </TabPanel>
           {/* <TabPanel value="roles">
