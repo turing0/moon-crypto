@@ -82,8 +82,8 @@ export function CreateExchangeDialog({userid, ipdata}) {
     })
   }
 
-  const whitelistIPs = ipdata
-  const whitelistIPsString = whitelistIPs.join(',')
+  // const whitelistIPs = ipdata
+  // const whitelistIPsString = whitelistIPs.join(',')
   // const displayIPs = isExpanded 
   // ? whitelistIPsString 
   // : whitelistIPs.slice(0, 2).join(',') + (whitelistIPs.length > 2 ? '...' : '')
@@ -92,7 +92,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
 
   const copyToClipboard = () => {
     // navigator.clipboard.writeText(whitelistIPsString)
-    navigator.clipboard.writeText(displayIPs)
+    navigator.clipboard.writeText(exchangeIPs[selectedExchange].join(','))
     toast.success("IP addresses copied", {position: "top-center"})
   }
 
@@ -118,7 +118,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Whitelist IP Addresses:</p>
           <div className="mt-1 flex items-start">
             {selectedExchange === "" ? (
-              <div className="text-sm text-gray-500 dark:text-gray-400 italic">
+              <div className="text-sm italic text-gray-500 dark:text-gray-400">
                 Please select an exchange to view the IP addresses.
               </div>
             ) : (
