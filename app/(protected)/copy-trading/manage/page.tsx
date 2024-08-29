@@ -160,7 +160,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <Tabs defaultValue="positions">
               <TabList>
                 <Tab value="positions">Positions</Tab>
-                <Tab value="histroy">Position History</Tab>
+                <Tab value="histroy" onClick={getPostionHistory}>Position History</Tab>
                 {/* <Tab value="order">
                   <div className="flex items-center">
                     <p>order</p>
@@ -267,7 +267,6 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>API Name</TableHead>
                         <TableHead>Symbol</TableHead>
                         <TableHead>Entry Date</TableHead>
                         <TableHead>Exit Date</TableHead>
@@ -279,7 +278,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                     <TableBody>
                       {positionHistoryData === undefined ? (
                         <TableRow>
-                          <TableCell colSpan={7} className="h-40 text-center">
+                          <TableCell colSpan={6} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
                               <Icons.spinner className="size-8 animate-spin text-gray-500" />
                             </div>
@@ -287,6 +286,34 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                         </TableRow>
                       ) : positionHistoryData.length > 0 ? (
                         <>
+                          {positionHistoryData.map((position, index) => (
+                            <TableRow key={index}>
+                              <TableCell>
+                                <div className="max-w-xs truncate">
+                                  {position.symbol}
+                                </div>
+                                <div className={`text-xs capitalize ${
+                                  position.side === 'long' ? 'text-green-500' : 'text-red-500'
+                                }`}>
+                                  {position.side}
+                                </div>
+                              </TableCell>
+                              <TableCell>{position.size}</TableCell>
+                              <TableCell>
+                                {position.entryPrice}USDT
+                                <div className="text-xs text-gray-500">
+                                  {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                {position.exitPrice}USDT
+                                <div className="text-xs text-gray-500">
+                                  {format(new Date(position.closeTime), 'yyyy-MM-dd HH:mm:ss')}
+                                </div>
+                                </TableCell>
+                              <TableCell></TableCell>
+                            </TableRow>
+                          ))}
                         </>
                       ) : (
                         <TableRow>

@@ -115,7 +115,7 @@ model CopyTradingSetting {
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   followedApis   CopyTradingAccount[]
   activePositions   ActiveCopyTradingPosition[]
-  historyPositions  CopyTradingPositionHistory[]
+  // historyPositions  CopyTradingPositionHistory[]
   
   @@index([userId, traderId])
   @@map(name: "copy_trading_settings")
@@ -160,9 +160,9 @@ model CopyTradingPositionHistory {
   size                  Float
   leverage              Int?
   openTime              DateTime
-  closeTime             DateTime
-  realizedPnl           Float
-  copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
+  closeTime             DateTime @default(now())
+  realizedPnl           String
+  // copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
 
   @@index([copyTradingSettingId])
   @@map(name: "copy_trading_position_history")
