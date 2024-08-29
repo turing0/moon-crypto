@@ -124,7 +124,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
             ) : (
               <>
                 {/* <code className="max-h-20 max-w-[calc(100%-140px)] overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"> */}
-                <code className="max-h-20 max-w-full break-all overflow-x-auto rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                <code className="max-h-20 overflow-x-auto break-all rounded border border-gray-300 bg-white px-2 py-1 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200">
                   {displayIPs}
                 </code>
                 <div className="ml-2 flex flex-col space-y-2">
