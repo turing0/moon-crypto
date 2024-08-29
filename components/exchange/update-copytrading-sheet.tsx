@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ReloadIcon } from "@radix-ui/react-icons"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { unstable_noStore as noStore } from 'next/cache';
@@ -39,6 +38,7 @@ import { CopyTradingSettingInfo } from "../table/columns"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
 import { updateCopyTradingSetting } from "@/actions/copy-trading"
+import { Icons } from "../shared/icons"
 
 interface UpdateCopyTradingSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
@@ -386,7 +386,7 @@ export function UpdateCopyTradingSheet({ task, onSuccess, ...props }: UpdateCopy
               </SheetClose>
               <Button disabled={isUpdatePending}>
                 {isUpdatePending && (
-                  <ReloadIcon
+                  <Icons.spinner
                     className="mr-2 size-4 animate-spin"
                     aria-hidden="true"
                   />

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 // import { type Task } from "@/db/schema"
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
+import { TrashIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 import { toast } from "sonner"
 
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { CopyTradingSettingInfo } from "../table/columns"
 import { deleteCopyTradingSetting, stopCopyTradingSetting } from "@/actions/copy-trading"
+import { Icons } from "../shared/icons"
 
 interface DeleteCopyTradingDialogProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
@@ -80,7 +81,7 @@ export function DeleteCopyTradingDialog({
             disabled={isDeletePending}
           >
             {isDeletePending && (
-              <ReloadIcon
+              <Icons.spinner
                 className="mr-2 size-4 animate-spin"
                 aria-hidden="true"
               />

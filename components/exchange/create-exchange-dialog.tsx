@@ -2,11 +2,10 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { PlusIcon, ReloadIcon } from "@radix-ui/react-icons"
+import { PlusIcon } from "@radix-ui/react-icons"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import {
   Dialog,
@@ -269,7 +268,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
               </DialogClose>
               <Button disabled={isCreatePending}>
                 {isCreatePending && (
-                  <ReloadIcon
+                  <Icons.spinner
                     className="mr-2 size-4 animate-spin"
                     aria-hidden="true"
                   />

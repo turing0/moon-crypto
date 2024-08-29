@@ -2,7 +2,7 @@
 
 import * as React from "react"
 // import { type Task } from "@/db/schema"
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
+import { TrashIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 import { toast } from "sonner"
 
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { toggleEnabledExchangeAPI } from "@/actions/exchange"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
+import { Icons } from "../shared/icons"
 
 
 interface ToggleExchangeApiDialogProps
@@ -82,7 +83,7 @@ export function EnabledExchangeApiDialog({
             disabled={isEnablePending}
           >
             {isEnablePending && (
-              <ReloadIcon
+              <Icons.spinner
                 className="mr-2 size-4 animate-spin"
                 aria-hidden="true"
               />

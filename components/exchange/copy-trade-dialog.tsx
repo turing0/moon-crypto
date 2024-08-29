@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { Input } from "../ui/input"
-import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Checkbox } from "../ui/checkbox"
@@ -446,7 +445,7 @@ export function CopyTradeDialog({traderId, traderName, avatarUrl, userApi}) {
                 </DialogClose>
                 <Button disabled={isCreatePending}>
                   {isCreatePending && (
-                    <ReloadIcon
+                    <Icons.spinner
                       className="mr-2 size-4 animate-spin"
                       aria-hidden="true"
                     />

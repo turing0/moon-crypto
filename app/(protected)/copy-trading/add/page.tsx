@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
-import { ReloadIcon } from "@radix-ui/react-icons"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -386,7 +385,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
             </Button>
             <Button type="submit" disabled={isCreatePending}>
               {isCreatePending && (
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
               )}
               Copy Now
             </Button>

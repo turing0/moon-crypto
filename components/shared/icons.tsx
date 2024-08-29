@@ -49,6 +49,7 @@ import {
   ShieldPlus,
   Globe,
   CircleHelp,
+  Loader,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -134,6 +135,7 @@ export const Icons = {
   home: Home,
   laptop: Laptop,
   logo: Bitcoin,
+  loader: Loader,
   lineChart: LineChart,
   media: Image,
   messages: MessagesSquare,

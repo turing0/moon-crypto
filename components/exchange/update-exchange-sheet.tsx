@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ReloadIcon } from "@radix-ui/react-icons"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { unstable_noStore as noStore } from 'next/cache';
@@ -38,6 +37,7 @@ import { useState } from "react"
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page"
 import { updateExchangeAPI } from "@/actions/exchange"
 import { updateExchangeApiSchema, UpdateExchangeApiSchema } from "@/lib/validations/exchange"
+import { Icons } from "../shared/icons"
 
 interface UpdateExchangeApiSheetProps
   extends React.ComponentPropsWithRef<typeof Sheet> {
@@ -218,7 +218,7 @@ export function UpdateExchangeApiSheet({ task, ...props }: UpdateExchangeApiShee
               </SheetClose>
               <Button disabled={isUpdatePending}>
                 {isUpdatePending && (
-                  <ReloadIcon
+                  <Icons.spinner
                     className="mr-2 size-4 animate-spin"
                     aria-hidden="true"
                   />
