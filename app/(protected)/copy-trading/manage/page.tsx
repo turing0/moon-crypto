@@ -268,10 +268,9 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Symbol</TableHead>
-                        <TableHead>Entry Date</TableHead>
-                        <TableHead>Exit Date</TableHead>
-                        <TableHead>Entry Price</TableHead>
-                        <TableHead>Exit Price</TableHead>
+                        <TableHead>Size</TableHead>
+                        <TableHead>Entry</TableHead>
+                        <TableHead>Exit</TableHead>
                         <TableHead>PNL</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -311,13 +310,13 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                   {format(new Date(position.closeTime), 'yyyy-MM-dd HH:mm:ss')}
                                 </div>
                                 </TableCell>
-                              <TableCell></TableCell>
+                              <TableCell>{position.realizedPnl}</TableCell>
                             </TableRow>
                           ))}
                         </>
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={7} className="h-40 text-center">
+                          <TableCell colSpan={5} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
                               <p className="text-sm text-muted-foreground">
                                 No records found.
