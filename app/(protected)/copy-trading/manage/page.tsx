@@ -512,10 +512,7 @@ export default function ManageCopyTradingPage() {
   // }
 
   const fetchData = useCallback(async () => {
-    // setIsLoading(true);
-    console.log("status:", status);
-    console.log("data:", data);
-    if (status !== "authenticated" || data) return;
+    if (status !== "authenticated") return;
     // if (status === "loading") return;
     // if (!session || !session.user) {
     //   router.push('/login');
