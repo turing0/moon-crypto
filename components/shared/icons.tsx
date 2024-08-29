@@ -48,6 +48,7 @@ import {
   RefreshCw,
   ShieldPlus,
   Globe,
+  CircleHelp,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -69,6 +70,7 @@ export const Icons = {
   chevronRight: ChevronRight,
   check: Check,
   circleDollarSign: CircleDollarSign,
+  circleHelp: CircleHelp,
   close: X,
   copy: Copy,
   clock: Clock,
