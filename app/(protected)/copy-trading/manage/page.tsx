@@ -513,7 +513,7 @@ export default function ManageCopyTradingPage() {
 
   const fetchData = useCallback(async () => {
     // setIsLoading(true);
-    if (status !== "authenticated") return;
+    if (status !== "authenticated" || data) return;
     // if (status === "loading") return;
     // if (!session || !session.user) {
     //   router.push('/login');
@@ -522,7 +522,7 @@ export default function ManageCopyTradingPage() {
     try {
       const data = await getCopyTradingSetting(session.user.id!);
       setData(data);
-      // console.log("getCopyTradingSetting:", data);
+      console.log("getCopyTradingSetting:", data);
     } catch (error) {
       console.error('Error getCopyTradingSetting:', error);
     } 
