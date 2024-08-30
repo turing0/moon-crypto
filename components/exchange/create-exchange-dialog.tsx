@@ -113,7 +113,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
           <DialogTitle>
             Add exchange
             <Link
-              href="/help/exchange-setup"
+              href="/docs/exchanges"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-4 inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"  >

@@ -29,6 +29,10 @@ export const docsConfig: DocsConfig = {
       title: "Exchanges",
       items: [
         {
+          title: "Introduction",
+          href: "/docs/exchanges",
+        },
+        {
           title: "Connect Binance API",
           href: "/docs/exchanges/connect-binance-api",
         },
