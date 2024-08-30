@@ -19,17 +19,17 @@ export const docsConfig: DocsConfig = {
           title: "Introduction",
           href: "/docs",
         },
-        {
-          title: "Installation",
-          href: "/docs/installation",
-        },
+        // {
+        //   title: "Installation",
+        //   href: "/docs/installation",
+        // },
       ],
     },
     {
       title: "Exchanges",
       items: [
         {
-          title: "Introduction",
+          title: "Setup exchange API",
           href: "/docs/exchanges",
         },
         {
@@ -63,46 +63,46 @@ export const docsConfig: DocsConfig = {
         },
       ],
     },
-    {
-      title: "Configuration",
-      items: [
-        {
-          title: "Authentification",
-          href: "/docs/configuration/authentification",
-        },
-        {
-          title: "Blog",
-          href: "/docs/configuration/blog",
-        },
-        {
-          title: "Components",
-          href: "/docs/configuration/components",
-        },
-        {
-          title: "Config files",
-          href: "/docs/configuration/config-files",
-        },
-        {
-          title: "Database",
-          href: "/docs/configuration/database",
-        },
-        {
-          title: "Email",
-          href: "/docs/configuration/email",
-        },
-        {
-          title: "Layouts",
-          href: "/docs/configuration/layouts",
-        },
-        {
-          title: "Markdown files",
-          href: "/docs/configuration/markdown-files",
-        },
-        {
-          title: "Subscriptions",
-          href: "/docs/configuration/subscriptions",
-        },
-      ],
-    },
+    // {
+    //   title: "Configuration",
+    //   items: [
+    //     {
+    //       title: "Authentification",
+    //       href: "/docs/configuration/authentification",
+    //     },
+    //     {
+    //       title: "Blog",
+    //       href: "/docs/configuration/blog",
+    //     },
+    //     {
+    //       title: "Components",
+    //       href: "/docs/configuration/components",
+    //     },
+    //     {
+    //       title: "Config files",
+    //       href: "/docs/configuration/config-files",
+    //     },
+    //     {
+    //       title: "Database",
+    //       href: "/docs/configuration/database",
+    //     },
+    //     {
+    //       title: "Email",
+    //       href: "/docs/configuration/email",
+    //     },
+    //     {
+    //       title: "Layouts",
+    //       href: "/docs/configuration/layouts",
+    //     },
+    //     {
+    //       title: "Markdown files",
+    //       href: "/docs/configuration/markdown-files",
+    //     },
+    //     {
+    //       title: "Subscriptions",
+    //       href: "/docs/configuration/subscriptions",
+    //     },
+    //   ],
+    // },
   ],
 };
