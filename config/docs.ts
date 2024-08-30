@@ -51,6 +51,19 @@ export const docsConfig: DocsConfig = {
       ],
     },
     {
+      title: "Copy Trading",
+      items: [
+        {
+          title: "Introduction",
+          href: "/docs/copy-trading",
+        },
+        {
+          title: "Error Solutions",
+          href: "/docs/copy-trading/error-solutions",
+        },
+      ],
+    },
+    {
       title: "Configuration",
       items: [
         {

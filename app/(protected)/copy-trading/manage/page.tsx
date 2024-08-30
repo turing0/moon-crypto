@@ -215,7 +215,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                               {position.error ? (
                                 <TableCell colSpan={5} className="p-2 text-red-600 dark:text-red-400">
                                   <div className="flex items-center">
-                                    <Link href={"/"} target="_blank" className="flex items-center">
+                                    <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
                                       <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
                                       <span>Error: {position.error}</span>
                                     </Link>
