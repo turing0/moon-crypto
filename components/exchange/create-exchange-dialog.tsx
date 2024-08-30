@@ -42,7 +42,7 @@ const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
 // Define the IP addresses for each exchange
 const exchangeIPs = {
-  Binance: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  Binance: ["52.193.63.94"],
   Bitget: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
   Bybit: ["52.193.63.94"],
   OKX: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
