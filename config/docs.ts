@@ -26,6 +26,27 @@ export const docsConfig: DocsConfig = {
       ],
     },
     {
+      title: "Exchanges",
+      items: [
+        {
+          title: "Connect Binance API",
+          href: "/docs/exchanges/connect-binance-api",
+        },
+        {
+          title: "Connect Bitget API",
+          href: "/docs/exchanges/connect-bitget-api",
+        },
+        {
+          title: "Connect Bybit API",
+          href: "/docs/exchanges/connect-bybit-api",
+        },
+        {
+          title: "Connect OKX API",
+          href: "/docs/exchanges/connect-okx-api",
+        },
+      ],
+    },
+    {
       title: "Configuration",
       items: [
         {

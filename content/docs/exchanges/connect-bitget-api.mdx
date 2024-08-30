@@ -3,13 +3,3 @@ title: Connect Bitget API
 description: How to connect bitget API.
 ---
 
-
-## Update auth_secret variable
-
-The only environment variable that is mandatory is the `AUTH_SECRET`. This is a random value used by the library to encrypt tokens and email verification hashes. You can generate one via running:
-
-```bash
-npx auth secret
-```
-
-Alternatively, you can use the `openssl` CLI, `openssl rand -base64 33`.
