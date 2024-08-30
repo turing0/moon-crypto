@@ -50,6 +50,7 @@ import {
   Globe,
   CircleHelp,
   Loader,
+  Info,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -133,6 +134,7 @@ export const Icons = {
   ),
   help: HelpCircle,
   home: Home,
+  info: Info,
   laptop: Laptop,
   logo: Bitcoin,
   loader: Loader,

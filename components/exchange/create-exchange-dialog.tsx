@@ -36,6 +36,7 @@ import {
 import { createExchangeAPI } from "@/actions/exchange"
 import { CreateExchangeApiSchema, createExchangeApiSchema } from "@/lib/validations/exchange"
 import { Icons } from "../shared/icons"
+import Link from "next/link"
 
 const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
 const exchangesRequiringPassphrase = ["OKX", "Bitget"];
@@ -108,7 +109,19 @@ export function CreateExchangeDialog({userid, ipdata}) {
       {/* <DialogContent className={"overflow-y-scroll max-h-screen"}> */}
       <DialogContent className={"max-h-[90vh] overflow-auto"}>
         <DialogHeader>
-          <DialogTitle>Add exchange</DialogTitle>
+          {/* <div className="flex items-start justify-between"> */}
+          <DialogTitle>
+            Add exchange
+            <Link
+              href="/help/exchange-setup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-4 inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"  >
+              <Icons.info className="mr-1 size-4" /> 
+              Step-by-step guide
+            </Link>
+          </DialogTitle>
+          {/* </div> */}
           <DialogDescription className="hidden sm:block">
             Fill in the details below to connect your exchange api.
           </DialogDescription>
