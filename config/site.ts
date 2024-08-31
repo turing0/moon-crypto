@@ -45,8 +45,8 @@ export const footerLinks: SidebarNavItem[] = [
     title: "Resources",
     items: [
       { title: "Docs", href: "/docs" },
+      { title: "Blog", href: "/blog" },
       { title: "Status", href: "https://status.mooncryp.to" },
-      // { title: "Components", href: "#" },
       // { title: "Code Blocks", href: "#" },
     ],
   },
