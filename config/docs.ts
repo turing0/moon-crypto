@@ -48,6 +48,10 @@ export const docsConfig: DocsConfig = {
           title: "Connect to OKX",
           href: "/docs/exchanges/connect-to-okx",
         },
+        {
+          title: "Connect to Bitfinex",
+          href: "/docs/exchanges/connect-to-bitfinex",
+        },
       ],
     },
     {

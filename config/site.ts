@@ -42,9 +42,9 @@ export const footerLinks: SidebarNavItem[] = [
     ],
   },
   {
-    title: "Docs",
+    title: "Resources",
     items: [
-      { title: "Introduction", href: "#" },
+      { title: "Docs", href: "/docs" },
       // { title: "Installation", href: "#" },
       // { title: "Components", href: "#" },
       // { title: "Code Blocks", href: "#" },
