@@ -47,7 +47,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
     }
     getActivePostions();
   }, [isExpanded]);
-  const getPostionHistory = async () => {
+  const getTradeHistory = async () => {
     if (positionHistoryData) {
       return
     }
@@ -56,7 +56,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
       setPositionHistoryData(data);
       console.log("getCopyTradingPositionHistory:", data)
     } catch (error) {
-      console.error('Error getPostionHistory:', error);
+      console.error('Error getTradeHistory:', error);
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
     }
   };
@@ -162,7 +162,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <Tabs defaultValue="positions">
               <TabList>
                 <Tab value="positions">Positions</Tab>
-                <Tab value="histroy" onClick={getPostionHistory}>Position History</Tab>
+                <Tab value="histroy" onClick={getTradeHistory}>Trade History</Tab>
               </TabList>
 
               <TabPanel value="positions">
@@ -259,17 +259,19 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>API</TableHead>
                         <TableHead>Symbol</TableHead>
+                        <TableHead>Side</TableHead>
                         <TableHead>Size</TableHead>
-                        <TableHead>Entry</TableHead>
-                        <TableHead>Exit</TableHead>
-                        <TableHead>PNL</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Realized PNL</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {positionHistoryData === undefined ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="h-40 text-center">
+                          <TableCell colSpan={7} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
                               <Icons.spinner className="size-8 animate-spin text-gray-500" />
                             </div>
@@ -277,38 +279,64 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                         </TableRow>
                       ) : positionHistoryData.length > 0 ? (
                         <>
-                          {positionHistoryData.map((position, index) => (
-                            <TableRow key={index}>
+                          {positionHistoryData.map((trade, index) => (
+                            <TableRow key={index} className={trade.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
+                              <TableCell>{format(new Date(trade.openTime), 'yyyy-MM-dd HH:mm:ss')}</TableCell>
                               <TableCell>
                                 <div className="max-w-xs truncate">
-                                  {position.symbol}
+                                  {trade.exchangeAccount.accountName}
                                 </div>
-                                <div className={`text-xs capitalize ${
-                                  position.side === 'long' ? 'text-green-500' : 'text-red-500'
+                                <div className="text-xs text-gray-500">
+                                  {trade.exchangeAccount.exchangeName}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="max-w-xs truncate">
+                                  {trade.symbol}
+                                </div>
+                                {/* <div className={`text-xs capitalize ${
+                                  trade.side === 'long' ? 'text-green-500' : 'text-red-500'
                                 }`}>
-                                  {position.side}
-                                </div>
+                                  {trade.side}
+                                </div> */}
                               </TableCell>
-                              <TableCell>{position.size}</TableCell>
-                              <TableCell>
-                                {position.entryPrice}USDT
-                                <div className="text-xs text-gray-500">
-                                  {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                {position.exitPrice}USDT
-                                <div className="text-xs text-gray-500">
-                                  {format(new Date(position.closeTime), 'yyyy-MM-dd HH:mm:ss')}
-                                </div>
+
+                              {trade.error ? (
+                                <TableCell colSpan={4} className="p-2 text-red-600 dark:text-red-400">
+                                  <div className="flex items-center">
+                                    <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
+                                      <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
+                                      <span>Error: {trade.error}</span>
+                                    </Link>
+                                  </div>
                                 </TableCell>
-                              <TableCell>{position.realizedPnl}</TableCell>
+                              ) : (
+                                <>
+                                <TableCell>
+                                  <div className={`capitalize ${
+                                    trade.side === 'long' ? 'text-green-500' : 'text-red-500'
+                                  }`}>
+                                    {trade.side}
+                                  </div>
+                                </TableCell>
+                                <TableCell>{trade.size}</TableCell>
+                                <TableCell>
+                                  {trade.entryPrice}
+                                  {/* <div className="text-xs text-gray-500">
+                                    {format(new Date(trade.openTime), 'yyyy-MM-dd HH:mm:ss')}
+                                  </div> */}
+                                </TableCell>
+                                <TableCell>
+                                  <PNLDisplay pnl={trade.realizedPnl} /> USDT
+                                </TableCell>
+                                </>
+                              )}
                             </TableRow>
                           ))}
                         </>
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={5} className="h-40 text-center">
+                          <TableCell colSpan={7} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
                               <p className="text-sm text-muted-foreground">
                                 No records found.
