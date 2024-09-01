@@ -87,7 +87,7 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
                         {trade.side==='long'?'Buy':'Sell'}/{trade.side}
                       </div>
                     </TableCell>
-                    <TableCell>{trade.size.toString().substring(0, 9)}</TableCell>
+                    <TableCell>{trade.size.toString().substring(0, 9)} {trade.symbol.slice(0, -4)}</TableCell>
                     <TableCell>{trade.entryPrice.toString().substring(0, 9)}</TableCell>
                     <TableCell>
                       <PNLDisplay pnl={trade.realizedPnl} showUSDT />
