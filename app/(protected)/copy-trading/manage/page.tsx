@@ -328,7 +328,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                   </div> */}
                                 </TableCell>
                                 <TableCell>
-                                  <PNLDisplay pnl={trade.realizedPnl} /> USDT
+                                  <PNLDisplay pnl={trade.realizedPnl} showUSDT />
                                 </TableCell>
                                 </>
                               )}
