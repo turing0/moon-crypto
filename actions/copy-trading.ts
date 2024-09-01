@@ -287,8 +287,10 @@ export async function getActiveCopyTradingPositions(copyTradingSettingId: string
             exchangeName: true,
           }
         }
-      }
-      
+      },
+      orderBy: {
+        openTime: 'desc',
+      },
     })
 
     return positions
