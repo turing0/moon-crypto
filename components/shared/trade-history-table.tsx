@@ -84,7 +84,7 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
                           trade.side === 'long' ? 'text-green-500' : 'text-red-500'
                         }`}
                       >
-                        {trade.side}
+                        {trade.side==='long'?'Buy':'Sell'}/{trade.side}
                       </div>
                     </TableCell>
                     <TableCell>{trade.size}</TableCell>
