@@ -16,6 +16,7 @@ import Link from "next/link";
 import PNLDisplay from "@/components/shared/common";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import TradeHistoryTable from "@/components/shared/trade-history-table";
 
 const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   const [showUpdateSheet, setShowUpdateSheet] = useState(false)
@@ -257,98 +258,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
               </TabPanel>
               <TabPanel value="histroy">
                 <div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Time</TableHead>
-                        <TableHead>API</TableHead>
-                        <TableHead>Symbol</TableHead>
-                        <TableHead>Side</TableHead>
-                        <TableHead>Size</TableHead>
-                        <TableHead>Price</TableHead>
-                        <TableHead>Realized PNL</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {tradeHistoryData === undefined ? (
-                        <TableRow>
-                          <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
-                              <Icons.spinner className="size-8 animate-spin text-gray-500" />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ) : tradeHistoryData.length > 0 ? (
-                        <>
-                          {tradeHistoryData.map((trade, index) => (
-                            <TableRow key={index} className={trade.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
-                              <TableCell>{format(new Date(trade.openTime), 'yyyy-MM-dd HH:mm:ss')}</TableCell>
-                              <TableCell>
-                                <div className="max-w-xs truncate">
-                                  {trade.exchangeAccount.accountName}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {trade.exchangeAccount.exchangeName}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div className="max-w-xs truncate">
-                                  {trade.symbol}
-                                </div>
-                                {/* <div className={`text-xs capitalize ${
-                                  trade.side === 'long' ? 'text-green-500' : 'text-red-500'
-                                }`}>
-                                  {trade.side}
-                                </div> */}
-                              </TableCell>
-
-                              {trade.error ? (
-                                <TableCell colSpan={4} className="p-2 text-red-600 dark:text-red-400">
-                                  <div className="flex items-center">
-                                    <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
-                                      <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
-                                      <span>Error: {trade.error}</span>
-                                    </Link>
-                                  </div>
-                                </TableCell>
-                              ) : (
-                                <>
-                                <TableCell>
-                                  <div className={`capitalize ${
-                                    trade.side === 'long' ? 'text-green-500' : 'text-red-500'
-                                  }`}>
-                                    {trade.side}
-                                  </div>
-                                </TableCell>
-                                <TableCell>{trade.size}</TableCell>
-                                <TableCell>
-                                  {trade.entryPrice}
-                                  {/* <div className="text-xs text-gray-500">
-                                    {format(new Date(trade.openTime), 'yyyy-MM-dd HH:mm:ss')}
-                                  </div> */}
-                                </TableCell>
-                                <TableCell>
-                                  <PNLDisplay pnl={trade.realizedPnl} showUSDT />
-                                </TableCell>
-                                </>
-                              )}
-                            </TableRow>
-                          ))}
-                        </>
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
-                              <p className="text-sm text-muted-foreground">
-                                No records found.
-                              </p>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-
-                    </TableBody>
-                  </Table>
+                  <TradeHistoryTable tradeHistoryData={tradeHistoryData} />
                 </div>
               </TabPanel>
             </Tabs>
@@ -370,7 +280,28 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
 const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false);
+  const [tradeHistoryData, setTradeHistoryData] = useState<any[] | undefined>(undefined);
 
+  const getTradeHistory = async () => {
+    if (tradeHistoryData) {
+      return
+    }
+    try {
+      // const data = await getCopyTradingPositionHistory(ctSetting.id);
+      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      setTradeHistoryData(data);
+      console.log("getCopyTradingPositionHistory:", data)
+    } catch (error) {
+      console.error('Error getTradeHistory:', error);
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    }
+  };
+  useEffect(() => {
+    if (!isExpanded || tradeHistoryData) {
+      return
+    }
+    getTradeHistory();
+  }, [isExpanded]);
   return (
     <Card className="mb-8 w-full">
       <CardHeader>
@@ -469,7 +400,7 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
         <CardContent>
           <div className="space-y-4">
             <div>
-              <h4 className="mb-2 font-semibold">Position History</h4>
+              <h4 className="mb-2 font-semibold">Trade History</h4>
               <Table>
                 <TableHeader>
                   <TableRow>
