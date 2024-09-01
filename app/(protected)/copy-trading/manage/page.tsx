@@ -23,7 +23,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   // const [isActiveLoading, setIsActiveLoading] = useState(true);
   const [activePositionData, setActivePositionData] = useState<any[] | undefined>(undefined);
-  const [positionHistoryData, setPositionHistoryData] = useState<any[] | undefined>(undefined);
+  const [tradeHistoryData, setTradeHistoryData] = useState<any[] | undefined>(undefined);
   
   const getActivePostions = async () => {
     if (activePositionData) {
@@ -48,12 +48,13 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
     getActivePostions();
   }, [isExpanded]);
   const getTradeHistory = async () => {
-    if (positionHistoryData) {
+    if (tradeHistoryData) {
       return
     }
     try {
-      const data = await getCopyTradingPositionHistory(ctSetting.id);
-      setPositionHistoryData(data);
+      // const data = await getCopyTradingPositionHistory(ctSetting.id);
+      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      setTradeHistoryData(data);
       console.log("getCopyTradingPositionHistory:", data)
     } catch (error) {
       console.error('Error getTradeHistory:', error);
@@ -269,7 +270,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {positionHistoryData === undefined ? (
+                      {tradeHistoryData === undefined ? (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
                             <div className="flex h-full w-full items-center justify-center">
@@ -277,9 +278,9 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                             </div>
                           </TableCell>
                         </TableRow>
-                      ) : positionHistoryData.length > 0 ? (
+                      ) : tradeHistoryData.length > 0 ? (
                         <>
-                          {positionHistoryData.map((trade, index) => (
+                          {tradeHistoryData.map((trade, index) => (
                             <TableRow key={index} className={trade.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
                               <TableCell>{format(new Date(trade.openTime), 'yyyy-MM-dd HH:mm:ss')}</TableCell>
                               <TableCell>

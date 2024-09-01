@@ -114,7 +114,7 @@ model CopyTradingSetting {
 
   user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   followedApis   CopyTradingAccount[]
-  activePositions   ActiveCopyTradingPosition[]
+  // activePositions   ActiveCopyTradingPosition[]
   // historyPositions  CopyTradingPositionHistory[]
   
   @@index([userId, traderId])
@@ -145,8 +145,8 @@ model ActiveCopyTradingPosition {
   realizedPnl           String?
   error                 String?
   openTime              DateTime @default(now())
-  copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
-  exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade) // New relation
+  // copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
+  exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)
 
   @@index([copyTradingSettingId, exchangeAccountId])
   @@map(name: "active_copy_trading_positions")
