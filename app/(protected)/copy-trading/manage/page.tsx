@@ -164,7 +164,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <Tabs defaultValue="positions">
               <TabList>
                 <Tab value="positions">Positions</Tab>
-                <Tab value="histroy" onClick={getTradeHistory}>Trade History</Tab>
+                <Tab value="history" onClick={getTradeHistory}>Trade History</Tab>
               </TabList>
 
               <TabPanel value="positions">
@@ -256,7 +256,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   </Table>
                 </div>
               </TabPanel>
-              <TabPanel value="histroy">
+              <TabPanel value="history">
                 <div>
                   <TradeHistoryTable tradeHistoryData={tradeHistoryData} />
                 </div>
@@ -398,34 +398,20 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
       </CardFooter>
       {isExpanded && (
         <CardContent>
+          <div>
+            <Tabs defaultValue="history">
+              <TabList>
+                <Tab value="history" onClick={getTradeHistory}>Trade History</Tab>
+              </TabList>
+
+              <TabPanel value="history">
+                <div>
+                  <TradeHistoryTable tradeHistoryData={tradeHistoryData} />
+                </div>
+              </TabPanel>
+            </Tabs>
+          </div>
           <div className="space-y-4">
-            <div>
-              <h4 className="mb-2 font-semibold">Trade History</h4>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Symbol</TableHead>
-                    <TableHead>Entry Date</TableHead>
-                    <TableHead>Exit Date</TableHead>
-                    <TableHead>Entry Price</TableHead>
-                    <TableHead>Exit Price</TableHead>
-                    <TableHead>PNL</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {/* {trader.historicalPositions.map((position, index) => (
-                    <TableRow key={index}>
-                      <TableCell>position.symbol</TableCell>
-                      <TableCell>position.entryDate</TableCell>
-                      <TableCell>position.exitDate</TableCell>
-                      <TableCell>position.entryPrice</TableCell>
-                      <TableCell>position.exitPrice</TableCell>
-                      <TableCell>position.pnl</TableCell>
-                    </TableRow>
-                  ))} */}
-                </TableBody>
-              </Table>
-            </div>
           </div>
         </CardContent>
       )}
