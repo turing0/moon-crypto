@@ -1,6 +1,6 @@
 "use client"
 
-import { getActiveCopyTradingPositions, getCopyTradingPositionHistory, getCopyTradingSetting } from "@/actions/copy-trading";
+import { getCopyTradingTradeHistory, getCopyTradingPositionHistory, getCopyTradingSetting } from "@/actions/copy-trading";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,9 +31,9 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
       return
     }
     try {
-      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      const data = await getCopyTradingTradeHistory(ctSetting.id);
       setActivePositionData(data);
-      console.log("getActiveCopyTradingPositions:", data)
+      console.log("getCopyTradingTradeHistory:", data)
     } catch (error) {
       console.error('Error getActivePostions:', error);
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -54,7 +54,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
     }
     try {
       // const data = await getCopyTradingPositionHistory(ctSetting.id);
-      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      const data = await getCopyTradingTradeHistory(ctSetting.id);
       setTradeHistoryData(data);
       console.log("getCopyTradingPositionHistory:", data)
     } catch (error) {
@@ -287,8 +287,7 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
       return
     }
     try {
-      // const data = await getCopyTradingPositionHistory(ctSetting.id);
-      const data = await getActiveCopyTradingPositions(ctSetting.id);
+      const data = await getCopyTradingTradeHistory(ctSetting.id);
       setTradeHistoryData(data);
       console.log("getCopyTradingPositionHistory:", data)
     } catch (error) {

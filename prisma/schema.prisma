@@ -91,7 +91,7 @@ model ExchangeAccount {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   // copyTradingSettings CopyTradingSetting[]
   copyTradingAccount CopyTradingAccount[]
-  activeCopyTradingPositions ActiveCopyTradingPosition[]
+  copyTradingTradeHistory CopyTradingTradeHistory[]
 
   @@index([userId])
   @@map(name: "exchange_accounts")
@@ -132,8 +132,8 @@ model CopyTradingAccount {
   @@map(name: "copy_trading_accounts")
 }
 
-model ActiveCopyTradingPosition {
-// model CopyTradingTradeHistory {
+// model ActiveCopyTradingPosition {
+model CopyTradingTradeHistory {
   id                    String   @id @default(cuid())
   copyTradingSettingId  String
   exchangeAccountId     String
@@ -149,7 +149,7 @@ model ActiveCopyTradingPosition {
   exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)
 
   @@index([copyTradingSettingId, exchangeAccountId])
-  @@map(name: "active_copy_trading_positions")
+  @@map(name: "copy_trading_trade_history")
 }
 
 model CopyTradingPositionHistory {

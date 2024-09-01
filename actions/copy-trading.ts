@@ -254,7 +254,7 @@ export async function deleteCopyTradingSetting(input: { ids: string[] }) {
   }
 }
 
-export async function getActiveCopyTradingPositions(copyTradingSettingId: string) {
+export async function getCopyTradingTradeHistory(copyTradingSettingId: string) {
   noStore()
   try {
     const session = await auth()
@@ -264,7 +264,7 @@ export async function getActiveCopyTradingPositions(copyTradingSettingId: string
     }
 
     // Retrieve  
-    const positions = await prisma.activeCopyTradingPosition.findMany({
+    const positions = await prisma.copyTradingTradeHistory.findMany({
       where: {
         copyTradingSettingId: copyTradingSettingId,
       },
@@ -273,7 +273,7 @@ export async function getActiveCopyTradingPositions(copyTradingSettingId: string
       //   symbol: true, 
       //   stopLoss: true, 
       //   followedApis: {select: {
-      //     copyTradingSettingId: true,   // Replace with the actual field names you need
+      //     copyTradingSettingId: true,
       //     exchangeAccountId: true,
       //     copyTradingSetting: true,
       //     exchangeAccount: true,
