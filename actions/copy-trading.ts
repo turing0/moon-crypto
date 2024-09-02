@@ -300,6 +300,29 @@ export async function getCopyTradingTradeHistory(copyTradingSettingId: string) {
   }
 }
 
+export async function getCopyTradingActivePosition(copyTradingSettingId: string) {
+  noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Retrieve  
+    const positions = await prisma.copyTradingActivePosition.findMany({
+      where: {
+        copyTradingSettingId: copyTradingSettingId,
+      },
+    })
+
+    return positions
+  } catch (err) {
+    console.log(err)
+    return []
+  }
+}
+
 export async function getCopyTradingPositionHistory(copyTradingSettingId: string) {
   noStore()
   try {

@@ -1,6 +1,6 @@
 "use client"
 
-import { getCopyTradingTradeHistory, getCopyTradingPositionHistory, getCopyTradingSetting } from "@/actions/copy-trading";
+import { getCopyTradingTradeHistory, getCopyTradingPositionHistory, getCopyTradingSetting, getCopyTradingActivePosition } from "@/actions/copy-trading";
 import { copyTradingSettingColumns } from "@/components/table/columns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,15 +25,16 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
   // const [isActiveLoading, setIsActiveLoading] = useState(true);
   const [activePositionData, setActivePositionData] = useState<any[] | undefined>(undefined);
   const [tradeHistoryData, setTradeHistoryData] = useState<any[] | undefined>(undefined);
+  const [positionHistory, setPositionHistory] = useState<any[] | undefined>(undefined);
   
   const getActivePostions = async () => {
     if (activePositionData) {
       return
     }
     try {
-      const data = await getCopyTradingTradeHistory(ctSetting.id);
+      const data = await getCopyTradingActivePosition(ctSetting.id);
       setActivePositionData(data);
-      console.log("getCopyTradingTradeHistory:", data)
+      console.log("getCopyTradingActivePosition:", data)
     } catch (error) {
       console.error('Error getActivePostions:', error);
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -59,6 +60,19 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
       console.log("getCopyTradingPositionHistory:", data)
     } catch (error) {
       console.error('Error getTradeHistory:', error);
+      toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+    }
+  };
+  const getPositionHistory = async () => {
+    if (positionHistory) {
+      return
+    }
+    try {
+      const data = await getCopyTradingPositionHistory(ctSetting.id);
+      setPositionHistory(data);
+      console.log("getCopyTradingPositionHistory:", data)
+    } catch (error) {
+      console.error('Error getPositionHistory:', error);
       toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
     }
   };
@@ -164,6 +178,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
             <Tabs defaultValue="positions">
               <TabList>
                 <Tab value="positions">Positions</Tab>
+                <Tab value="positionHistory" onClick={getPositionHistory}>Position History</Tab>
                 <Tab value="history" onClick={getTradeHistory}>Trade History</Tab>
               </TabList>
 
@@ -256,6 +271,13 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                   </Table>
                 </div>
               </TabPanel>
+
+              <TabPanel value="positionHistory">
+                <div>
+                  
+                </div>
+              </TabPanel>
+
               <TabPanel value="history">
                 <div>
                   <TradeHistoryTable tradeHistoryData={tradeHistoryData} />
