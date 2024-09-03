@@ -176,19 +176,17 @@ model CopyTradingActivePosition {
 model CopyTradingPositionHistory {
   id                    String   @id @default(cuid())
   copyTradingSettingId  String
+  exchangeAccountId     String
   symbol                String
   side                  String   // long, short
   entryPrice            Float
   exitPrice             Float
   size                  Float
-  exchange              String
-  apiName               String
   closedSize            Float? @default(0)
   leverage              Int?
   openTime              DateTime
   closeTime             DateTime @default(now())
   realizedPnl           String
-  // copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
 
   @@index([copyTradingSettingId])
   @@map(name: "copy_trading_position_history")
