@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { ExchangeApiInfo } from "@/app/(protected)/exchanges/page";
 import { redisUpdate } from "./redis-sync";
 import { error } from "console";
+import { generateUserId } from "@/lib/utils";
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
@@ -51,9 +52,39 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
       }
     }
 
+    let result: any;
+    let attempts = 0;
+    const maxAttempts = 3;
+    while (!result && attempts < maxAttempts) {
+      try {
+        const unique_id = generateUserId(input.api, 8, false)
+        result = await prisma.exchangeAccount.create({
+          data: {
+            id: input.exchange + '-' + unique_id,
+            userId: userId,
+            exchangeName: input.exchange,
+            accountName: input.accountName,
+            apiKey: input.api,
+            secretKey: input.secret,
+            passphrase: input.passphrase,
+            balance: balance,
+            description: input.description,
+          },
+        })
+      } catch (error) {
+        if ((error as any).code === 'P2002') {
+          console.log("CreateExchangeAPI Duplicate ID detected, retrying...");
+          attempts++;
+        } else {
+          throw error;
+        }
+      }
+    }
+    console.log("All attempts failed, using cuid as userId");
     // creat 
     await prisma.exchangeAccount.create({
       data: {
+        id: input.exchange + '-' + crypto.randomUUID(),
         userId: userId,
         exchangeName: input.exchange,
         accountName: input.accountName,

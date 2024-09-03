@@ -32,7 +32,7 @@ export const {
       const maxAttempts = 3;
       while (!user && attempts < maxAttempts) {
         try {
-          userId = generateUserId(data.email);
+          userId = generateUserId(data.email, 10, true);
           user = await prisma.user.create({
             data: {
               ...data,
@@ -44,7 +44,7 @@ export const {
           return user;
         } catch (error) {
           if ((error as any).code === 'P2002') {
-            console.log("Duplicate ID detected, retrying...");
+            console.log("CreateUser Duplicate ID detected, retrying...");
             attempts++;
           } else {
             throw error;

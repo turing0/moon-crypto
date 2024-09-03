@@ -75,7 +75,8 @@ model User {
 }
 
 model ExchangeAccount {
-  id                String   @id @default(cuid())
+  // id                String   @id @default(cuid())
+  id                String   @id
   userId            String
   accountName       String
   exchangeName      String
@@ -161,6 +162,7 @@ model CopyTradingActivePosition {
   entryPrice            Float
   exitPrice             Float
   size                  Float
+  closedSize            Float? @default(0)
   leverage              Int?
   openTime              DateTime @default(now())
   realizedPnl           String
@@ -179,6 +181,9 @@ model CopyTradingPositionHistory {
   entryPrice            Float
   exitPrice             Float
   size                  Float
+  exchange              String
+  apiName               String
+  closedSize            Float? @default(0)
   leverage              Int?
   openTime              DateTime
   closeTime             DateTime @default(now())

@@ -168,18 +168,25 @@ export const getBlurDataURL = async (url: string | null) => {
   }
 };
 
-export function generateUserId(email: string, length: number=10, randomLength: number=4): string {
+export function generateUserId(email: string, length: number=10, numericOnly: boolean = false, randomLength: number=4): string {
   const randomNumber = Math.floor(Math.random() * (10 ** randomLength));
   const combined = email + randomNumber.toString().padStart(randomLength, '0');
   console.log("combined to hash", combined);
   const hash = crypto.createHash('sha256').update(combined).digest('hex');
-  const bigIntHash = BigInt('0x' + hash);
-  let uid = bigIntHash.toString();
+  // const bigIntHash = BigInt('0x' + hash);
+  // let uid = bigIntHash.toString();
+  let uid: string;
+  if (numericOnly) {
+    const bigIntHash = BigInt('0x' + hash);
+    uid = bigIntHash.toString();
+  } else {
+    uid = hash;
+  }
 
   if (uid.length > length) {
     uid = uid.substring(0, length);
   } else {
-    uid = uid.padStart(length, '0');
+    uid = uid.padStart(length, numericOnly ? '0' : 'a');
   }
 
   console.log('uid', uid)
