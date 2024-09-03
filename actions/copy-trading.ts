@@ -314,6 +314,14 @@ export async function getCopyTradingActivePosition(copyTradingSettingId: string)
       where: {
         copyTradingSettingId: copyTradingSettingId,
       },
+      include: {
+        exchangeAccount: {
+          select: {
+            accountName: true,
+            exchangeName: true,
+          }
+        }
+      },
     })
 
     return positions
