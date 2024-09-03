@@ -274,7 +274,87 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
 
               <TabPanel value="positionHistory">
                 <div>
-                  
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Symbol</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {positionHistory === undefined ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <Icons.spinner className="size-8 animate-spin text-gray-500" />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ) : positionHistory.length>0 ? (
+                        <>
+                          {positionHistory.map((position, index) => (
+                            <TableRow key={index} className={position.error ? 'bg-red-100 hover:bg-red-200 dark:bg-red-950/30 dark:hover:bg-red-950/40' : ''}>
+                              <TableCell>
+                                {/* <div className="max-w-xs truncate">
+                                  {position.exchangeAccount.accountName}
+                                </div> */}
+                                <div className="text-xs text-gray-500">
+                                  {position.exchangeAccountId.includes('-')
+                                    ? position.exchangeAccountId.split('-')[0]
+                                    : 'unknown'}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="max-w-xs truncate">
+                                  {position.symbol}
+                                </div>
+                                {/* <div className={`text-xs capitalize ${textColor}`}> */}
+                                <div className={`text-xs capitalize ${
+                                  position.side === 'long' ? 'text-green-500' : 'text-red-500'
+                                }`}>
+                                  {position.side}
+                                </div>
+                              </TableCell>
+
+                              {position.error ? (
+                                <TableCell colSpan={5} className="p-2 text-red-600 dark:text-red-400">
+                                  <div className="flex items-center">
+                                    <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
+                                      <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
+                                      <span>Error: {position.error}</span>
+                                    </Link>
+                                  </div>
+                                </TableCell>
+                              ) : (
+                                <>
+                                  <TableCell>{position.size}</TableCell>
+                                  <TableCell>
+                                    {position.entryPrice}USDT
+                                    <div className="text-xs text-gray-500">
+                                      {format(new Date(position.openTime), 'yyyy-MM-dd HH:mm:ss')}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell>{position.currentPrice}</TableCell>
+                                  <TableCell>{position.pnl}</TableCell>
+                                  <TableCell></TableCell>
+                                </>
+                              )}
+                              
+                            </TableRow>
+                          ))}
+                        </>
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-40 text-center">
+                            <div className="flex h-full w-full items-center justify-center">
+                              <p className="text-sm text-muted-foreground">
+                                No records found.
+                              </p>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
                 </div>
               </TabPanel>
 
