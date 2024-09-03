@@ -80,21 +80,23 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
         }
       }
     }
-    console.log("All attempts failed, using cuid as userId");
-    // creat 
-    await prisma.exchangeAccount.create({
-      data: {
-        id: input.exchange + '-' + crypto.randomUUID(),
-        userId: userId,
-        exchangeName: input.exchange,
-        accountName: input.accountName,
-        apiKey: input.api,
-        secretKey: input.secret,
-        passphrase: input.passphrase,
-        balance: balance,
-        description: input.description,
-      },
-    })
+    if (!result) {
+      console.log("All attempts failed, using cuid as userId");
+      // creat 
+      await prisma.exchangeAccount.create({
+        data: {
+          id: input.exchange + '-' + crypto.randomUUID(),
+          userId: userId,
+          exchangeName: input.exchange,
+          accountName: input.accountName,
+          apiKey: input.api,
+          secretKey: input.secret,
+          passphrase: input.passphrase,
+          balance: balance,
+          description: input.description,
+        },
+      })
+    }
 
     revalidatePath("/exchanges")
 
