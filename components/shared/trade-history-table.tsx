@@ -81,10 +81,10 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
                     <TableCell>
                       <div
                         className={`capitalize ${
-                          trade.side === 'long' ? 'text-green-500' : 'text-red-500'
+                          trade.side === 'long' ? 'text-green-500' : trade.side==='short'?'text-red-500':''
                         }`}
                       >
-                        {trade.side==='long'?'Buy':'Sell'}/{trade.side}
+                        {trade.side==='long'?'Buy/':trade.side==='short'?'Sell/':''}{trade.side}
                       </div>
                     </TableCell>
                     <TableCell>{trade.size.toString().substring(0, 9)} {trade.symbol.slice(0, -4)}</TableCell>

@@ -139,7 +139,7 @@ model CopyTradingTradeHistory {
   copyTradingSettingId  String
   exchangeAccountId     String
   symbol                String
-  side                  String   // long, short
+  side                  String   // long, short, cancel order
   entryPrice            Float
   size                  Float
   // leverage              Int?
@@ -165,7 +165,7 @@ model CopyTradingActivePosition {
   closedSize            Float? @default(0)
   leverage              Int?
   openTime              DateTime @default(now())
-  realizedPnl           String
+  realizedPnl           Float
   // copyTradingSetting    CopyTradingSetting @relation(fields: [copyTradingSettingId], references: [id], onDelete: Cascade)
   exchangeAccount       ExchangeAccount    @relation(fields: [exchangeAccountId], references: [id], onDelete: Cascade)
 
@@ -186,7 +186,7 @@ model CopyTradingPositionHistory {
   leverage              Int?
   openTime              DateTime
   closeTime             DateTime @default(now())
-  realizedPnl           String
+  realizedPnl           Float
 
   @@index([copyTradingSettingId])
   @@map(name: "copy_trading_position_history")
