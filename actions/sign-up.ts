@@ -1,6 +1,6 @@
 "use server";
 
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import { prisma } from "@/lib/db";
 import { getUserByEmail } from "@/lib/user";
 import { generateUserId } from "@/lib/utils";
