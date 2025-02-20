@@ -43,11 +43,11 @@ const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
 // Define the IP addresses for each exchange
 const exchangeIPs = {
-  Binance: ["52.193.63.94"],
-  Bitget: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
-  Bybit: ["52.193.63.94"],
-  OKX: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
-  Bitfinex: ["52.193.63.94", "148.135.103.68", "107.172.83.193"],
+  Binance: ["108.61.182.99"],
+  Bitget: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
+  Bybit: ["108.61.182.99"],
+  OKX: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
+  Bitfinex: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
   // Add more exchanges and their IP addresses as needed
 };
 
