@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import bcrypt from "bcryptjs";
 import { getUserByEmail } from "@/lib/user";
 import { generateUserId } from "@/lib/utils";
 import * as z from "zod";
@@ -8,7 +9,7 @@ import * as z from "zod";
 export const signUp = async (values) => {
   console.log('values',values)
   const { email, name, password } = values;
-  // const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
 
@@ -21,8 +22,7 @@ export const signUp = async (values) => {
       id: generateUserId(email, 10, true),
       name,
       email,
-      // password: hashedPassword,
-      password: password,
+      password: hashedPassword,
     },
   });
 

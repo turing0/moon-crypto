@@ -2,6 +2,7 @@ import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs";
 import { env } from "@/env.mjs";
 import { sendVerificationRequest } from "@/lib/email";
 import { getUserByEmail } from "./lib/user";
@@ -31,8 +32,7 @@ export default {
         //   return null;
         // }
 
-        // const passwordMatch = await bcrypt.compare(password, existingUser.password);
-        const passwordMatch = password===existingUser.password;
+        const passwordMatch = await bcrypt.compare(password, existingUser.password);
         
         if (passwordMatch) {
           return existingUser;
