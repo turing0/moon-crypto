@@ -29,10 +29,10 @@ function SignInModal({
             <Icons.logo className="size-10" />
           </a>
           <h3 className="font-urban text-2xl font-bold">Sign In</h3>
-          <p className="text-sm text-gray-500">
+          {/* <p className="text-sm text-gray-500">
             This is strictly for demo purposes - only your email and profile
             picture will be stored.
-          </p>
+          </p> */}
         </div>
 
         <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8 md:px-16">

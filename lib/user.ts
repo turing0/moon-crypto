@@ -6,10 +6,10 @@ export const getUserByEmail = async (email: string) => {
       where: {
         email: email,
       },
-      select: {
-        name: true,
-        emailVerified: true,
-      },
+      // select: {
+      //   name: true,
+      //   emailVerified: true,
+      // },
     });
 
     return user;
