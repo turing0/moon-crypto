@@ -64,7 +64,7 @@ export type BitgetTrader = {
 
 async function getBitgetTraders(traderId: string) {
   try {
-    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
+    const response = await fetch(`https://api.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }

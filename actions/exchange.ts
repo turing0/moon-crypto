@@ -11,7 +11,7 @@ import { generateUserId } from "@/lib/utils";
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
-    const response = await fetch(`https://tdb.mooncryp.to/api/exchange/verify?exchange=${exchangeName}&key=${apiKey}&secret=${secretKey}&passphrase=${passphrase}`, {
+    const response = await fetch(`https://api.mooncryp.to/api/exchange/verify?exchange=${exchangeName}&key=${apiKey}&secret=${secretKey}&passphrase=${passphrase}`, {
       // body: JSON.stringify({ data })
     })
     if (!response.ok) {

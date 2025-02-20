@@ -83,7 +83,7 @@ export type OkxHistoryOrder = {
 
 async function getBitgetHistoryOrder(traderId: string) {
   try {
-    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/history?traderId=${traderId}&pageSize=5000`)
+    const response = await fetch(`https://api.mooncryp.to/api/bitget/order/history?traderId=${traderId}&pageSize=5000`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
@@ -111,7 +111,7 @@ async function getBitgetHistoryOrder(traderId: string) {
 }
 async function getBitgetTrader(traderId: string) {
   try {
-    const response = await fetch(`https://tdb.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
+    const response = await fetch(`https://api.mooncryp.to/api/bitget/traders?traderId=${traderId}`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
@@ -131,7 +131,7 @@ async function getBitgetTrader(traderId: string) {
 }
 async function getOkxHistoryOrder(traderId: string) {
   try {
-    const response = await fetch(`https://tdb.mooncryp.to/api/okx/order/history?uniqueCode=${traderId}&pageSize=5000`)
+    const response = await fetch(`https://api.mooncryp.to/api/okx/order/history?uniqueCode=${traderId}&pageSize=5000`)
     if (!response.ok) {
       throw new Error("Network response was not ok")
     }
@@ -281,7 +281,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     }
     setIsCurrentOrderLoading(true);
     try {
-      const response = await fetch(`https://tdb.mooncryp.to/api/bitget/order/current?traderId=${bitgetTraderId}`);
+      const response = await fetch(`https://api.mooncryp.to/api/bitget/order/current?traderId=${bitgetTraderId}`);
       const data = await response.json();
       console.log("ActiveOrders data:", data)
       setBitgetCurrentOrder(data.data);

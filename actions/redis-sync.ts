@@ -1,7 +1,7 @@
 "use server"
 
 export async function redisUpdate(settingIds?, exchangeAccountId?) {
-  const response = await fetch(`https://tdb.mooncryp.to/api/redis/update`, { 
+  const response = await fetch(`https://api.mooncryp.to/api/redis/update`, { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export async function redisUpdate(settingIds?, exchangeAccountId?) {
 
 export async function redisDelete(settingId) {
   console.log('delete:', settingId)
-  const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?settingId=${settingId}`;
+  const apiUrl = `https://api.mooncryp.to/api/redis/delete?settingId=${settingId}`;
   const response = await fetch(apiUrl, { method: 'GET' });
   if (!response.ok) {
     throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
@@ -28,7 +28,7 @@ export async function redisDelete(settingId) {
   return responseData;
 }
 // async function redisDelete(exchangeAccountId) {
-//   const apiUrl = `https://tdb.mooncryp.to/api/redis/delete?exchangeAccountId=${exchangeAccountId}`;
+//   const apiUrl = `https://api.mooncryp.to/api/redis/delete?exchangeAccountId=${exchangeAccountId}`;
 //   const response = await fetch(apiUrl, { method: 'GET' });
 //   if (!response.ok) {
 //     throw new Error(`Redis delete, failed to fetch data: ${response.statusText}`);
