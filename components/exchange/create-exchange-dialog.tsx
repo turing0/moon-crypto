@@ -38,7 +38,8 @@ import { CreateExchangeApiSchema, createExchangeApiSchema } from "@/lib/validati
 import { Icons } from "../shared/icons"
 import Link from "next/link"
 
-const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
+// const exchanges =  ["Binance", "Bitget", "Bybit", "OKX", "Bitfinex"]
+const exchanges =  ["Binance", "Bitget", "Bybit", "OKX"]
 const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
 // Define the IP addresses for each exchange
@@ -47,7 +48,7 @@ const exchangeIPs = {
   Bitget: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
   Bybit: ["108.61.182.99"],
   OKX: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
-  Bitfinex: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
+  // Bitfinex: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
   // Add more exchanges and their IP addresses as needed
 };
 
