@@ -64,7 +64,7 @@ model User {
   accounts Account[]
   sessions Session[]
   exchangeAccounts   ExchangeAccount[]
-  arbitrageActiveConfigs ArbitrageActiveConfig[]
+  arbitrageConfigs ArbitrageConfig[]
   copyTradingSettings CopyTradingSetting[]
   loginLogs     LoginLog[]
 
@@ -175,7 +175,7 @@ model CopyTradingActivePosition {
   @@map(name: "copy_trading_active_positions")
 }
 
-model ArbitrageActiveConfig {
+model ArbitrageConfig {
   id                    String   @id @default(cuid())
   userId                String
   symbol                String
@@ -183,8 +183,9 @@ model ArbitrageActiveConfig {
   shortApiAccountId     String
   longType              String
   shortType             String
-  amount                Float
+  amount                Float //  总共的投资金额
   leverage              Int
+  initialFundingRate    Float
   closeCondition        String
   closeOnRate           Float?
   longOrderId           String?
@@ -197,7 +198,7 @@ model ArbitrageActiveConfig {
   // longApiAccount        ExchangeAccount    @relation(fields: [longApiAccountId], references: [id], onDelete: Cascade)
   // shortApiAccount       ExchangeAccount    @relation(fields: [shortApiAccountId], references: [id], onDelete: Cascade)
 
-  @@map(name: "arbitrage_active_config")
+  @@map(name: "arbitrage_config")
 }
 
 model CopyTradingPositionHistory {

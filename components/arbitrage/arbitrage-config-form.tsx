@@ -16,9 +16,12 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import { createArbitrageConfig } from "@/actions/arbitrage"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 interface ApiAccount {
   id: string
@@ -31,8 +34,8 @@ interface GroupedApiAccounts {
 }
 
 const formSchema = z.object({
-  longApiAccount: z.string().min(1, "请选择做多API账号"),
-  shortApiAccount: z.string().min(1, "请选择做空API账号"),
+  longApiAccountId: z.string().min(1, "请选择做多API账号"),
+  shortApiAccountId: z.string().min(1, "请选择做空API账号"),
   longType: z.enum(["spot", "futures"], {
     required_error: "请选择做多类型",
   }),
@@ -53,7 +56,9 @@ interface ArbitrageConfigFormProps {
 
 export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps) {
   const { data: session } = useSession()
+  const router = useRouter();
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
+  const [isCreatePending, startCreateTransition] = useTransition()
 
   useEffect(() => {
     if (!session?.user?.id) {
@@ -103,7 +108,21 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
   })
 
   const onSubmit = (data: ArbitrageConfig) => {
+    startCreateTransition(async () => {
+      // TODO: initialFundingRate
+      const { error } = await createArbitrageConfig(symbol, 'initialFundingRate', data)
+
+      if (error) {
+        toast.error(error)
+        return
+      }
+
+      form.reset()
+      toast.success("Arbitrage added")
+      router.push('/arbitrage/manage')
+    })
     console.log("配置提交:", data)
+
     // TODO: 实现套利策略启动逻辑
   }
 
@@ -124,7 +143,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                 <h3 className="font-medium">做多配置</h3>
                 <FormField
                   control={form.control}
-                  name="longApiAccount"
+                  name="longApiAccountId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>做多API账号</FormLabel>
@@ -187,7 +206,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                 <h3 className="font-medium">做空配置</h3>
                 <FormField
                   control={form.control}
-                  name="shortApiAccount"
+                  name="shortApiAccountId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>做空API账号</FormLabel>
