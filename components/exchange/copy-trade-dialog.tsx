@@ -320,7 +320,7 @@ export function CopyTradeDialog({traderId, traderName, avatarUrl, userApi}) {
                   <div className="flex cursor-pointer items-center justify-between space-x-4">
                     <div className="flex items-center space-x-2">
                       <FormLabel className="cursor-pointer text-base">More Settings</FormLabel>
-                      {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown className="h-4 w-4" />}
+                      {isAdvancedOpen ? <Icons.chevronUp className="size-4" /> : <Icons.chevronDown className="size-4" />}
                     </div>
                   </div>
                 </CollapsibleTrigger>

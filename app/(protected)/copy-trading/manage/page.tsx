@@ -162,12 +162,12 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
           {isExpanded ? (
             <>
               Collapse Details
-              <Icons.chevronUp className="ml-2 h-4 w-4" />
+              <Icons.chevronUp className="ml-2 size-4" />
             </>
           ) : (
             <div className="flex items-center">
               Expand Details
-              <Icons.chevronDown className="ml-2 h-4 w-4" />
+              <Icons.chevronDown className="ml-2 size-4" />
             </div>
           )}
         </Button>
@@ -200,7 +200,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       {activePositionData === undefined ? (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
+                            <div className="flex size-full items-center justify-center">
                               <Icons.spinner className="size-8 animate-spin text-gray-500" />
                             </div>
                           </TableCell>
@@ -233,7 +233,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                 <TableCell colSpan={5} className="p-2 text-red-600 dark:text-red-400">
                                   <div className="flex items-center">
                                     <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
-                                      <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
+                                      <Icons.circleHelp className="mr-2 size-5 shrink-0 cursor-pointer" />
                                       <span>Error: {position.error}</span>
                                     </Link>
                                   </div>
@@ -259,7 +259,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
+                            <div className="flex size-full items-center justify-center">
                               <p className="text-sm text-muted-foreground">
                                 No records found.
                               </p>
@@ -284,7 +284,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       {positionHistory === undefined ? (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
+                            <div className="flex size-full items-center justify-center">
                               <Icons.spinner className="size-8 animate-spin text-gray-500" />
                             </div>
                           </TableCell>
@@ -319,7 +319,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                                 <TableCell colSpan={5} className="p-2 text-red-600 dark:text-red-400">
                                   <div className="flex items-center">
                                     <Link href={"/docs/copy-trading/error-solutions"} target="_blank" className="flex items-center">
-                                      <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
+                                      <Icons.circleHelp className="mr-2 size-5 shrink-0 cursor-pointer" />
                                       <span>Error: {position.error}</span>
                                     </Link>
                                   </div>
@@ -345,7 +345,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
                       ) : (
                         <TableRow>
                           <TableCell colSpan={7} className="h-40 text-center">
-                            <div className="flex h-full w-full items-center justify-center">
+                            <div className="flex size-full items-center justify-center">
                               <p className="text-sm text-muted-foreground">
                                 No records found.
                               </p>
@@ -487,12 +487,12 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
           {isExpanded ? (
             <>
               Collapse Details
-              <Icons.chevronUp className="ml-2 h-4 w-4" />
+              <Icons.chevronUp className="ml-2 size-4" />
             </>
           ) : (
             <>
               Expand Details
-              <Icons.chevronDown className="ml-2 h-4 w-4" />
+              <Icons.chevronDown className="ml-2 size-4" />
             </>
           )}
         </Button>
@@ -593,7 +593,7 @@ export default function ManageCopyTradingPage() {
     <>
       <div className="text-sm text-gray-600 dark:text-gray-400">
         <Link href="/copy-trading" className="mb-2 inline-flex cursor-pointer items-center">
-          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <Icons.arrowLeft className="mr-1 size-4" />
           <span>Copy Trading</span>
         </Link>
       </div >

@@ -184,7 +184,7 @@ export default function TradersPage() {
             </p>
             <Link href="/copy-trading/manage" className="mt-4 inline-flex items-center text-sm font-medium text-primary">
               Copy Overview
-              <ArrowRight className="ml-1 h-4 w-4" />
+              <ArrowRight className="ml-1 size-4" />
             </Link>
           </CardContent>
         </Card>

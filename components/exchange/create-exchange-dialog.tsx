@@ -148,7 +148,7 @@ export function CreateExchangeDialog({userid, ipdata}) {
                     size="sm"
                     className="shrink-0 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                   >
-                    <Icons.copy className="mr-1 h-4 w-4" aria-hidden="true" />
+                    <Icons.copy className="mr-1 size-4" aria-hidden="true" />
                     Copy
                   </Button>
                 </div>

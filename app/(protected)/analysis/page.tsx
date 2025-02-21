@@ -312,7 +312,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
     <>
       <div className="text-sm text-gray-600 dark:text-gray-400">
         <Link href="/copy-trading" className="mb-2 inline-flex cursor-pointer items-center">
-          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <Icons.arrowLeft className="mr-1 size-4" />
           <span>Explore Traders</span>
         </Link>
       </div >
@@ -336,7 +336,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   <SearchBar name="bitgetTraderId" placeholder="Search Bitget TraderId" />
                 </Suspense> */}
                 <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                   <Input name="bitgetTraderId" placeholder="Search Bitget TraderId" defaultValue={bitgetTraderIdParam} className="pl-8" />
                 </div>
               </form>
@@ -360,7 +360,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                 {/* <div className="flex items-center justify-between"> */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center space-x-4">
-                    <Avatar className="h-16 w-16">
+                    <Avatar className="size-16">
                       <AvatarImage src={trader['traderPic']} alt="Trader Avatar" />
                       <AvatarFallback className="text-violet11 text-[25px]">
                         {trader['traderName'][0]}
@@ -540,7 +540,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   <SearchBar name="binanceTraderId" placeholder="Search Binance TraderId" />
                 </Suspense> */}
                 <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                   <Input name="binanceTraderId" placeholder="Search Binance TraderId" className="pl-8" />
                 </div>
               </form>
@@ -555,7 +555,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
                   <SearchBar name="okxTraderId" placeholder="Search OKX TraderId" />
                 </Suspense> */}
                 <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                   <Input name="okxTraderId" placeholder="Search OKX TraderId" defaultValue={okxTraderIdParam} className="pl-8" />
                 </div>
               </form>

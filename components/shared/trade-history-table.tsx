@@ -42,7 +42,7 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
         {tradeHistoryData === undefined ? (
           <TableRow>
             <TableCell colSpan={7} className="h-40 text-center">
-              <div className="flex h-full w-full items-center justify-center">
+              <div className="flex size-full items-center justify-center">
                 <Icons.spinner className="size-8 animate-spin text-gray-500" />
               </div>
             </TableCell>
@@ -71,7 +71,7 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
                   <TableCell colSpan={4} className="p-2 text-red-600 dark:text-red-400">
                     <div className="flex items-center">
                       <Link href="/docs/copy-trading/error-solutions" target="_blank" className="flex items-center">
-                        <Icons.circleHelp className="mr-2 size-5 flex-shrink-0 cursor-pointer" />
+                        <Icons.circleHelp className="mr-2 size-5 shrink-0 cursor-pointer" />
                         <span>Error: {trade.error}</span>
                       </Link>
                     </div>
@@ -100,7 +100,7 @@ function TradeHistoryTable({ tradeHistoryData }: TradeHistoryTableProps) {
         ) : (
           <TableRow>
             <TableCell colSpan={7} className="h-40 text-center">
-              <div className="flex h-full w-full items-center justify-center">
+              <div className="flex size-full items-center justify-center">
                 <p className="text-sm text-muted-foreground">No records found.</p>
               </div>
             </TableCell>

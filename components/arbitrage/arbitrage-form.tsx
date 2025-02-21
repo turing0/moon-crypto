@@ -22,7 +22,7 @@ export default function ArbitrageForm() {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-sm">
       <div className="mb-4">
-        <Label htmlFor="symbol" className="block text-sm font-medium mb-2">
+        <Label htmlFor="symbol" className="mb-2 block text-sm font-medium">
           Enter Symbol for Arbitrage
         </Label>
         <Input

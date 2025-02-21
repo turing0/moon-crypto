@@ -12,7 +12,7 @@
     "postbuild": "next-sitemap",
     "turbo": "next dev --turbo",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint || next lint --fix",
     "preview": "next build && next start",
     "postinstall": "npx prisma generate",
     "email": "email dev --dir emails --port 3333"

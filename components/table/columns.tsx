@@ -169,7 +169,7 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           TrackingNo
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
@@ -216,9 +216,9 @@ export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="size-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -340,7 +340,7 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           TrackingNo
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
@@ -357,9 +357,9 @@ export const bitgetCurrentOrderColumns: ColumnDef<BitGetCurrentOrder>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="size-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -476,7 +476,7 @@ export const okxOrderColumns: ColumnDef<OkxHistoryOrder>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           订单编号
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
@@ -493,9 +493,9 @@ export const okxOrderColumns: ColumnDef<OkxHistoryOrder>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="size-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

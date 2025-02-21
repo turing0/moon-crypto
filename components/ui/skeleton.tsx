@@ -56,7 +56,7 @@ const CardSkeleton = () => {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
+            <Skeleton className="size-12 rounded-full" />
             <div>
               <Skeleton className="h-5 w-40" />
               <Skeleton className="mt-2 h-4 w-60" />

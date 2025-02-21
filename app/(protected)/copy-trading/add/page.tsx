@@ -163,7 +163,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
     <>
       <div className="text-sm text-gray-600 dark:text-gray-400">
         <Link href="/copy-trading" className="mb-2 flex cursor-pointer items-center">
-          <Icons.arrowLeft className="mr-1 h-4 w-4" />
+          <Icons.arrowLeft className="mr-1 size-4" />
           <span>Explor Traders</span>
         </Link>
       </div >
@@ -183,7 +183,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
                 <FormLabel className="text-lg">Choose your exchange account</FormLabel>
                 {apiLoading ? (
                   <div className="flex items-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
+                    <Loader2 className="size-6 animate-spin text-gray-500" />
                     <span className="ml-2 text-gray-500">Loading APIs...</span>
                   </div>
                 ) : (
@@ -318,7 +318,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
             <CollapsibleTrigger asChild>
               <div className="flex cursor-pointer items-center space-x-2">
                 <FormLabel className="cursor-pointer text-lg">More Settings</FormLabel>
-                {isAdvancedOpen ? <Icons.chevronUp className="h-4 w-4" /> : <Icons.chevronDown className="h-4 w-4" />}
+                {isAdvancedOpen ? <Icons.chevronUp className="size-4" /> : <Icons.chevronDown className="size-4" />}
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-4">
@@ -385,7 +385,7 @@ export default function AddCopyTradePage({ searchParams }: AddCopyTradePageProps
             </Button>
             <Button type="submit" disabled={isCreatePending}>
               {isCreatePending && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />
               )}
               Copy Now
             </Button>
