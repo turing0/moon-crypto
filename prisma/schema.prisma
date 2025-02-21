@@ -64,6 +64,7 @@ model User {
   accounts Account[]
   sessions Session[]
   exchangeAccounts   ExchangeAccount[]
+  arbitrageActiveConfigs ArbitrageActiveConfig[]
   copyTradingSettings CopyTradingSetting[]
   loginLogs     LoginLog[]
 
@@ -172,6 +173,31 @@ model CopyTradingActivePosition {
 
   @@index([copyTradingSettingId])
   @@map(name: "copy_trading_active_positions")
+}
+
+model ArbitrageActiveConfig {
+  id                    String   @id @default(cuid())
+  userId                String
+  symbol                String
+  longApiAccountId      String
+  shortApiAccountId     String
+  longType              String
+  shortType             String
+  amount                Float
+  leverage              Int
+  closeCondition        String
+  closeOnRate           Float?
+  longOrderId           String?
+  shortOrderId          String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  status                String   @default("active") // active ended
+  
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // longApiAccount        ExchangeAccount    @relation(fields: [longApiAccountId], references: [id], onDelete: Cascade)
+  // shortApiAccount       ExchangeAccount    @relation(fields: [shortApiAccountId], references: [id], onDelete: Cascade)
+
+  @@map(name: "arbitrage_active_config")
 }
 
 model CopyTradingPositionHistory {
