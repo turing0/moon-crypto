@@ -25,14 +25,14 @@ export const {
   adapter: {
     ...PrismaAdapter(prisma),
     createUser: async (data) => {
-      console.log("default createUser", data);
+      // console.log("default createUser", data);
       let userId: string;
       let user: any;
       let attempts = 0;
       const maxAttempts = 3;
       while (!user && attempts < maxAttempts) {
         try {
-          userId = generateUserId(data.email, 10, true);
+          userId = generateUserId(data.email, 8+attempts, true);
           user = await prisma.user.create({
             data: {
               ...data,
@@ -40,7 +40,7 @@ export const {
             },
           });
     
-          console.log("User created successfully:", user);
+          // console.log("User created successfully:", user);
           return user;
         } catch (error) {
           if ((error as any).code === 'P2002') {
