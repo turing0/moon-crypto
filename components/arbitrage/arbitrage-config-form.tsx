@@ -112,8 +112,8 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>{symbol} 套利配置</CardTitle>
-        <CardDescription>设置套利策略参数，包括API账号选择、投资金额和平仓条件</CardDescription>
+        <CardTitle>{symbol} 资金费率套利配置</CardTitle>
+        <CardDescription>设置资金费率套利策略参数，包括API账号选择、投资金额和平仓条件</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

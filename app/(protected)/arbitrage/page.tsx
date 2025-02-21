@@ -3,7 +3,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tab, TabList, TabPanel, Tabs as Tabs2 } from "@/components/v2/tabs/tabs"
 import { toast } from "sonner"
-import { usePathname, useRouter } from "next/navigation"
 import { DataTable } from "@/components/table/data-table"
 import { Skeleton, TableSkeleton } from "@/components/ui/skeleton"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,9 +23,9 @@ export default function ArbitragePage() {
         </Link> */}
       </div >
 
-      <div className="flex flex-col items-center justify-center p-24">
+      <div className="flex flex-col items-center justify-center p-6">
       
-        <h1 className="mb-8 text-4xl font-bold">Arbitrage</h1>
+        <h1 className="mb-4 text-4xl font-bold">Arbitrage</h1>
         <ArbitrageForm />
 
       </div>
