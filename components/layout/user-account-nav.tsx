@@ -59,6 +59,11 @@ export function UserAccountNav() {
                     {user?.email}
                   </p>
                 )}
+                {user.id && (
+                  <p className="w-[200px] truncate text-muted-foreground">
+                    UID: {user?.id}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -147,6 +152,11 @@ export function UserAccountNav() {
             {user.email && (
               <p className="w-[200px] truncate text-sm text-muted-foreground">
                 {user?.email}
+              </p>
+            )}
+            {user.id && (
+              <p className="w-[200px] truncate text-sm text-muted-foreground">
+                UID: {user?.id}
               </p>
             )}
           </div>
