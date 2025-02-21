@@ -1,18 +1,36 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+
+interface ApiAccount {
+  id: string
+  accountName: string
+  exchangeName: string
+}
+
+interface GroupedApiAccounts {
+  [key: string]: ApiAccount[]
+}
 
 const formSchema = z.object({
-  longExchange: z.string().min(1, "请选择做多交易所"),
   longApiAccount: z.string().min(1, "请选择做多API账号"),
-  shortExchange: z.string().min(1, "请选择做空交易所"),
   shortApiAccount: z.string().min(1, "请选择做空API账号"),
   longType: z.enum(["spot", "futures"], {
     required_error: "请选择做多类型",
@@ -28,23 +46,49 @@ const formSchema = z.object({
 
 type ArbitrageConfig = z.infer<typeof formSchema>
 
-const exchanges = [
-  { value: "binance", label: "Binance" },
-  { value: "okx", label: "OKX" },
-  { value: "bybit", label: "Bybit" },
-  { value: "bitget", label: "Bitget" },
-]
-
-const apiAccounts = [
-  { value: "account1", label: "Account 1" },
-  { value: "account2", label: "Account 2" },
-  { value: "account3", label: "Account 3" },
-]
 interface ArbitrageConfigFormProps {
-  symbol: string;
+  symbol: string
 }
 
 export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps) {
+  const { data: session } = useSession()
+  const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
+
+  useEffect(() => {
+    if (!session?.user?.id) {
+      return
+    }
+    async function fetchUserApiData() {
+      try {
+        const response = await fetch("/api/userApi", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: session?.user.id }),
+        })
+        if (response.ok) {
+          const data = await response.json()
+          const groupedData = data.reduce((acc: GroupedApiAccounts, item: ApiAccount) => {
+            if (!acc[item.exchangeName]) {
+              acc[item.exchangeName] = []
+            }
+            acc[item.exchangeName].push(item)
+            return acc
+          }, {})
+          console.log("userApi groupedData:", groupedData)
+          setUserApi(groupedData)
+        } else {
+          console.error("Failed to fetch user data:", response.status)
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error)
+      }
+    }
+
+    fetchUserApiData()
+  }, [session])
+
   const form = useForm<ArbitrageConfig>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,7 +112,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     <Card className="w-full">
       <CardHeader>
         <CardTitle>{symbol} 套利配置</CardTitle>
-        <CardDescription>设置套利策略参数，包括交易所选择、投资金额和平仓条件</CardDescription>
+        <CardDescription>设置套利策略参数，包括API账号选择、投资金额和平仓条件</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -77,56 +121,37 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
               {/* 做多配置 */}
               <div className="space-y-4">
                 <h3 className="font-medium">做多配置</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="longExchange"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>做多交易所</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="选择交易所" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {exchanges.map((exchange) => (
-                              <SelectItem key={exchange.value} value={exchange.value}>
-                                {exchange.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="longApiAccount"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>API账号</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="选择API账号" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {apiAccounts.map((account) => (
-                              <SelectItem key={account.value} value={account.value}>
-                                {account.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="longApiAccount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>做多API账号</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="选择API账号" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.entries(userApi).map(([exchangeName, apis]) => (
+                            <SelectGroup key={exchangeName}>
+                              <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                {exchangeName}
+                              </SelectLabel>
+                              {apis.map((api) => (
+                                <SelectItem key={api.id} value={api.id}>
+                                  {api.accountName}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="longType"
@@ -153,56 +178,37 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
               {/* 做空配置 */}
               <div className="space-y-4">
                 <h3 className="font-medium">做空配置</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="shortExchange"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>做空交易所</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="选择交易所" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {exchanges.map((exchange) => (
-                              <SelectItem key={exchange.value} value={exchange.value}>
-                                {exchange.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="shortApiAccount"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>API账号</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="选择API账号" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {apiAccounts.map((account) => (
-                              <SelectItem key={account.value} value={account.value}>
-                                {account.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="shortApiAccount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>做空API账号</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="选择API账号" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.entries(userApi).map(([exchangeName, apis]) => (
+                            <SelectGroup key={exchangeName}>
+                              <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                {exchangeName}
+                              </SelectLabel>
+                              {apis.map((api) => (
+                                <SelectItem key={api.id} value={api.id} className="pl-4">
+                                  {api.accountName}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="shortType"

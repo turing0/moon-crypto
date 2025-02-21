@@ -6,7 +6,6 @@ import Link from "next/link"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
-import { symbol } from "prop-types"
 
 type ExchangeData = {
   name: string
