@@ -21,9 +21,10 @@ export const sidebarLinks: SidebarNavItem[] = [
         authorizeOnly: UserRole.ADMIN,
       },
       { href: "/exchanges", icon: "arrowRightLeft", title: "Exchanges" },
-      // { href: "/dashboard/charts", icon: "lineChart", title: "Charts" },
+      { href: "/arbitrage", icon: "trendingUp", title: "Arbitrage" },
       { href: "/copy-trading", icon: "candlestickChart", title: "Copy Trading" },
       { href: "/analysis", icon: "lineChart", title: "Analysis" },
+      // { href: "/dashboard/charts", icon: "lineChart", title: "Charts" },
       // {
       //   href: "/billing",
       //   icon: "billing",

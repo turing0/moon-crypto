@@ -51,6 +51,7 @@ import {
   CircleHelp,
   Loader,
   Info,
+  TrendingUp,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -153,6 +154,7 @@ export const Icons = {
   shieldPlus: ShieldPlus,
   spinner: Loader2,
   sun: SunMedium,
+  trendingUp: TrendingUp,
   trash: Trash,
   trash2: Trash2,
   twitter: ({ ...props }: LucideProps) => (

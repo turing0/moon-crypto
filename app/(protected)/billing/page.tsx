@@ -60,14 +60,14 @@ export default async function BillingPage() {
                   {/* <TableHead className="text-right">Amount</TableHead> */}
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              {/* <TableBody> */}
                 {/* <TableRow className="bg-accent"> */}
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>
                     <div className="font-medium">ETH</div>
-                    {/* <div className="hidden text-sm text-muted-foreground md:inline">
+                    <div className="hidden text-sm text-muted-foreground md:inline">
                       liam@example.com
-                    </div> */}
+                    </div>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
                     ERC20
@@ -82,15 +82,11 @@ export default async function BillingPage() {
                   <TableCell className="hidden md:table-cell">
                     2024-06-12 10:42:35
                   </TableCell>
-                  {/* <TableCell className="text-right">$250.00</TableCell> */}
-                  
-                </TableRow>
-                <TableRow>
+                  <TableCell className="text-right">$250.00</TableCell>
+                </TableRow> */}
+                {/* <TableRow>
                   <TableCell>
                     <div className="font-medium">USDT</div>
-                    {/* <div className="hidden text-sm text-muted-foreground md:inline">
-                      olivia@example.com
-                    </div> */}
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
                     TRC20
@@ -105,10 +101,9 @@ export default async function BillingPage() {
                   <TableCell className="hidden md:table-cell">
                     2024-06-04 10:42:39
                   </TableCell>
-                  {/* <TableCell className="text-right">$150.00</TableCell> */}
-                  
-                </TableRow>
-              </TableBody>
+                  <TableCell className="text-right">$150.00</TableCell>
+                </TableRow> */}
+              {/* </TableBody> */}
             </Table>
           </CardContent>
         </Card>
