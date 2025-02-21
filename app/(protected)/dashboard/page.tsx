@@ -88,7 +88,7 @@ export default async function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card>
+            {/* <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Active Trades</CardTitle>
                 <svg
@@ -111,8 +111,8 @@ export default async function DashboardPage() {
                   +2 from last week
                 </p>
               </CardContent>
-            </Card>
-            <Card>
+            </Card> */}
+            {/* <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Win/Loss Ratio
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
                   +5% from last week
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
           {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
