@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
+import Link from "next/link"
 
 interface ApiAccount {
   id: string
@@ -76,7 +77,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
             acc[item.exchangeName].push(item)
             return acc
           }, {})
-          console.log("userApi groupedData:", groupedData)
+          // console.log("userApi groupedData:", groupedData)
           setUserApi(groupedData)
         } else {
           console.error("Failed to fetch user data:", response.status)
@@ -134,18 +135,24 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Object.entries(userApi).map(([exchangeName, apis]) => (
-                            <SelectGroup key={exchangeName}>
-                              <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
-                                {exchangeName}
-                              </SelectLabel>
-                              {apis.map((api) => (
-                                <SelectItem key={api.id} value={api.id}>
-                                  {api.accountName}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          ))}
+                          {Object.keys(userApi).length === 0 ? (
+                            <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
+                              尚未添加API账号。请前往 <Link href="/exchanges" className="text-amber-500 underline">Exchanges 页面</Link> 添加。
+                            </div>
+                          ) : (
+                            Object.entries(userApi).map(([exchangeName, apis]) => (
+                              <SelectGroup key={exchangeName}>
+                                <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                  {exchangeName}
+                                </SelectLabel>
+                                {apis.map((api) => (
+                                  <SelectItem key={api.id} value={api.id}>
+                                    {api.accountName}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            ))
+                          )}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -191,18 +198,23 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Object.entries(userApi).map(([exchangeName, apis]) => (
+                          {Object.keys(userApi).length === 0 ? (
+                            <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
+                              尚未添加API账号。请前往 <Link href="/exchanges" className="text-amber-500 underline">Exchanges 页面</Link> 添加。
+                            </div>
+                          ) : (Object.entries(userApi).map(([exchangeName, apis]) => (
                             <SelectGroup key={exchangeName}>
                               <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
                                 {exchangeName}
                               </SelectLabel>
                               {apis.map((api) => (
-                                <SelectItem key={api.id} value={api.id} className="pl-4">
+                                <SelectItem key={api.id} value={api.id}>
                                   {api.accountName}
                                 </SelectItem>
                               ))}
                             </SelectGroup>
-                          ))}
+                          ))
+                        )}
                         </SelectContent>
                       </Select>
                       <FormMessage />
