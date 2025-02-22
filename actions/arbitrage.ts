@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
 
+const apiAuthorization = process.env.API_Authorization;
 
 export async function createArbitrageConfig(symbol, initialFundingRate, input: any) {
   // noStore()
@@ -63,7 +64,7 @@ export async function getBinanceRate(symbol) {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
-        'Authorization': 'Hv0bcc6HZCR0wEm7Hj+mik6JJTfhqNJrugjIQx9jcsdVxkvRZvigrft4Xfs',
+        'Authorization': apiAuthorization!,
       },
       body: JSON.stringify({
         uid: session?.user.id,

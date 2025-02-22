@@ -7,12 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
 import { getBinanceRate } from "@/actions/arbitrage"
 
-type ExchangeData = {
-  name: string
-  logo: string
-  rate: string
-}
-
 interface FundingRates {
   [exchangeName: string]: number | string;
 }
