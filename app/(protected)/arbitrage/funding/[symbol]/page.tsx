@@ -8,7 +8,11 @@ import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
 import { getBinanceRate } from "@/actions/arbitrage"
 
 interface FundingRates {
-  [exchangeName: string]: number | string;
+  // [exchangeName: string]: number | string;
+  [exchangeName: string]: {
+    fundingRate: number | string
+  };
+
 }
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
@@ -103,8 +107,14 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                   </div>
                 </TableCell>
                 {Object.entries(fundingRates).map(([exchange, rate]) => (
-                  <TableCell key={exchange} className={getRateColor(rate)}>
-                    {rate}
+                  <TableCell key={exchange} className={getRateColor(rate?.fundingRate)}>
+                    {/* {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
+                      parseFloat(rate?.fundingRate).toFixed(4) :
+                      rate?.fundingRate.toFixed(4))} */}
+                    {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
+                    (parseFloat(rate?.fundingRate) * 100).toFixed(4) :
+                    (rate?.fundingRate * 100).toFixed(4))}
+                    {rate?.fundingRate ? "%":"" }
                   </TableCell>
                 ))}
               </TableRow>
