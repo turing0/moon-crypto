@@ -20,8 +20,8 @@ import { useEffect, useState, useTransition } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { createArbitrageConfig } from "@/actions/arbitrage"
-import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 interface ApiAccount {
   id: string
@@ -127,6 +127,33 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
   }
 
   const closeCondition = form.watch("closeCondition")
+
+  const [openingFees, setOpeningFees] = useState(0)
+  const [projectedProfit, setProjectedProfit] = useState(0)
+
+  // Watch relevant form fields for fee calculations
+  const amount = form.watch("amount")
+  const leverage = form.watch("leverage")
+  const longType = form.watch("longType")
+  const shortType = form.watch("shortType")
+
+  // Update fees and profit when relevant fields change
+  useEffect(() => {
+    if (amount && leverage && longType && shortType) {
+      const amountNum = Number.parseFloat(amount)
+      const leverageNum = Number.parseFloat(leverage)
+
+      // Example fee calculation (replace with actual exchange fee rates)
+      // 0.1%
+      const fees = amountNum * leverageNum * 0.001 
+      setOpeningFees(fees)
+
+      // Example 8-hour profit calculation (replace with actual funding rate)
+      const fundingRate = 0.005 // 0.5% example rate
+      const projectedProfit = amountNum * leverageNum * (shortType==='futures'?fundingRate:-fundingRate) - (fees * 2)
+      setProjectedProfit(projectedProfit)
+    }
+  }, [amount, leverage, longType, shortType])
 
   return (
     <Card className="w-full">
@@ -346,6 +373,33 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                   )}
                 />
               )}
+            </div>
+
+            {/* 预计收益 */}
+            <div className="space-y-2">
+              <h3 className="font-medium">预计收益</h3>
+              <div className="rounded-lg border p-4 space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground">预计开仓手续费</div>
+                    <div className="text-lg font-semibold">{openingFees.toFixed(2)} USDT</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground">当前资金费率预计8小时收益</div>
+                    <div className={`text-xl font-bold ${projectedProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      {projectedProfit.toFixed(2)} USDT
+                    </div>
+                  </div>
+                </div>
+                {/* <div className="pt-2 border-t">
+                  <div className="space-y-1">
+                    <div className="text-sm text-muted-foreground">当前资金费率预计8小时收益</div>
+                    <div className={`text-xl font-bold ${projectedProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      {projectedProfit.toFixed(2)} USDT
+                    </div>
+                  </div>
+                </div> */}
+              </div>
             </div>
 
             <Button type="submit" className="w-full">
