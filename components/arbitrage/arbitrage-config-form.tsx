@@ -58,6 +58,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
   const { data: session } = useSession()
   const router = useRouter();
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
+  const [fundingRates, setFundingRates] = useState<any>({})
   const [isCreatePending, startCreateTransition] = useTransition()
 
   useEffect(() => {
@@ -145,7 +146,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
       const fees = amountNum * leverageNum * ((longType==='futures'?0.0002:0.001) + (shortType==='futures'?0.0002:0.001))
       setOpeningFees(fees)
 
-      // TODO: 资金费率获取 4h转换
+      // TODO: 资金费率获取 4h 转换
       const fundingRate = 0.005 // 0.5% funding rate
       const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-fundingRate) + (shortType==='spot'?0:fundingRate))
       setProfit(projectedProfit)
@@ -156,7 +157,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     <Card className="w-full">
       <CardHeader>
         <CardTitle>{symbol} 资金费率套利配置</CardTitle>
-        <CardDescription>设置资金费率套利策略参数，包括API账号选择、单边投资金额和平仓条件</CardDescription>
+        {/* <CardDescription>设置资金费率套利策略参数，包括API账号选择、单边投资金额和平仓条件</CardDescription> */}
       </CardHeader>
       <CardContent>
         <Form {...form}>

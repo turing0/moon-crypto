@@ -31,9 +31,7 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
       data: { ...data, ...input },
     });
 
-    
     // revalidatePath("/copy-trading")
-
     // await redisUpdate([copyTradingSettingId], undefined);
 
     return {
@@ -47,3 +45,51 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
     }
   }
 }
+
+
+export async function getBinanceRate(symbol) {
+  // noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Send the POST request
+    const response = await fetch("https://api.mooncryp.to/funding-rate", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Authorization': 'Hv0bcc6HZCR0wEm7Hj+mik6JJTfhqNJrugjIQx9jcsdVxkvRZvigrft4Xfs',
+      },
+      body: JSON.stringify({
+        uid: session?.user.id,
+        symbol: symbol+'USDT'
+      }),
+    });
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error(`Failed to getBinanceRate: ${errorMessage}`);
+      return {
+        fundingRate: null,
+        error: errorMessage
+      }
+    }
+    const responseData = await response.json();
+
+    return {
+      fundingRate: responseData,
+      status: "success",
+    }
+  } catch (err) {
+    console.log("getBinanceRate error:", err)
+    return {
+      fundingRate: null,
+      error: (err),
+    }
+  }
+}
+

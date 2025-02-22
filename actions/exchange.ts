@@ -18,7 +18,7 @@ async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey
       throw new Error("OKX verrify fetch failed")
     }
     const data = await response.json()
-    console.log("response data:", data)
+    // console.log("exchangeApiVerify data:", data)
     if (data['code']==="0") {
       return {
         "verified": true, 

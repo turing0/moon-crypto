@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import Image from "next/image"
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
+import { getBinanceRate } from "@/actions/arbitrage"
 
 type ExchangeData = {
   name: string
@@ -13,58 +13,51 @@ type ExchangeData = {
   rate: string
 }
 
-type FundingRate = {
-  symbol: string
-  symbolLogo: string
-  exchanges: ExchangeData[]
+interface FundingRates {
+  [exchangeName: string]: number | string;
 }
 
-const mockFundingRates: FundingRate[] = [
-  {
-    symbol: "BTC",
-    symbolLogo: "/btc-logo.svg",
-    exchanges: [
-      {
-        name: "Binance",
-        logo: "",
-        rate: "-0.0016%",
-      },
-      {
-        name: "OKX",
-        logo: "",
-        rate: "-0.0044%",
-      },
-      {
-        name: "Bybit",
-        logo: "",
-        rate: "0.0007%",
-      },
-      {
-        name: "Bitget",
-        logo: "",
-        rate: "-0.0026%",
-      },
-    ],
-  },
-]
-
 export default function FundingPage({ params }: { params: { symbol: string } }) {
-  const [fundingRates, setFundingRates] = useState<FundingRate[]>(mockFundingRates)
+  const [fundingRates, setFundingRates] = useState<FundingRates>({})
 
   useEffect(() => {
-    // Simulating an API call
-    const fetchFundingRates = async () => {
-      // Replace this with actual API call in production
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      setFundingRates(mockFundingRates)
+    async function getFundingRate() {
+      try {
+        const { fundingRate } = await getBinanceRate(params.symbol)
+        console.log(fundingRate)
+        // if (response.ok) {
+        //   const data = await response.json()
+        //   // console.log("getFundingRate data:", data)
+        //   setUserApi(data)
+        // } else {
+        //   console.error("Failed to getFundingRate:", response.status)
+        // }
+        setFundingRates(fundingRate)
+      } catch (error) {
+        console.error("Failed to getFundingRate:", error)
+      }
     }
 
-    fetchFundingRates()
+    getFundingRate()
   }, [])
 
-  const getRateColor = (rate: string) => {
-    const value = Number.parseFloat(rate)
-    return value < 0 ? "text-green-500" : value > 0 ? "text-red-500" : "text-gray-500"
+  const getRateColor = (rate: number | string) => {
+    // const value = Number.parseFloat(rate)
+    // return value < 0 ? "text-green-500" : value > 0 ? "text-red-500" : "text-gray-500"
+    if (typeof rate === 'number') {
+      if (rate > 0) return "text-green-500";
+      if (rate < 0) return "text-red-500";
+        return "";
+    } else if (typeof rate === 'string') {
+        const numRate = parseFloat(rate); // Try to parse if it's a string representation of a number
+        if (!isNaN(numRate)) {
+            if (numRate > 0) return "text-green-500";
+            if (numRate < 0) return "text-red-500";
+            return "";
+        }
+        return ""; // Handle cases where string rate is not a number if needed
+    }
+    return ""; // Default case
   }
 
   return (
@@ -81,10 +74,10 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
           <TableHeader>
             <TableRow className="bg-muted/50">
               <TableHead className="min-w-[100px]">Symbol</TableHead>
-              {fundingRates[0]?.exchanges.map((exchange) => (
-                <TableHead key={exchange.name} className="min-w-[120px]">
+              {Object.keys(fundingRates)?.map((exchange) => (
+                <TableHead key={exchange} className="min-w-[120px]">
                   <div className="flex items-center gap-2">
-                    <div className="relative size-5">
+                    {/* <div className="relative size-5">
                       <Image
                         src={exchange.logo || "/placeholder.svg"}
                         alt={``}
@@ -92,19 +85,18 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                         height={20}
                         className="object-contain"
                       />
-                    </div>
-                    {exchange.name}
+                    </div> */}
+                    {exchange}
                   </div>
                 </TableHead>
               ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fundingRates.map((rate) => (
-              <TableRow key={rate.symbol}>
+              <TableRow>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
-                    <div className="relative size-5">
+                    {/* <div className="relative size-5">
                       <Image
                         src={rate.symbolLogo || "/placeholder.svg"}
                         alt={``}
@@ -112,22 +104,22 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                         height={20}
                         className="object-contain"
                       />
-                    </div>
-                    {rate.symbol}
+                    </div> */}
+                    {params.symbol}
                   </div>
                 </TableCell>
-                {rate.exchanges.map((exchange) => (
-                  <TableCell key={exchange.name} className={getRateColor(exchange.rate)}>
-                    {exchange.rate}
+                {Object.entries(fundingRates).map(([exchange, rate]) => (
+                  <TableCell key={exchange} className={getRateColor(rate)}>
+                    {rate}
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
           </TableBody>
         </Table>
       </div>
 
       <ArbitrageConfigForm symbol={params.symbol} />
+
     </div>
   )
 }
