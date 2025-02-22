@@ -142,15 +142,15 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     if (amount && leverage && longType && shortType) {
       const amountNum = Number.parseFloat(amount)
       const leverageNum = Number.parseFloat(leverage)
-
-      // Example fee calculation (replace with actual exchange fee rates)
-      // 0.1%
-      const fees = amountNum * leverageNum * 0.001 
+      // binance bybit bitget okx
+      // 杠杆 0.1% 合约 0.02%
+      const fees = amountNum * leverageNum * ((longType==='futures'?0.0002:0.001) + (shortType==='futures'?0.0002:0.001))
       setOpeningFees(fees)
 
       // Example 8-hour profit calculation (replace with actual funding rate)
-      const fundingRate = 0.005 // 0.5% example rate
-      const projectedProfit = amountNum * leverageNum * (shortType==='futures'?fundingRate:-fundingRate) - (fees * 2)
+      const fundingRate = 0.005 // 0.5% funding rate
+      // const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-fundingRate) + (shortType==='spot'?0:fundingRate)) - (fees * 2)
+      const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-fundingRate) + (shortType==='spot'?0:fundingRate))
       setProjectedProfit(projectedProfit)
     }
   }, [amount, leverage, longType, shortType])
