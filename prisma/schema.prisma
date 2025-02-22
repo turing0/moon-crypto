@@ -183,7 +183,7 @@ model ArbitrageConfig {
   shortApiAccountId     String
   longType              String
   shortType             String
-  amount                Float //  总共的投资金额
+  amount                Float //  单边投资金额
   leverage              Int
   initialFundingRate    Float
   closeCondition        String

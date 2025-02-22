@@ -24,7 +24,7 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
     if (input.closeOnRate) {
       input.closeOnRate = parseFloat(input.closeOnRate);
     }
-    console.log('input:', input)
+    // console.log('input:', input)
 
     // 创建
     const config = await prisma.arbitrageConfig.create({

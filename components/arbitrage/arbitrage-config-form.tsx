@@ -42,7 +42,7 @@ const formSchema = z.object({
   shortType: z.enum(["spot", "futures"], {
     required_error: "请选择做空类型",
   }),
-  amount: z.string().min(1, "请输入投资金额"),
+  amount: z.string().min(1, "请输入单边投资金额"),
   leverage: z.string().min(1, "请输入杠杆倍数"),
   closeCondition: z.enum(["directionChange", "rateThreshold"]),
   closeOnRate: z.string().optional(),
@@ -110,7 +110,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
   const onSubmit = (data: ArbitrageConfig) => {
     startCreateTransition(async () => {
       // TODO: initialFundingRate
-      const { error } = await createArbitrageConfig(symbol, 'initialFundingRate', data)
+      const { error } = await createArbitrageConfig(symbol, 0.5, data)
 
       if (error) {
         toast.error(error)
@@ -132,14 +132,14 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     <Card className="w-full">
       <CardHeader>
         <CardTitle>{symbol} 资金费率套利配置</CardTitle>
-        <CardDescription>设置资金费率套利策略参数，包括API账号选择、投资金额和平仓条件</CardDescription>
+        <CardDescription>设置资金费率套利策略参数，包括API账号选择、单边投资金额和平仓条件</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {/* 做多配置 */}
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <h3 className="font-medium">做多配置</h3>
                 <FormField
                   control={form.control}
@@ -202,7 +202,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
               </div>
 
               {/* 做空配置 */}
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <h3 className="font-medium">做空配置</h3>
                 <FormField
                   control={form.control}
@@ -265,7 +265,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
             </div>
 
             {/* 投资配置 */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h3 className="font-medium">投资配置</h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <FormField
@@ -273,7 +273,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>投资金额 (USDT)</FormLabel>
+                      <FormLabel>单边投资金额 (USDT)</FormLabel>
                       <FormControl>
                         <Input type="number" {...field} />
                       </FormControl>
@@ -298,14 +298,14 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
             </div>
 
             {/* 平仓条件 */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <h3 className="font-medium">平仓条件</h3>
               <FormField
                 control={form.control}
                 name="closeCondition"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>选择平仓条件</FormLabel>
+                    {/* <FormLabel>选择平仓条件</FormLabel> */}
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
