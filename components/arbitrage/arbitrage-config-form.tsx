@@ -126,18 +126,16 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     // TODO: 实现套利策略启动逻辑
   }
 
-  const closeCondition = form.watch("closeCondition")
 
   const [openingFees, setOpeningFees] = useState(0)
-  const [projectedProfit, setProjectedProfit] = useState(0)
+  const [profit, setProfit] = useState(0)
 
-  // Watch relevant form fields for fee calculations
+  const closeCondition = form.watch("closeCondition")
   const amount = form.watch("amount")
   const leverage = form.watch("leverage")
   const longType = form.watch("longType")
   const shortType = form.watch("shortType")
 
-  // Update fees and profit when relevant fields change
   useEffect(() => {
     if (amount && leverage && longType && shortType) {
       const amountNum = Number.parseFloat(amount)
@@ -147,11 +145,10 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
       const fees = amountNum * leverageNum * ((longType==='futures'?0.0002:0.001) + (shortType==='futures'?0.0002:0.001))
       setOpeningFees(fees)
 
-      // Example 8-hour profit calculation (replace with actual funding rate)
+      // TODO: 资金费率获取 4h转换
       const fundingRate = 0.005 // 0.5% funding rate
-      // const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-fundingRate) + (shortType==='spot'?0:fundingRate)) - (fees * 2)
       const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-fundingRate) + (shortType==='spot'?0:fundingRate))
-      setProjectedProfit(projectedProfit)
+      setProfit(projectedProfit)
     }
   }, [amount, leverage, longType, shortType])
 
@@ -378,22 +375,22 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
             {/* 预计收益 */}
             <div className="space-y-2">
               <h3 className="font-medium">预计收益</h3>
-              <div className="rounded-lg border p-4 space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3 rounded-lg border p-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">预计开仓手续费</div>
                     <div className="text-lg font-semibold">{openingFees.toFixed(2)} USDT</div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-sm text-muted-foreground">当前资金费率预计8小时收益</div>
-                    <div className={`text-xl font-bold ${projectedProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
-                      {projectedProfit.toFixed(2)} USDT
+                    <div className="text-sm text-muted-foreground">当前资金费率预计4小时收益</div>
+                    <div className={`text-xl font-bold ${profit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      {profit.toFixed(2)} USDT
                     </div>
                   </div>
                 </div>
                 {/* <div className="pt-2 border-t">
                   <div className="space-y-1">
-                    <div className="text-sm text-muted-foreground">当前资金费率预计8小时收益</div>
+                    <div className="text-sm text-muted-foreground">当前资金费率预计4小时收益</div>
                     <div className={`text-xl font-bold ${projectedProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
                       {projectedProfit.toFixed(2)} USDT
                     </div>
