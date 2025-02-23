@@ -61,7 +61,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   }
 
   return (
-    <div className="flex flex-col space-y-8 p-4 md:p-8">
+    <div className="flex flex-col space-y-6 p-4 md:p-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold md:text-3xl">Funding Rates</h1>
         <Button>

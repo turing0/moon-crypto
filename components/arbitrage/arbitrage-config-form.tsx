@@ -102,7 +102,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
     defaultValues: {
       longType: "spot",
       shortType: "futures",
-      amount: "1000",
+      amount: "10000",
       leverage: "1",
       closeCondition: "directionChange",
       closeOnRate: "0.01",
