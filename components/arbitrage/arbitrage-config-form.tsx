@@ -130,8 +130,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
   }
 
   const [openingFees, setOpeningFees] = useState(0)
-  // const [longFundingRate, setLongFundingRate] = useState(0)
-  // const [shortFundingRate, setShortFundingRate] = useState(0)
   const [profit, setProfit] = useState(0)
 
   const closeCondition = form.watch("closeCondition")
@@ -152,7 +150,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       setOpeningFees(fees)
 
       // TODO: 资金费率获取 4h 转换
-      // const fundingRate = 0.005 // 0.5% funding rate
       let longFundingRate = 0
       let shortFundingRate = 0
       if (longType==='futures') {
@@ -197,24 +194,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>做多API账号</FormLabel>
-                      {/* <Select onValueChange={field.onChange} defaultValue={field.value}> */}
-                      <Select 
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          // if (longType==='futures') {
-                          //   const selectedExchange = Object.entries(userApi).find(([_, apis]) =>
-                          //     apis.some((api) => api.id === value)
-                          //   );
-                          //   if (selectedExchange) {
-                          //     const [exchangeName] = selectedExchange;
-                          //     console.log(fundingRates[exchangeName].fundingRate)
-                          //     setLongFundingRate(fundingRates[exchangeName].fundingRate)
-                          //     // handleApiClick(exchangeName, value);
-                          //   }
-                          // }
-                        }} 
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="选择API账号" />
@@ -281,22 +261,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>做空API账号</FormLabel>
-                      <Select 
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          // if (shortType==='futures') {
-                          //   const selectedExchange = Object.entries(userApi).find(([_, apis]) =>
-                          //     apis.some((api) => api.id === value)
-                          //   );
-                          //   if (selectedExchange) {
-                          //     const [exchangeName] = selectedExchange;
-                          //     console.log(fundingRates[exchangeName].fundingRate)
-                          //     setShortFundingRate(fundingRates[exchangeName].fundingRate)
-                          //   }
-                          // }
-                        }} 
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="选择API账号" />

@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/shared/icons"
 import ArbitrageForm from "@/components/arbitrage/arbitrage-form"
-import { Input } from "@/components/ui/input"
 import { DashboardHeader } from "@/components/dashboard/header"
 
 export default function ArbitragePage() {
