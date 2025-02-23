@@ -22,6 +22,7 @@ import Link from "next/link"
 import { createArbitrageConfig } from "@/actions/arbitrage"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { truncate } from "fs/promises"
 
 interface ApiAccount {
   id: string
@@ -52,13 +53,13 @@ type ArbitrageConfig = z.infer<typeof formSchema>
 
 interface ArbitrageConfigFormProps {
   symbol: string
+  fundingRates: any
 }
 
-export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps) {
+export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageConfigFormProps) {
   const { data: session } = useSession()
   const router = useRouter();
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
-  const [fundingRates, setFundingRates] = useState<any>({})
   const [isCreatePending, startCreateTransition] = useTransition()
 
   useEffect(() => {
@@ -125,8 +126,8 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
     console.log("配置提交:", data)
 
     // TODO: 实现套利策略启动逻辑
-  }
 
+  }
 
   const [openingFees, setOpeningFees] = useState(0)
   const [profit, setProfit] = useState(0)
@@ -190,7 +191,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                                   {exchangeName}
                                 </SelectLabel>
                                 {apis.map((api) => (
-                                  <SelectItem key={api.id} value={api.id}>
+                                  <SelectItem key={api.id} value={api.id} disabled={fundingRates[exchangeName]?.disabled}>
                                     {api.accountName}
                                   </SelectItem>
                                 ))}
@@ -252,7 +253,7 @@ export default function ArbitrageConfigForm({ symbol }: ArbitrageConfigFormProps
                                 {exchangeName}
                               </SelectLabel>
                               {apis.map((api) => (
-                                <SelectItem key={api.id} value={api.id}>
+                                <SelectItem key={api.id} value={api.id} disabled={fundingRates[exchangeName]?.disabled}>
                                   {api.accountName}
                                 </SelectItem>
                               ))}

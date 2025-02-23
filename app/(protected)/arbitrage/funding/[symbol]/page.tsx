@@ -6,11 +6,13 @@ import Link from "next/link"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
 import { getBinanceRate } from "@/actions/arbitrage"
+import { toast } from "sonner"
 
 interface FundingRates {
   // [exchangeName: string]: number | string;
   [exchangeName: string]: {
     fundingRate: number | string
+    disabled: boolean
   };
 
 }
@@ -21,16 +23,16 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   useEffect(() => {
     async function getFundingRate() {
       try {
-        const { fundingRate } = await getBinanceRate(params.symbol)
+        const { fundingRate, error } = await getBinanceRate(params.symbol)
         console.log(fundingRate)
-        // if (response.ok) {
-        //   const data = await response.json()
-        //   // console.log("getFundingRate data:", data)
-        //   setUserApi(data)
-        // } else {
-        //   console.error("Failed to getFundingRate:", response.status)
-        // }
-        setFundingRates(fundingRate)
+        if (error) {
+          toast.error("资金费率获取失败", {
+            description:error,
+          });
+          console.error("Failed to getFundingRate:", error)
+        } else {
+          setFundingRates(fundingRate)
+        }
       } catch (error) {
         console.error("Failed to getFundingRate:", error)
       }
@@ -111,10 +113,16 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                     {/* {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
                       parseFloat(rate?.fundingRate).toFixed(4) :
                       rate?.fundingRate.toFixed(4))} */}
-                    {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
-                    (parseFloat(rate?.fundingRate) * 100).toFixed(4) :
-                    (rate?.fundingRate * 100).toFixed(4))}
-                    {rate?.fundingRate ? "%":"" }
+                    {rate?.disabled ? (
+                        "/"
+                    ):(
+                      <>
+                        {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
+                        (parseFloat(rate?.fundingRate) * 100).toFixed(4) :
+                        (rate?.fundingRate * 100).toFixed(4))}
+                        {rate?.fundingRate ? "%":"" }
+                      </>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -122,7 +130,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         </Table>
       </div>
 
-      <ArbitrageConfigForm symbol={params.symbol} />
+      <ArbitrageConfigForm symbol={params.symbol} fundingRates={fundingRates} />
 
     </div>
   )
