@@ -117,7 +117,7 @@ export async function getBinanceRate(symbol) {
 }
 
 // TODO:
-export async function marketClose(id) {
+export async function marketClose(id: string) {
   // noStore()
   try {
     const session = await auth()
@@ -162,7 +162,7 @@ export async function marketClose(id) {
   }
 }
 // TODO:
-export async function limitClose(id) {
+export async function limitClose(id: string) {
   // noStore()
   try {
     const session = await auth()
@@ -186,7 +186,7 @@ export async function limitClose(id) {
     });
     if (!response.ok) {
       const errorMessage = await response.text();
-      console.error(`Failed to marketClose: ${errorMessage}`);
+      console.error(`Failed to limitClose: ${errorMessage}`);
       return {
         fundingRate: null,
         error: errorMessage
@@ -199,7 +199,52 @@ export async function limitClose(id) {
       status: "success",
     }
   } catch (err) {
-    console.log("marketClose error:", err)
+    console.log("limitClose error:", err)
+    return {
+      fundingRate: null,
+      error: (err),
+    }
+  }
+}
+// TODO:
+export async function cancelArbitrage(id: string) {
+  // noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Send the POST request
+    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Authorization': apiAuthorization!,
+      },
+      body: JSON.stringify({
+        uid: session?.user.id,
+      }),
+    });
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error(`Failed to cancelArbitrage: ${errorMessage}`);
+      return {
+        fundingRate: null,
+        error: errorMessage
+      }
+    }
+    const responseData = await response.json();
+
+    return {
+      fundingRate: responseData,
+      status: "success",
+    }
+  } catch (err) {
+    console.log("cancelArbitrage error:", err)
     return {
       fundingRate: null,
       error: (err),

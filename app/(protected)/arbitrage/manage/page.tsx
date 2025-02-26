@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
+import { cancelArbitrage, getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
 import { PackageSearch, AlertCircle } from "lucide-react"
 import { Icons } from "@/components/shared/icons"
@@ -148,7 +148,7 @@ export default function ArbitrageManagementPage() {
       isOpen: true,
       action: async () => {
         try {
-          await fetch(`/api/arbitrage/${id}/cancel`, { method: "POST" })
+          await cancelArbitrage(id)
           toast.success("套利已取消")
           const updatedConfigs = await getArbitrageConfig(session?.user.id!)
           setArbitrageConfigs(updatedConfigs)
