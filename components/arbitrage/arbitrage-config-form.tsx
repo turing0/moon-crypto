@@ -173,7 +173,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-longFundingRate) + (shortType==='spot'?0:shortFundingRate))
       setProfit(projectedProfit)
     }
-  }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId])
+  }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates])
 
   return (
     <Card className="w-full">

@@ -39,7 +39,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     }
 
     getFundingRate()
-  }, [])
+  }, [params.symbol])
 
   const getRateColor = (rate: number | string) => {
     // const value = Number.parseFloat(rate)
