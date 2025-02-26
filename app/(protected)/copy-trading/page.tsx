@@ -159,7 +159,7 @@ export default function TradersPage() {
     }
 
     fetchUserApiData();
-  }, [session]);
+  }, [session, isLoading]);
 
   // const user = await getCurrentUser();
   // if (!user) {

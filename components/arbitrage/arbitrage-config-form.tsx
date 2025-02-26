@@ -109,26 +109,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
     },
   })
 
-  const onSubmit = (data: ArbitrageConfig) => {
-    startCreateTransition(async () => {
-      // TODO: initialFundingRate
-      const { error } = await createArbitrageConfig(symbol, 0.5, data)
-
-      if (error) {
-        toast.error(error)
-        return
-      }
-
-      form.reset()
-      toast.success("Arbitrage added")
-      router.push('/arbitrage/manage')
-    })
-    console.log("配置提交:", data)
-
-    // TODO: 实现套利策略启动逻辑
-
-  }
-
   const [openingFees, setOpeningFees] = useState(0)
   const [profit, setProfit] = useState(0)
 
@@ -174,6 +154,47 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       setProfit(projectedProfit)
     }
   }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates])
+  
+  const onSubmit = (data: ArbitrageConfig) => {
+    startCreateTransition(async () => {
+      let longFundingRate = 0
+      let shortFundingRate = 0
+      const allFutures = longType==='futures' && shortType==='futures'
+      if (longType==='futures') {
+        const selectedLongExchange = Object.entries(userApi).find(([_, apis]) =>
+          apis.some((api) => api.id === longApiAccountId)
+        );
+        if (selectedLongExchange) {
+          const [exchangeName] = selectedLongExchange;
+          longFundingRate = fundingRates[exchangeName].fundingRate
+        }
+      }
+      if (shortType==='futures') {
+        const selectedShortExchange = Object.entries(userApi).find(([_, apis]) =>
+          apis.some((api) => api.id === shortApiAccountId)
+        );
+        if (selectedShortExchange) {
+          const [exchangeName] = selectedShortExchange;
+          shortFundingRate = fundingRates[exchangeName].fundingRate
+        }
+      }
+
+      const { error } = await createArbitrageConfig(symbol, allFutures?Math.abs(longFundingRate-shortFundingRate):(shortType==='futures'?shortFundingRate:longFundingRate), data)
+
+      if (error) {
+        toast.error(error)
+        return
+      }
+
+      form.reset()
+      toast.success("Arbitrage added")
+      router.push('/arbitrage/manage')
+    })
+    console.log("配置提交:", data)
+
+    // TODO: 实现套利策略启动逻辑
+
+  }
 
   return (
     <Card className="w-full">

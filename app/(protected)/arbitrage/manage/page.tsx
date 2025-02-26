@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { getArbitrageConfig } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
+import { PackageSearch } from "lucide-react"
 
 interface ArbitrageConfig {
   id: string
@@ -47,8 +48,9 @@ export default function ArbitrageManagementPage() {
     if (!session) return
 
     async function fetchArbitrageConfigs() {
-      const response = await getArbitrageConfig(session?.user.id!)
-      setArbitrageConfigs(response)
+      const configs = await getArbitrageConfig(session?.user.id!)
+      console.log(configs)
+      setArbitrageConfigs(configs)
     }
 
     fetchArbitrageConfigs()
@@ -77,69 +79,81 @@ export default function ArbitrageManagementPage() {
       <DashboardHeader heading="套利管理" />
 
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {arbitrageConfigs.map((config) => (
-          <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
-            <CardHeader>
-              <div className="flex flex-col space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
-                    <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
-                      {config.leverage}x
-                    </Badge>
-                  </div>
-                  <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">做多类型</p>
-                    <p className="font-medium">{config.longType}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">做空类型</p>
-                    <p className="font-medium">{config.shortType}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">单边投资金额</p>
-                    <p className="font-medium">{config.amount} USDT</p>
+        {arbitrageConfigs.length > 0 ? (
+          arbitrageConfigs.map((config) => (
+            <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
+              <CardHeader>
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                      <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                        {config.leverage}x
+                      </Badge>
+                    </div>
+                    <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
                   </div>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">平仓条件</p>
-                  <p className="font-medium">{config.closeCondition}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">创建时间</p>
-                  <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
-                </div>
-                {config.longOrderId && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">做多订单ID</p>
-                    <p className="truncate font-medium">{config.longOrderId}</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">做多类型</p>
+                      <p className="font-medium">{config.longType}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">做空类型</p>
+                      <p className="font-medium">{config.shortType}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">单边投资金额</p>
+                      <p className="font-medium">{config.amount} USDT</p>
+                    </div>
                   </div>
-                )}
-                {config.shortOrderId && (
                   <div>
-                    <p className="text-sm text-muted-foreground">做空订单ID</p>
-                    <p className="truncate font-medium">{config.shortOrderId}</p>
+                    <p className="text-sm text-muted-foreground">平仓条件</p>
+                    <p className="font-medium">{config.closeCondition}</p>
                   </div>
-                )}
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end space-x-2">
-              <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
-                市价全平
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
-                限价全平
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+                  <div>
+                    <p className="text-sm text-muted-foreground">创建时间</p>
+                    <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
+                  </div>
+                  {config.longOrderId && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">做多订单ID</p>
+                      <p className="truncate font-medium">{config.longOrderId}</p>
+                    </div>
+                  )}
+                  {config.shortOrderId && (
+                    <div>
+                      <p className="text-sm text-muted-foreground">做空订单ID</p>
+                      <p className="truncate font-medium">{config.shortOrderId}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end space-x-2">
+                <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
+                  市价全平
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
+                  限价全平
+                </Button>
+              </CardFooter>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
+            <div className="mb-4 rounded-full bg-muted p-6">
+              <PackageSearch className="size-12 text-muted-foreground" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold">暂无套利配置</h3>
+            <p className="max-w-sm text-muted-foreground">
+              当前没有任何套利配置。您可以创建新的套利配置来开始交易。
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

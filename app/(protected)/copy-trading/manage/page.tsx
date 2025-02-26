@@ -48,7 +48,7 @@ const TraderCard = ({ ctSetting, onSuccess=() => {} }) => {
       return
     }
     getActivePostions();
-  }, [isExpanded]);
+  }, [isExpanded, activePositionData]);
   const getTradeHistory = async () => {
     if (tradeHistoryData) {
       return
@@ -403,6 +403,7 @@ const EndedTraderCard = ({ ctSetting, onSuccess  }) => {
     }
     getTradeHistory();
   }, [isExpanded]);
+
   return (
     <Card className="mb-8 w-full">
       <CardHeader>
@@ -550,7 +551,7 @@ export default function ManageCopyTradingPage() {
     // finally {
     //   setIsLoading(false);
     // }
-  }, [status]);
+  }, [session, status]);
 
   useEffect(() => {
     document.title = "Manage Copy Trading – MoonCrypto";
