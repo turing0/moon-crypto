@@ -48,7 +48,7 @@ const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: strin
     return (
       <div className="rounded-md bg-destructive/10 p-3">
         <div className="flex items-start space-x-2">
-          <AlertCircle className="mt-0.5 h-5 w-5 text-destructive" />
+          <AlertCircle className="mt-0.5 size-5 text-destructive" />
           <div className="flex-1">
             <p className="text-sm font-medium text-destructive">{type === "long" ? "做多" : "做空"}订单错误</p>
             <p className="text-sm text-destructive/90">{orderId}</p>
@@ -92,7 +92,7 @@ export default function ArbitrageManagementPage() {
 
   const handleLimitClose = async (id: string) => {
     try {
-      await fetch(`/api/arbitrage-configs/${id}/limit-close`, { method: "POST" })
+      await fetch(`/api/arbitrage/${id}/limit-close`, { method: "POST" })
       toast.success("限价平仓指令已发送")
     } catch (error) {
       toast.error("限价平仓失败")
@@ -101,7 +101,7 @@ export default function ArbitrageManagementPage() {
 
   const handleMarketClose = async (id: string) => {
     try {
-      await fetch(`/api/arbitrage-configs/${id}/market-close`, { method: "POST" })
+      await fetch(`/api/arbitrage/${id}/market-close`, { method: "POST" })
       toast.success("市价平仓指令已发送")
     } catch (error) {
       toast.error("市价平仓失败")
@@ -110,7 +110,7 @@ export default function ArbitrageManagementPage() {
 
   const handleCancelArbitrage = async (id: string) => {
     try {
-      await fetch(`/api/arbitrage-configs/${id}/cancel`, { method: "POST" })
+      await fetch(`/api/arbitrage/${id}/cancel`, { method: "POST" })
       toast.success("套利已取消")
       // Refresh the configs after cancellation
       const updatedConfigs = await getArbitrageConfig(session?.user.id!)
@@ -196,7 +196,7 @@ export default function ArbitrageManagementPage() {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end space-x-2">
-                {config.longOrderId || config.shortOrderId ? (
+                {config.longOrderId && config.shortOrderId ? (
                   <>
                     <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
                       市价全平

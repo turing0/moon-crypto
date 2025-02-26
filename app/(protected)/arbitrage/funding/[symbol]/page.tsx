@@ -12,9 +12,22 @@ interface FundingRates {
   // [exchangeName: string]: number | string;
   [exchangeName: string]: {
     fundingRate: number | string
+    fundingTimestamp: number
+    interval: string | null
     disabled: boolean
   };
+}
 
+const formatCountdown = (timestamp: number) => {
+  const now = Date.now()
+  const diff = timestamp - now
+  if (diff <= 0) return "Now"
+
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 }
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
@@ -59,6 +72,22 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     }
     return ""; // Default case
   }
+
+  const [countdown, setCountdown] = useState<{ [key: string]: string }>({})
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const newCountdown: { [key: string]: string } = {}
+      Object.entries(fundingRates).forEach(([exchange, rate]) => {
+        if (!rate.disabled && rate.fundingTimestamp) {
+          newCountdown[exchange] = formatCountdown(rate.fundingTimestamp)
+        }
+      })
+      setCountdown(newCountdown)
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [fundingRates])
 
   return (
     <div className="flex flex-col space-y-6 p-4 md:p-8">
@@ -109,18 +138,26 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                   </div>
                 </TableCell>
                 {Object.entries(fundingRates).map(([exchange, rate]) => (
-                  <TableCell key={exchange} className={getRateColor(rate?.fundingRate)}>
-                    {/* {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
-                      parseFloat(rate?.fundingRate).toFixed(4) :
-                      rate?.fundingRate.toFixed(4))} */}
-                    {rate?.disabled ? (
+                  <TableCell key={exchange}>
+                    <div className={getRateColor(rate?.fundingRate)}>
+                      {rate?.disabled ? (
                         "/"
-                    ):(
+                      ) : (
+                        <>
+                          {rate?.fundingRate &&
+                            (typeof rate?.fundingRate === "string"
+                              ? (Number.parseFloat(rate?.fundingRate) * 100).toFixed(4)
+                              : (rate?.fundingRate * 100).toFixed(4))}
+                          {rate?.fundingRate ? "%" : ""}
+                        </>
+                      )}
+                    </div>
+                    {!rate?.disabled && (
                       <>
-                        {rate?.fundingRate && (typeof rate?.fundingRate === 'string' ?
-                        (parseFloat(rate?.fundingRate) * 100).toFixed(4) :
-                        (rate?.fundingRate * 100).toFixed(4))}
-                        {rate?.fundingRate ? "%":"" }
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          Next: {countdown[exchange] || "Loading..."}
+                        </div>
+                        <div className="text-xs text-muted-foreground">Interval: {rate.interval}</div>
                       </>
                     )}
                   </TableCell>
