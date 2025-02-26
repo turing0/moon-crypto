@@ -116,3 +116,94 @@ export async function getBinanceRate(symbol) {
   }
 }
 
+// TODO:
+export async function marketClose(id) {
+  // noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Send the POST request
+    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/market-close`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Authorization': apiAuthorization!,
+      },
+      body: JSON.stringify({
+        uid: session?.user.id,
+      }),
+    });
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error(`Failed to marketClose: ${errorMessage}`);
+      return {
+        fundingRate: null,
+        error: errorMessage
+      }
+    }
+    const responseData = await response.json();
+
+    return {
+      fundingRate: responseData,
+      status: "success",
+    }
+  } catch (err) {
+    console.log("marketClose error:", err)
+    return {
+      fundingRate: null,
+      error: (err),
+    }
+  }
+}
+// TODO:
+export async function limitClose(id) {
+  // noStore()
+  try {
+    const session = await auth()
+    
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    // Send the POST request
+    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/limit-close`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Authorization': apiAuthorization!,
+      },
+      body: JSON.stringify({
+        uid: session?.user.id,
+      }),
+    });
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error(`Failed to marketClose: ${errorMessage}`);
+      return {
+        fundingRate: null,
+        error: errorMessage
+      }
+    }
+    const responseData = await response.json();
+
+    return {
+      fundingRate: responseData,
+      status: "success",
+    }
+  } catch (err) {
+    console.log("marketClose error:", err)
+    return {
+      fundingRate: null,
+      error: (err),
+    }
+  }
+}
+

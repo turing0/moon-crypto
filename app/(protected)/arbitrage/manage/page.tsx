@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
-import { getArbitrageConfig } from "@/actions/arbitrage"
+import { getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
 import { PackageSearch, AlertCircle } from "lucide-react"
 import { Icons } from "@/components/shared/icons"
@@ -92,7 +92,7 @@ export default function ArbitrageManagementPage() {
 
   const handleLimitClose = async (id: string) => {
     try {
-      await fetch(`/api/arbitrage/${id}/limit-close`, { method: "POST" })
+      const response = await limitClose(id)
       toast.success("限价平仓指令已发送")
     } catch (error) {
       toast.error("限价平仓失败")
@@ -101,7 +101,8 @@ export default function ArbitrageManagementPage() {
 
   const handleMarketClose = async (id: string) => {
     try {
-      await fetch(`/api/arbitrage/${id}/market-close`, { method: "POST" })
+      const response = await marketClose(id)
+      console.log(response)
       toast.success("市价平仓指令已发送")
     } catch (error) {
       toast.error("市价平仓失败")
@@ -110,6 +111,7 @@ export default function ArbitrageManagementPage() {
 
   const handleCancelArbitrage = async (id: string) => {
     try {
+      // TODO: 
       await fetch(`/api/arbitrage/${id}/cancel`, { method: "POST" })
       toast.success("套利已取消")
       // Refresh the configs after cancellation
