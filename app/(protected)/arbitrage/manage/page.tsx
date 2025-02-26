@@ -10,6 +10,16 @@ import { getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage
 import { useSession } from "next-auth/react"
 import { PackageSearch, AlertCircle } from "lucide-react"
 import { Icons } from "@/components/shared/icons"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface ArbitrageConfig {
   id: string
@@ -43,8 +53,8 @@ const getStatusColor = (status: string) => {
   }
 }
 
-const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: string | null; }) => {
-  if (orderId?.startsWith('Error')) {
+const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: string | null }) => {
+  if (orderId?.startsWith("Error")) {
     return (
       <div className="rounded-md bg-destructive/10 p-3">
         <div className="flex items-start space-x-2">
@@ -78,6 +88,17 @@ const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: strin
 export default function ArbitrageManagementPage() {
   const { data: session } = useSession()
   const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[] | undefined>(undefined)
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean
+    action: () => Promise<void>
+    title: string
+    description: string
+  }>({
+    isOpen: false,
+    action: async () => {},
+    title: "",
+    description: "",
+  })
 
   useEffect(() => {
     if (!session) return
@@ -91,35 +112,53 @@ export default function ArbitrageManagementPage() {
   }, [session])
 
   const handleLimitClose = async (id: string) => {
-    try {
-      const response = await limitClose(id)
-      toast.success("限价平仓指令已发送")
-    } catch (error) {
-      toast.error("限价平仓失败")
-    }
+    setConfirmDialog({
+      isOpen: true,
+      action: async () => {
+        try {
+          await limitClose(id)
+          toast.success("限价平仓指令已发送")
+        } catch (error) {
+          toast.error("限价平仓失败")
+        }
+      },
+      title: "确认限价全平",
+      description: "您确定要执行限价全平操作吗？这将关闭所有相关的仓位（读取orderbook的价格）。",
+    })
   }
 
   const handleMarketClose = async (id: string) => {
-    try {
-      const response = await marketClose(id)
-      console.log(response)
-      toast.success("市价平仓指令已发送")
-    } catch (error) {
-      toast.error("市价平仓失败")
-    }
+    setConfirmDialog({
+      isOpen: true,
+      action: async () => {
+        try {
+          await marketClose(id)
+          toast.success("市价平仓指令已发送")
+        } catch (error) {
+          toast.error("市价平仓失败")
+        }
+      },
+      title: "确认市价全平",
+      description: "您确定要执行市价全平操作吗？这将立即以市价关闭所有相关的仓位。",
+    })
   }
 
   const handleCancelArbitrage = async (id: string) => {
-    try {
-      // TODO: 
-      await fetch(`/api/arbitrage/${id}/cancel`, { method: "POST" })
-      toast.success("套利已取消")
-      // Refresh the configs after cancellation
-      const updatedConfigs = await getArbitrageConfig(session?.user.id!)
-      setArbitrageConfigs(updatedConfigs)
-    } catch (error) {
-      toast.error("取消套利失败")
-    }
+    setConfirmDialog({
+      isOpen: true,
+      action: async () => {
+        try {
+          await fetch(`/api/arbitrage/${id}/cancel`, { method: "POST" })
+          toast.success("套利已取消")
+          const updatedConfigs = await getArbitrageConfig(session?.user.id!)
+          setArbitrageConfigs(updatedConfigs)
+        } catch (error) {
+          toast.error("取消套利失败")
+        }
+      },
+      title: "确认取消套利",
+      description: "您确定要取消此套利吗？已成交订单将会市价平仓，未成交订单将会立即取消。",
+    })
   }
 
   return (
@@ -138,9 +177,7 @@ export default function ArbitrageManagementPage() {
                 <PackageSearch className="size-12 text-muted-foreground" />
               </div>
               <h3 className="mb-2 text-lg font-semibold">暂无套利配置</h3>
-              <p className="max-w-sm text-muted-foreground">
-                当前没有任何套利配置。您可以创建新的套利配置来开始交易。
-              </p>
+              <p className="max-w-sm text-muted-foreground">当前没有任何套利配置。您可以创建新的套利配置来开始交易。</p>
             </div>
           </Card>
         ) : (
@@ -151,7 +188,10 @@ export default function ArbitrageManagementPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
-                      <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                      <Badge
+                        variant="secondary"
+                        className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
+                      >
                         {config.leverage}x
                       </Badge>
                     </div>
@@ -183,17 +223,11 @@ export default function ArbitrageManagementPage() {
                     <p className="text-sm text-muted-foreground">创建时间</p>
                     <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
                   </div>
-                  
+
                   {/* Order Status Section */}
                   <div className="space-y-3 rounded-lg bg-muted/50 p-3">
-                    <OrderStatus 
-                      type="long"
-                      orderId={config.longOrderId}
-                    />
-                    <OrderStatus 
-                      type="short"
-                      orderId={config.shortOrderId}
-                    />
+                    <OrderStatus type="long" orderId={config.longOrderId} />
+                    <OrderStatus type="short" orderId={config.shortOrderId} />
                   </div>
                 </div>
               </CardContent>
@@ -217,6 +251,30 @@ export default function ArbitrageManagementPage() {
           ))
         )}
       </div>
+
+      <AlertDialog
+        open={confirmDialog.isOpen}
+        onOpenChange={(isOpen) => setConfirmDialog((prev) => ({ ...prev, isOpen }))}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{confirmDialog.title}</AlertDialogTitle>
+            <AlertDialogDescription>{confirmDialog.description}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                await confirmDialog.action()
+                setConfirmDialog((prev) => ({ ...prev, isOpen: false }))
+              }}
+            >
+              确认
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
+
