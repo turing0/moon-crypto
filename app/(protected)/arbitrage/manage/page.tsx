@@ -9,6 +9,7 @@ import { DashboardHeader } from "@/components/dashboard/header"
 import { getArbitrageConfig } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
 import { PackageSearch } from "lucide-react"
+import { Icons } from "@/components/shared/icons"
 
 interface ArbitrageConfig {
   id: string
@@ -42,7 +43,7 @@ const getStatusColor = (status: string) => {
 
 export default function ArbitrageManagementPage() {
   const { data: session } = useSession()
-  const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[]>([])
+  const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[] | undefined>(undefined)
 
   useEffect(() => {
     if (!session) return
@@ -79,7 +80,11 @@ export default function ArbitrageManagementPage() {
       <DashboardHeader heading="套利管理" />
 
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {arbitrageConfigs.length > 0 ? (
+        {arbitrageConfigs === undefined ? (
+          <div className="col-span-full flex h-40 items-center justify-center">
+            <Icons.spinner className="size-8 animate-spin text-gray-500" />
+          </div>
+        ) : arbitrageConfigs.length > 0 ? (
           arbitrageConfigs.map((config) => (
             <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
               <CardHeader>

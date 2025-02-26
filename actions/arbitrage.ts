@@ -32,7 +32,7 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
       data: { ...data, ...input },
     });
 
-    // revalidatePath("/copy-trading")
+    // revalidatePath("/arbitrage/manage")
     // await redisUpdate([copyTradingSettingId], undefined);
 
     return {
