@@ -42,41 +42,41 @@ export default function ArbitragePage() {
 
   return (
     <>
-    <div className="flex items-center justify-between">
-      <DashboardHeader
-        heading="套利交易"
-      />
-      <Link href="/arbitrage/manage">
-        <Button variant="outline">
-          <Icons.settings className="mr-2 size-4" />
-          管理现有套利
-        </Button>
-      </Link>
-    </div>
-    <div className="container mx-auto ">
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>套利搜索</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ArbitrageForm />
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-between">
+        <DashboardHeader
+          heading="套利交易"
+        />
+        <Link href="/arbitrage/manage">
+          <Button variant="outline">
+            <Icons.settings className="mr-2 size-4" />
+            管理现有套利
+          </Button>
+        </Link>
+      </div>
+      <div className="container mx-auto ">
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>套利搜索</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ArbitrageForm />
+          </CardContent>
+        </Card>
 
-      <Tabs defaultValue="all-trades" className="w-full">
-        <TabsList className="">
-          <TabsTrigger value="all-trades">全部交易</TabsTrigger>
-          <TabsTrigger value="new-coin-trades">新币交易</TabsTrigger>
-        </TabsList>
-        <TabsContent value="all-trades">
-          <DataTable columns={allTradesColumns} data={allTradesData} />
-        </TabsContent>
-        <TabsContent value="new-coin-trades">
-          <DataTable columns={newCoinTradesColumns} data={newCoinTradesData} />
-        </TabsContent>
-      </Tabs>
+        <Tabs defaultValue="all-trades" className="w-full">
+          <TabsList className="">
+            <TabsTrigger value="all-trades">全部交易</TabsTrigger>
+            <TabsTrigger value="new-coin-trades">新币交易</TabsTrigger>
+          </TabsList>
+          <TabsContent value="all-trades">
+            <DataTable columns={allTradesColumns} data={allTradesData} />
+          </TabsContent>
+          <TabsContent value="new-coin-trades">
+            <DataTable columns={newCoinTradesColumns} data={newCoinTradesData} />
+          </TabsContent>
+        </Tabs>
 
-    </div>
+      </div>
     </>
   )
 }
