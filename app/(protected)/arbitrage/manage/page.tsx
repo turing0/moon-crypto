@@ -50,7 +50,7 @@ export default function ArbitrageManagementPage() {
 
     async function fetchArbitrageConfigs() {
       const configs = await getArbitrageConfig(session?.user.id!)
-      console.log(configs)
+      console.log('configs', configs)
       setArbitrageConfigs(configs)
     }
 
@@ -102,7 +102,7 @@ export default function ArbitrageManagementPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
                       <p className="text-sm text-muted-foreground">做多类型</p>
                       <p className="font-medium">{config.longType}</p>
