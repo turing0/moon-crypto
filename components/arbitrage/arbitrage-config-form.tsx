@@ -138,7 +138,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
         );
         if (selectedLongExchange) {
           const [exchangeName] = selectedLongExchange;
-          longFundingRate = fundingRates[exchangeName].fundingRate
+          longFundingRate = fundingRates[exchangeName]?.fundingRate
         }
       }
       if (shortType==='futures') {
@@ -147,7 +147,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
         );
         if (selectedShortExchange) {
           const [exchangeName] = selectedShortExchange;
-          shortFundingRate = fundingRates[exchangeName].fundingRate
+          shortFundingRate = fundingRates[exchangeName]?.fundingRate
         }
       }
       const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-longFundingRate) + (shortType==='spot'?0:shortFundingRate))
