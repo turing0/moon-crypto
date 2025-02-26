@@ -5,8 +5,9 @@ import { DataTable } from "@/components/table/data-table"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/shared/icons"
 import { toast } from "sonner"
-import { Banknote, DollarSign } from "lucide-react"
 import { DashboardHeader } from "@/components/dashboard/header"
+import { getArbitrageConfig } from "@/actions/arbitrage"
+import { useSession } from "next-auth/react"
 
 interface ArbitrageConfig {
   id: string
@@ -19,31 +20,33 @@ interface ArbitrageConfig {
   closeCondition: string
   closeOnRate: number | null
   status: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export default function ArbitrageManagementPage() {
+  const { data: session } = useSession()
   const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[]>([])
 
   useEffect(() => {
-    // Fetch arbitrage configs from your API
-    fetchArbitrageConfigs()
-  }, [])
+    if (!session) {
+      return
+    }
+    async function fetchArbitrageConfigs() {
+      const response = await getArbitrageConfig(session?.user.id!)
+      console.log(response)
+      setArbitrageConfigs(response)
+    }
 
-  const fetchArbitrageConfigs = async () => {
-    // Replace this with your actual API call
-    const response = await fetch("/api/arbitrage-configs")
-    const data = await response.json()
-    setArbitrageConfigs(data)
-  }
+    fetchArbitrageConfigs()
+  }, [session])
 
   const handleLimitClose = async (id: string) => {
     try {
       // Replace this with your actual API call
       await fetch(`/api/arbitrage-configs/${id}/limit-close`, { method: "POST" })
       toast.success("限价平仓指令已发送")
-      fetchArbitrageConfigs() // Refresh the data
+      // fetchArbitrageConfigs() // Refresh the data
     } catch (error) {
       toast.error("限价平仓失败")
     }
@@ -54,7 +57,7 @@ export default function ArbitrageManagementPage() {
       // Replace this with your actual API call
       await fetch(`/api/arbitrage-configs/${id}/market-close`, { method: "POST" })
       toast.success("市价平仓指令已发送")
-      fetchArbitrageConfigs() // Refresh the data
+      // fetchArbitrageConfigs() // Refresh the data
     } catch (error) {
       toast.error("市价平仓失败")
     }
@@ -88,13 +91,11 @@ export default function ArbitrageManagementPage() {
       header: "操作",
       cell: ({ row }) => (
         <div className="flex space-x-2">
-          <Button variant="outline" size="sm" onClick={() => handleLimitClose(row.original.id)}>
-            <DollarSign className="mr-2 h-4 w-4" />
-            限价平仓
-          </Button>
           <Button variant="outline" size="sm" onClick={() => handleMarketClose(row.original.id)}>
-            <Banknote className="mr-2 h-4 w-4" />
             市价平仓
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => handleLimitClose(row.original.id)}>
+            限价平仓
           </Button>
         </div>
       ),
