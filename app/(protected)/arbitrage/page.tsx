@@ -48,7 +48,7 @@ export default function ArbitragePage() {
       />
       <Link href="/arbitrage/manage">
         <Button variant="outline">
-          <Icons.settings className="mr-2 h-4 w-4" />
+          <Icons.settings className="mr-2 size-4" />
           管理现有套利
         </Button>
       </Link>

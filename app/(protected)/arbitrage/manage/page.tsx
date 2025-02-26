@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { DataTable } from "@/components/table/data-table"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/shared/icons"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { getArbitrageConfig } from "@/actions/arbitrage"
@@ -24,17 +24,28 @@ interface ArbitrageConfig {
   updatedAt: Date
 }
 
+const getStatusColor = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'active':
+      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+    case 'pending':
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+    case 'closed':
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+    default:
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+  }
+}
+
 export default function ArbitrageManagementPage() {
   const { data: session } = useSession()
   const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[]>([])
 
   useEffect(() => {
-    if (!session) {
-      return
-    }
+    if (!session) return
+    
     async function fetchArbitrageConfigs() {
       const response = await getArbitrageConfig(session?.user.id!)
-      console.log(response)
       setArbitrageConfigs(response)
     }
 
@@ -43,10 +54,8 @@ export default function ArbitrageManagementPage() {
 
   const handleLimitClose = async (id: string) => {
     try {
-      // Replace this with your actual API call
       await fetch(`/api/arbitrage-configs/${id}/limit-close`, { method: "POST" })
       toast.success("限价平仓指令已发送")
-      // fetchArbitrageConfigs() // Refresh the data
     } catch (error) {
       toast.error("限价平仓失败")
     }
@@ -54,53 +63,12 @@ export default function ArbitrageManagementPage() {
 
   const handleMarketClose = async (id: string) => {
     try {
-      // Replace this with your actual API call
       await fetch(`/api/arbitrage-configs/${id}/market-close`, { method: "POST" })
       toast.success("市价平仓指令已发送")
-      // fetchArbitrageConfigs() // Refresh the data
     } catch (error) {
       toast.error("市价平仓失败")
     }
   }
-
-  const columns = [
-    { accessorKey: "symbol", header: "交易对" },
-    { accessorKey: "longType", header: "做多类型" },
-    { accessorKey: "shortType", header: "做空类型" },
-    { accessorKey: "amount", header: "单边投资金额", cell: ({ row }) => `$${row.original.amount.toLocaleString()}` },
-    { accessorKey: "leverage", header: "杠杆" },
-    {
-      accessorKey: "initialFundingRate",
-      header: "初始资金费率",
-      cell: ({ row }) => `${(row.original.initialFundingRate * 100).toFixed(4)}%`,
-    },
-    { accessorKey: "closeCondition", header: "平仓条件" },
-    {
-      accessorKey: "closeOnRate",
-      header: "平仓汇率",
-      cell: ({ row }) => (row.original.closeOnRate ? `${(row.original.closeOnRate * 100).toFixed(4)}%` : "N/A"),
-    },
-    { accessorKey: "status", header: "状态" },
-    {
-      accessorKey: "createdAt",
-      header: "创建时间",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
-    {
-      id: "actions",
-      header: "操作",
-      cell: ({ row }) => (
-        <div className="flex space-x-2">
-          <Button variant="outline" size="sm" onClick={() => handleMarketClose(row.original.id)}>
-            市价平仓
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => handleLimitClose(row.original.id)}>
-            限价平仓
-          </Button>
-        </div>
-      ),
-    },
-  ]
 
   return (
     <div className="">
@@ -108,9 +76,83 @@ export default function ArbitrageManagementPage() {
         heading="套利管理"
       />
 
-      <DataTable columns={columns} data={arbitrageConfigs} />
-
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {arbitrageConfigs.map((config) => (
+          <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
+            <CardHeader>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                    <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                      {config.leverage}x
+                    </Badge>
+                  </div>
+                  <Badge className={`${getStatusColor(config.status)}`}>
+                    {config.status}
+                  </Badge>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">做多类型</p>
+                    <p className="font-medium">{config.longType}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">做空类型</p>
+                    <p className="font-medium">{config.shortType}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">单边投资金额</p>
+                    <p className="font-medium">{config.amount} USDT</p>
+                  </div>
+                  {/* <div>
+                    <p className="text-sm text-muted-foreground">杠杆</p>
+                    <p className="font-medium">{config.leverage}x</p>
+                  </div> */}
+                </div>
+                {/* <div>
+                  <p className="text-sm text-muted-foreground">初始资金费率</p>
+                  <p className="font-medium">{(config.initialFundingRate * 100).toFixed(4)}%</p>
+                </div> */}
+                <div>
+                  <p className="text-sm text-muted-foreground">平仓条件</p>
+                  <p className="font-medium">{config.closeCondition}</p>
+                </div>
+                {/* {config.closeOnRate && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">平仓汇率</p>
+                    <p className="font-medium">{(config.closeOnRate * 100).toFixed(4)}%</p>
+                  </div>
+                )} */}
+                <div>
+                  <p className="text-sm text-muted-foreground">创建时间</p>
+                  <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-end space-x-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => handleMarketClose(config.id)}
+              >
+                市价全平
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => handleLimitClose(config.id)}
+              >
+                限价全平
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }
-
