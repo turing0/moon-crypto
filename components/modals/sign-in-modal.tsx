@@ -10,6 +10,7 @@ import { Modal } from "@/components/ui/modal"
 import { siteConfig } from "@/config/site"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useRouter } from "next/navigation"
 
 function SignInModal({
   showSignInModal,
@@ -18,27 +19,32 @@ function SignInModal({
   showSignInModal: boolean
   setShowSignInModal: Dispatch<SetStateAction<boolean>>
 }) {
+  const router = useRouter();
   const [signInClicked, setSignInClicked] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const handleEmailSignIn = async (e: React.FormEvent) => {
+  const handleEmailSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
+    
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
 
     try {
       const result = await signIn("credentials", {
-        redirect: false,
         email,
         password,
+        redirect: false,
       })
-
       if (result?.error) {
-        setError(result.error)
+        console.log(result)
+        // setError(result.error)
+        setError("Invalid email or password")
       } else {
+        router.push("/dashboard")
         setTimeout(() => {
           setShowSignInModal(false)
         }, 400)
@@ -53,16 +59,11 @@ function SignInModal({
   return (
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
       <div className="w-full">
-        {/* <div className="flex flex-col items-center justify-center space-y-3 border-b bg-background px-4 py-6 pt-8 text-center md:px-16"> */}
         <div className="flex flex-col items-center justify-center space-y-3 bg-background px-4 py-6 pt-8 text-center md:px-16">
           <a href={siteConfig.url}>
             <Icons.logo className="size-10" />
           </a>
           <h3 className="font-urban text-2xl font-bold">Sign In</h3>
-          {/* <p className="text-sm text-gray-500">
-            This is strictly for demo purposes - only your email and profile
-            picture will be stored.
-          </p> */}
         </div>
 
         <div className="flex flex-col space-y-4 px-4 pb-8 md:px-16">
@@ -70,23 +71,11 @@ function SignInModal({
           <form onSubmit={handleEmailSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <Input id="email" name="email" type="email" required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <Input id="password" name="password" type="password" required />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -141,6 +130,6 @@ export function useSignInModal() {
       setShowSignInModal,
       SignInModal: SignInModalCallback,
     }),
-    [setShowSignInModal, SignInModalCallback],
+    [SignInModalCallback],
   )
 }

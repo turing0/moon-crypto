@@ -12,19 +12,19 @@ export default {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        console.log('credentials', credentials)
+        // console.log('credentials', credentials)
         const email = credentials?.email as string;
         const password = credentials?.password as string;
 
         const existingUser = await getUserByEmail(email);
         // console.log('existingUser', existingUser)
         if (!existingUser || !existingUser.email || !existingUser.password) {
-          // return { error: "Email does not exist!" };
-          return null
+          throw new Error("Invalid email or password")
+          // return null
         }
 
         // Prevent unverified email sign in
@@ -34,11 +34,12 @@ export default {
 
         const passwordMatch = await bcrypt.compare(password, existingUser.password);
         
-        if (passwordMatch) {
-          return existingUser;
+        if (!passwordMatch) {
+          throw new Error("Invalid email or password")
+          // return null; // 验证失败，返回 null
         }
 
-        return null; // 验证失败，返回 null
+        return existingUser;
       }
     }),
     Google({
