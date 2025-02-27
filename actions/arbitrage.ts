@@ -51,12 +51,10 @@ export async function getArbitrageConfig(userId: string) {
   // noStore()
   try {
     const session = await auth()
-    console.log('userId', session?.user.id, userId)
     if (!session?.user || session?.user.id !== userId) {
       throw new Error("Unauthorized");
     }
 
-    // 创建
     const configs = await prisma.arbitrageConfig.findMany({
       where: {
         userId: userId
