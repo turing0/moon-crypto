@@ -123,7 +123,7 @@ export default function ArbitrageManagementPage() {
         }
       },
       title: "确认限价全平",
-      description: "您确定要执行限价全平操作吗？这将关闭所有相关的仓位（读取orderbook的价格）。",
+      description: "您确定要执行限价全平操作吗？这将关闭所有的仓位（读取orderbook的价格）。",
     })
   }
 
@@ -139,7 +139,7 @@ export default function ArbitrageManagementPage() {
         }
       },
       title: "确认市价全平",
-      description: "您确定要执行市价全平操作吗？这将立即以市价关闭所有相关的仓位。",
+      description: "您确定要执行市价全平操作吗？这将立即以市价关闭所有的仓位。",
     })
   }
 
