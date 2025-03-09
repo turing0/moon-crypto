@@ -76,7 +76,7 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
             Copyright &copy; 2024. All rights reserved.
           </span> */}
           <p className="text-left text-sm text-muted-foreground">
-            © 2024{" "}
+            © {new Date().getFullYear()}{" "}
             <Link
               // href={siteConfig.links.twitter}
               href="/"
