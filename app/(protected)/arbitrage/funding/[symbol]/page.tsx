@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
 import { getBinanceRate } from "@/actions/arbitrage"
 import { toast } from "sonner"
-import { DashboardHeader } from "@/components/dashboard/header"
+import { Icons } from "@/components/shared/icons"
 
 interface FundingRates {
   // [exchangeName: string]: number | string;
@@ -92,15 +92,11 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
 
   return (
     <div className="flex flex-col space-y-6">
-      <div className="flex items-center justify-between">
-        <DashboardHeader
-          heading="Funding Rates"
-        />
-        <Link href="/arbitrage">
-          <Button>
-          Back to Arbitrage
-          </Button>
+      <div className="flex items-center space-x-2">
+        <Link href="/arbitrage" className="inline-flex cursor-pointer items-center">
+          <Icons.arrowLeft />
         </Link>
+        <h1 className="text-3xl font-bold">Funding Rates</h1>
       </div>
 
       <div className="overflow-x-auto rounded-md border">
