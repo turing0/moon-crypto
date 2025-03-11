@@ -38,7 +38,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     async function getFundingRate() {
       try {
         const { fundingRate, error } = await getBinanceRate(params.symbol)
-        console.log(fundingRate)
+        console.log('fundingRate', fundingRate)
         if (error) {
           toast.error("资金费率获取失败", {
             description:error,
