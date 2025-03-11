@@ -11,8 +11,17 @@ import { generateUserId } from "@/lib/utils";
 
 async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey: string, passphrase?: string) {
   try {
-    const response = await fetch(`https://api.mooncryp.to/api/exchange/verify?exchange=${exchangeName}&key=${apiKey}&secret=${secretKey}&passphrase=${passphrase}`, {
-      // body: JSON.stringify({ data })
+    const response = await fetch(`https://api.mooncryp.to/api/exchange/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        exchange: exchangeName,
+        key: apiKey,
+        secret: secretKey,
+        passphrase: passphrase,
+      })
     })
     if (!response.ok) {
       throw new Error(`${exchangeName} verify fetch failed`)
@@ -24,7 +33,8 @@ async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey
         "verified": true, 
         "data": data, 
         "balance": data['balance'], 
-        "msg": "success"}
+        "msg": "success"
+      }
     } 
 
     return {"verified": false, "msg": data["msg"]}
