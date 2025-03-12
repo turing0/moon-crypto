@@ -188,8 +188,8 @@ model ArbitrageConfig {
   initialFundingRate    Float
   closeCondition        String
   closeOnRate           Float?
-  longOrderId           String?
-  shortOrderId          String?
+  longOrderId           String? // orderId or error: ...
+  shortOrderId          String? // orderId or error: ...
   longOrderStatus       String?
   shortOrderStatus      String?
   closeLongOrderId      String?
