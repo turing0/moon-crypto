@@ -190,6 +190,8 @@ model ArbitrageConfig {
   closeOnRate           Float?
   longOrderId           String?
   shortOrderId          String?
+  longOrderStatus       String?
+  shortOrderStatus      String?
   closeLongOrderId      String?
   closeShortOrderId     String?
   createdAt             DateTime @default(now())

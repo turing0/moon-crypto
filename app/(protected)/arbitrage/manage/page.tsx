@@ -54,13 +54,13 @@ const getStatusColor = (status: string) => {
 }
 
 const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: string | null }) => {
-  if (orderId?.startsWith("Error")) {
+  if (orderId?.startsWith("error")) {
     return (
       <div className="rounded-md bg-destructive/10 p-3">
         <div className="flex items-start space-x-2">
           <AlertCircle className="mt-0.5 size-5 text-destructive" />
           <div className="flex-1">
-            <p className="text-sm font-medium text-destructive">{type === "long" ? "做多" : "做空"}订单错误</p>
+            <p className="text-sm font-medium text-destructive">{type === "long" ? "做多" : "做空"}订单出错</p>
             <p className="text-sm text-destructive/90">{orderId}</p>
           </div>
         </div>
@@ -73,7 +73,7 @@ const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: strin
       <div className="flex items-center space-x-2">
         <p className="text-sm text-muted-foreground">{type === "long" ? "做多" : "做空"}仓位</p>
         <Badge variant="outline" className={orderId ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"}>
-          {orderId ? "已成交" : "等待成交"}
+          {orderId ? "已下单" : "待下单"}
         </Badge>
       </div>
       {orderId && (
