@@ -21,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import Link from "next/link"
 
 interface ArbitrageConfig {
   id: string
@@ -204,7 +205,9 @@ export default function ArbitrageManagementPage() {
           <div className="flex flex-col space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                <Link href={`/arbitrage/funding/${config.symbol}`}>
+                  <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                </Link>
                 <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
                   {config.leverage}x
                 </Badge>
