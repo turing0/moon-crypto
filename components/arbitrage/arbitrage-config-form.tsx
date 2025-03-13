@@ -23,6 +23,7 @@ import { createArbitrageConfig } from "@/actions/arbitrage"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { truncate } from "fs/promises"
+import { Icons } from "../shared/icons"
 
 interface ApiAccount {
   id: string
@@ -191,7 +192,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       router.push('/arbitrage/manage')
     })
     console.log("配置提交:", data)
-
     // TODO: 实现套利策略启动逻辑
 
   }
@@ -447,7 +447,13 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isCreatePending}>
+              {isCreatePending && (
+                <Icons.spinner
+                  className="mr-2 size-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )} 
               启动套利策略
             </Button>
           </form>
