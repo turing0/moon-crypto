@@ -154,7 +154,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-longFundingRate) + (shortType==='spot'?0:shortFundingRate))
       setProfit(projectedProfit)
     }
-  }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates])
+  }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates, userApi])
   
   const onSubmit = (data: ArbitrageConfig) => {
     startCreateTransition(async () => {

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { cancelArbitrage, getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
@@ -76,11 +77,7 @@ const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: strin
           {orderId ? "已下单" : "待下单"}
         </Badge>
       </div>
-      {orderId && (
-        <p className="truncate font-mono text-sm text-muted-foreground">
-          订单ID: {orderId}
-        </p>
-      )}
+      {orderId && <p className="truncate font-mono text-sm text-muted-foreground">订单ID: {orderId}</p>}
     </div>
   )
 }
@@ -88,6 +85,7 @@ const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: strin
 export default function ArbitrageManagementPage() {
   const { data: session } = useSession()
   const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[] | undefined>(undefined)
+  const [activeTab, setActiveTab] = useState("active")
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean
     action: () => Promise<void>
@@ -161,96 +159,138 @@ export default function ArbitrageManagementPage() {
     })
   }
 
+  // Filter configs based on active tab
+  const filteredConfigs = arbitrageConfigs?.filter((config) => {
+    if (activeTab === "active") {
+      return config.status.toLowerCase() === "active" || config.status.toLowerCase() === "pending"
+    } else if (activeTab === "ended") {
+      return config.status.toLowerCase() === "ended"
+    }
+    return true
+  })
+
+  const renderConfigCards = (configs: ArbitrageConfig[] | undefined) => {
+    if (configs === undefined) {
+      return (
+        <div className="col-span-full flex h-40 items-center justify-center">
+          <Icons.spinner className="size-8 animate-spin text-gray-500" />
+        </div>
+      )
+    }
+
+    if (configs.length === 0) {
+      return (
+        <Card className="col-span-full">
+          <div className="flex flex-col items-center justify-center p-8 text-center">
+            <div className="mb-4 rounded-full bg-muted p-6">
+              <PackageSearch className="size-12 text-muted-foreground" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold">
+              {activeTab === "active" ? "暂无活跃套利配置" : "暂无已结束套利配置"}
+            </h3>
+            <p className="max-w-sm text-muted-foreground">
+              {activeTab === "active"
+                ? "当前没有任何活跃的套利配置。您可以创建新的套利配置来开始交易。"
+                : "当前没有任何已结束的套利配置。"}
+            </p>
+          </div>
+        </Card>
+      )
+    }
+
+    return configs.map((config) => (
+      <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
+        <CardHeader>
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                  {config.leverage}x
+                </Badge>
+              </div>
+              <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">做多类型</p>
+                <p className="font-medium">{config.longType}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">做空类型</p>
+                <p className="font-medium">{config.shortType}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">单边投资金额</p>
+                <p className="font-medium">{config.amount} USDT</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">平仓条件</p>
+              <p className="font-medium">{config.closeCondition}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">创建时间</p>
+              <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
+            </div>
+
+            {/* Order Status Section */}
+            <div className="space-y-3 rounded-lg bg-muted/50 p-3">
+              <OrderStatus type="long" orderId={config.longOrderId} />
+              <OrderStatus type="short" orderId={config.shortOrderId} />
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-end space-x-2">
+          {config.status.toLowerCase() === "active" && (
+            <>
+              {config.longOrderId && config.shortOrderId ? (
+                <>
+                  <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
+                    市价全平
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
+                    限价全平
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
+                  取消套利
+                </Button>
+              )}
+            </>
+          )}
+        </CardFooter>
+      </Card>
+    ))
+  }
+
   return (
     <>
       <DashboardHeader heading="套利管理" />
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {arbitrageConfigs === undefined ? (
-          <div className="col-span-full flex h-40 items-center justify-center">
-            <Icons.spinner className="size-8 animate-spin text-gray-500" />
-          </div>
-        ) : arbitrageConfigs.length === 0 ? (
-          <Card className="col-span-full">
-            <div className="flex flex-col items-center justify-center p-8 text-center">
-              <div className="mb-4 rounded-full bg-muted p-6">
-                <PackageSearch className="size-12 text-muted-foreground" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold">暂无套利配置</h3>
-              <p className="max-w-sm text-muted-foreground">当前没有任何套利配置。您可以创建新的套利配置来开始交易。</p>
-            </div>
-          </Card>
-        ) : (
-          arbitrageConfigs.map((config) => (
-            <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
-              <CardHeader>
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
-                      <Badge
-                        variant="secondary"
-                        className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
-                      >
-                        {config.leverage}x
-                      </Badge>
-                    </div>
-                    <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">做多类型</p>
-                      <p className="font-medium">{config.longType}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">做空类型</p>
-                      <p className="font-medium">{config.shortType}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">单边投资金额</p>
-                      <p className="font-medium">{config.amount} USDT</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">平仓条件</p>
-                    <p className="font-medium">{config.closeCondition}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">创建时间</p>
-                    <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
-                  </div>
+      <Tabs defaultValue="active" value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="mb-6 grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="active">活跃套利</TabsTrigger>
+          <TabsTrigger value="ended">已结束套利</TabsTrigger>
+        </TabsList>
 
-                  {/* Order Status Section */}
-                  <div className="space-y-3 rounded-lg bg-muted/50 p-3">
-                    <OrderStatus type="long" orderId={config.longOrderId} />
-                    <OrderStatus type="short" orderId={config.shortOrderId} />
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-end space-x-2">
-                {config.longOrderId && config.shortOrderId ? (
-                  <>
-                    <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
-                      市价全平
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
-                      限价全平
-                    </Button>
-                  </>
-                ) : (
-                  <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
-                    取消套利
-                  </Button>
-                )}
-              </CardFooter>
-            </Card>
-          ))
-        )}
-      </div>
+        <TabsContent value="active" className="mt-0">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {renderConfigCards(filteredConfigs)}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="ended" className="mt-0">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {renderConfigCards(filteredConfigs)}
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <AlertDialog
         open={confirmDialog.isOpen}
