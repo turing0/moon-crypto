@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
-import { getBinanceRate } from "@/actions/arbitrage"
+import { getFundingRate } from "@/actions/arbitrage"
 import { toast } from "sonner"
 import { Icons } from "@/components/shared/icons"
 
@@ -35,9 +35,9 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
 
   useEffect(() => {
-    async function getFundingRate() {
+    async function getRate() {
       try {
-        const { fundingRate, error } = await getBinanceRate(params.symbol)
+        const { fundingRate, error } = await getFundingRate(params.symbol)
         console.log('fundingRate', fundingRate)
         if (error) {
           toast.error("资金费率获取失败", {
@@ -52,7 +52,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       }
     }
 
-    getFundingRate()
+    getRate()
   }, [params.symbol])
 
   const getRateColor = (rate: number | string) => {
@@ -169,6 +169,11 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       </div>
 
       <ArbitrageConfigForm symbol={params.symbol} fundingRates={fundingRates} />
+      
+
+      <div>
+
+      </div>
 
     </div>
   )

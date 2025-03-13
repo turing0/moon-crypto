@@ -25,18 +25,44 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
     if (input.closeOnRate) {
       input.closeOnRate = parseFloat(input.closeOnRate);
     }
-    // console.log('input:', input)
 
-    // 创建
-    const config = await prisma.arbitrageConfig.create({
-      data: { ...data, ...input },
+    // 校验
+    const response = await fetch("https://api.mooncryp.to/arbitrage/validate", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Authorization': apiAuthorization!,
+      },
+      body: JSON.stringify({ ...data, ...input }),
     });
-
-    // revalidatePath("/arbitrage/manage")
-    // await redisUpdate([copyTradingSettingId], undefined);
+    // console.log('validate data:', { ...data, ...input })
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error(`Failed to validate ArbitrageConfig: ${errorMessage}`);
+      return {
+        error: errorMessage
+      }
+    }
+    const validatedData = await response.json();
+    console.log('validate result:', validatedData)
+    if (validatedData?.validated) {
+      // 创建
+      const config = await prisma.arbitrageConfig.create({
+        data: { ...data, ...input },
+      });
+      // revalidatePath("/arbitrage/manage")
+      // await redisUpdate([copyTradingSettingId], undefined);
+      return {
+        status: "success",
+        data: config
+      }
+    }
 
     return {
-      status: "success",
+      // status: "success",
+      error: validatedData?.error
     }
   } catch (err) {
     console.log("createArbitrageConfig error:", err)
@@ -68,7 +94,7 @@ export async function getArbitrageConfig(userId: string) {
   }
 }
 
-export async function getBinanceRate(symbol) {
+export async function getFundingRate(symbol) {
   // noStore()
   try {
     const session = await auth()

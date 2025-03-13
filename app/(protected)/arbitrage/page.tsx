@@ -53,7 +53,7 @@ export default function ArbitragePage() {
           </Button>
         </Link>
       </div>
-      <div className="container mx-auto ">
+      <div className="container mx-auto">
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>套利搜索</CardTitle>

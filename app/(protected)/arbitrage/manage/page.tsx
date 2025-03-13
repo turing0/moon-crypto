@@ -162,10 +162,10 @@ export default function ArbitrageManagementPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
       <DashboardHeader heading="套利管理" />
 
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {arbitrageConfigs === undefined ? (
           <div className="col-span-full flex h-40 items-center justify-center">
             <Icons.spinner className="size-8 animate-spin text-gray-500" />
@@ -274,7 +274,7 @@ export default function ArbitrageManagementPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   )
 }
 
