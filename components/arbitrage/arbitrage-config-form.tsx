@@ -22,7 +22,7 @@ import Link from "next/link"
 import { createArbitrageConfig } from "@/actions/arbitrage"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { truncate } from "fs/promises"
+import { ArrowUpRight, ArrowDownRight } from "lucide-react"
 import { Icons } from "../shared/icons"
 
 interface ApiAccount {
@@ -59,7 +59,7 @@ interface ArbitrageConfigFormProps {
 
 export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageConfigFormProps) {
   const { data: session } = useSession()
-  const router = useRouter();
+  const router = useRouter()
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
   const [isCreatePending, startCreateTransition] = useTransition()
 
@@ -85,7 +85,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
             acc[item.exchangeName].push(item)
             return acc
           }, {})
-          // console.log("userApi groupedData:", groupedData)
           setUserApi(groupedData)
         } else {
           console.error("Failed to fetch user data:", response.status)
@@ -127,60 +126,74 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       const leverageNum = Number.parseFloat(leverage)
       // binance bybit bitget okx
       // 杠杆 0.1% 合约 0.02%
-      const fees = amountNum * leverageNum * ((longType==='futures'?0.0002:0.001) + (shortType==='futures'?0.0002:0.001))
+      const fees =
+        amountNum *
+        leverageNum *
+        ((longType === "futures" ? 0.0002 : 0.001) + (shortType === "futures" ? 0.0002 : 0.001))
       setOpeningFees(fees)
 
       // TODO: 资金费率获取 4h 转换
       let longFundingRate = 0
       let shortFundingRate = 0
-      if (longType==='futures') {
+      if (longType === "futures") {
         const selectedLongExchange = Object.entries(userApi).find(([_, apis]) =>
-          apis.some((api) => api.id === longApiAccountId)
-        );
+          apis.some((api) => api.id === longApiAccountId),
+        )
         if (selectedLongExchange) {
-          const [exchangeName] = selectedLongExchange;
+          const [exchangeName] = selectedLongExchange
           longFundingRate = fundingRates[exchangeName]?.fundingRate
         }
       }
-      if (shortType==='futures') {
+      if (shortType === "futures") {
         const selectedShortExchange = Object.entries(userApi).find(([_, apis]) =>
-          apis.some((api) => api.id === shortApiAccountId)
-        );
+          apis.some((api) => api.id === shortApiAccountId),
+        )
         if (selectedShortExchange) {
-          const [exchangeName] = selectedShortExchange;
+          const [exchangeName] = selectedShortExchange
           shortFundingRate = fundingRates[exchangeName]?.fundingRate
         }
       }
-      const projectedProfit = amountNum * leverageNum * ((longType==='spot'?0:-longFundingRate) + (shortType==='spot'?0:shortFundingRate))
+      const projectedProfit =
+        amountNum *
+        leverageNum *
+        ((longType === "spot" ? 0 : -longFundingRate) + (shortType === "spot" ? 0 : shortFundingRate))
       setProfit(projectedProfit)
     }
   }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates, userApi])
-  
+
   const onSubmit = (data: ArbitrageConfig) => {
     startCreateTransition(async () => {
       let longFundingRate = 0
       let shortFundingRate = 0
-      const allFutures = longType==='futures' && shortType==='futures'
-      if (longType==='futures') {
+      const allFutures = longType === "futures" && shortType === "futures"
+      if (longType === "futures") {
         const selectedLongExchange = Object.entries(userApi).find(([_, apis]) =>
-          apis.some((api) => api.id === longApiAccountId)
-        );
+          apis.some((api) => api.id === longApiAccountId),
+        )
         if (selectedLongExchange) {
-          const [exchangeName] = selectedLongExchange;
+          const [exchangeName] = selectedLongExchange
           longFundingRate = fundingRates[exchangeName].fundingRate
         }
       }
-      if (shortType==='futures') {
+      if (shortType === "futures") {
         const selectedShortExchange = Object.entries(userApi).find(([_, apis]) =>
-          apis.some((api) => api.id === shortApiAccountId)
-        );
+          apis.some((api) => api.id === shortApiAccountId),
+        )
         if (selectedShortExchange) {
-          const [exchangeName] = selectedShortExchange;
+          const [exchangeName] = selectedShortExchange
           shortFundingRate = fundingRates[exchangeName].fundingRate
         }
       }
 
-      const { error } = await createArbitrageConfig(symbol, allFutures?Math.abs(longFundingRate-shortFundingRate):(shortType==='futures'?shortFundingRate:longFundingRate), data)
+      const { error } = await createArbitrageConfig(
+        symbol,
+        allFutures
+          ? Math.abs(longFundingRate - shortFundingRate)
+          : shortType === "futures"
+            ? shortFundingRate
+            : longFundingRate,
+        data,
+      )
 
       if (error) {
         toast.error(error)
@@ -189,156 +202,178 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
 
       form.reset()
       toast.success("Arbitrage added")
-      router.push('/arbitrage/manage')
+      router.push("/arbitrage/manage")
     })
     console.log("配置提交:", data)
-    // TODO: 实现套利策略启动逻辑
-
   }
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>{symbol} 资金费率套利配置</CardTitle>
-        {/* <CardDescription>设置资金费率套利策略参数，包括API账号选择、单边投资金额和平仓条件</CardDescription> */}
+      <CardHeader className="border-b pb-4">
+        <CardTitle className="text-xl">{symbol} 资金费率套利配置</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-5">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {/* 做多配置 */}
-              <div className="space-y-2">
-                <h3 className="font-medium">做多配置</h3>
-                <FormField
-                  control={form.control}
-                  name="longApiAccountId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>做多API账号</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="选择API账号" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {Object.keys(userApi).length === 0 ? (
-                            <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
-                              尚未添加API账号。请前往 <Link href="/exchanges" className="text-amber-500 underline">Exchanges 页面</Link> 添加。
-                            </div>
-                          ) : (
-                            Object.entries(userApi).map(([exchangeName, apis]) => (
-                              <SelectGroup key={exchangeName}>
-                                <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
-                                  {exchangeName}
-                                </SelectLabel>
-                                {apis.map((api) => (
-                                  <SelectItem 
-                                    key={api.id} 
-                                    value={api.id} 
-                                    disabled={fundingRates[exchangeName]?.disabled}
-                                  >
-                                    {api.accountName}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="longType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>做多类型</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="选择类型" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="spot">现货</SelectItem>
-                          <SelectItem value="futures">合约</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+            {/* 交易配置部分 */}
+            <div className="space-y-4">
+              {/* <h3 className="text-base font-medium">交易配置</h3> */}
 
-              {/* 做空配置 */}
-              <div className="space-y-2">
-                <h3 className="font-medium">做空配置</h3>
-                <FormField
-                  control={form.control}
-                  name="shortApiAccountId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>做空API账号</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="选择API账号" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {Object.keys(userApi).length === 0 ? (
-                            <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
-                              尚未添加API账号。请前往 <Link href="/exchanges" className="text-amber-500 underline">Exchanges 页面</Link> 添加。
-                            </div>
-                          ) : (Object.entries(userApi).map(([exchangeName, apis]) => (
-                            <SelectGroup key={exchangeName}>
-                              <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
-                                {exchangeName}
-                              </SelectLabel>
-                              {apis.map((api) => (
-                                <SelectItem key={api.id} value={api.id} disabled={fundingRates[exchangeName]?.disabled}>
-                                  {api.accountName}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          ))
-                        )}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="shortType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>做空类型</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="选择类型" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="spot">现货</SelectItem>
-                          <SelectItem value="futures">合约</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {/* 做多配置 */}
+                <div className="space-y-3 rounded-md border-l-4 border-green-500 py-3 pl-3 pr-1">
+                  <div className="flex items-center gap-2">
+                    <ArrowUpRight className="size-4 text-green-500" />
+                    <h4 className="text-sm font-medium text-green-700 dark:text-green-400">做多配置</h4>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="longApiAccountId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>做多API账号</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="border-green-200 focus:ring-green-500/20">
+                              <SelectValue placeholder="选择API账号" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.keys(userApi).length === 0 ? (
+                              <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
+                                尚未添加API账号。请前往{" "}
+                                <Link href="/exchanges" className="text-amber-500 underline">
+                                  Exchanges 页面
+                                </Link>{" "}
+                                添加。
+                              </div>
+                            ) : (
+                              Object.entries(userApi).map(([exchangeName, apis]) => (
+                                <SelectGroup key={exchangeName}>
+                                  <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                    {exchangeName}
+                                  </SelectLabel>
+                                  {apis.map((api) => (
+                                    <SelectItem
+                                      key={api.id}
+                                      value={api.id}
+                                      disabled={fundingRates[exchangeName]?.disabled}
+                                    >
+                                      {api.accountName}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              ))
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="longType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>做多类型</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="border-green-200 focus:ring-green-500/20">
+                              <SelectValue placeholder="选择类型" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="spot">现货</SelectItem>
+                            <SelectItem value="futures">合约</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* 做空配置 */}
+                <div className="space-y-3 rounded-md border-l-4 border-red-500 py-3 pl-3 pr-1">
+                  <div className="flex items-center gap-2">
+                    <ArrowDownRight className="size-4 text-red-500" />
+                    <h4 className="text-sm font-medium text-red-700 dark:text-red-400">做空配置</h4>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="shortApiAccountId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>做空API账号</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="border-red-200 focus:ring-red-500/20">
+                              <SelectValue placeholder="选择API账号" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.keys(userApi).length === 0 ? (
+                              <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
+                                尚未添加API账号。请前往{" "}
+                                <Link href="/exchanges" className="text-amber-500 underline">
+                                  Exchanges 页面
+                                </Link>{" "}
+                                添加。
+                              </div>
+                            ) : (
+                              Object.entries(userApi).map(([exchangeName, apis]) => (
+                                <SelectGroup key={exchangeName}>
+                                  <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                    {exchangeName}
+                                  </SelectLabel>
+                                  {apis.map((api) => (
+                                    <SelectItem
+                                      key={api.id}
+                                      value={api.id}
+                                      disabled={fundingRates[exchangeName]?.disabled}
+                                    >
+                                      {api.accountName}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              ))
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="shortType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>做空类型</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="border-red-200 focus:ring-red-500/20">
+                              <SelectValue placeholder="选择类型" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="spot">现货</SelectItem>
+                            <SelectItem value="futures">合约</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
 
             {/* 投资配置 */}
-            <div className="space-y-2">
-              <h3 className="font-medium">投资配置</h3>
+            <div className="space-y-4">
+              <h3 className="text-base font-medium">投资配置</h3>
+
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -370,90 +405,82 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
             </div>
 
             {/* 平仓条件 */}
-            <div className="space-y-2">
-              <h3 className="font-medium">平仓条件</h3>
-              <FormField
-                control={form.control}
-                name="closeCondition"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    {/* <FormLabel>选择平仓条件</FormLabel> */}
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="directionChange" />
-                          </FormControl>
-                          <FormLabel className="font-normal">资金费率方向反转时平仓</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="rateThreshold" />
-                          </FormControl>
-                          <FormLabel className="font-normal">资金费率差值小于阈值时平仓</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {closeCondition === "rateThreshold" && (
+            <div className="space-y-4">
+              <h3 className="text-base font-medium">平仓条件</h3>
+
+              <div>
                 <FormField
                   control={form.control}
-                  name="closeOnRate"
+                  name="closeCondition"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>资金费率阈值 (%)</FormLabel>
+                    <FormItem className="space-y-3">
                       <FormControl>
-                        <Input type="number" step="0.001" {...field} />
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-2"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="directionChange" />
+                            </FormControl>
+                            <FormLabel className="font-normal">资金费率方向反转时平仓</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="rateThreshold" />
+                            </FormControl>
+                            <FormLabel className="font-normal">资金费率差值小于阈值时平仓</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
                       </FormControl>
-                      <FormDescription>当资金费率差值小于此阈值时平仓</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              )}
+                {closeCondition === "rateThreshold" && (
+                  <div className="ml-7 mt-4">
+                    <FormField
+                      control={form.control}
+                      name="closeOnRate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>资金费率阈值 (%)</FormLabel>
+                          <FormControl>
+                            <Input type="number" step="0.001" className="max-w-[200px]" {...field} />
+                          </FormControl>
+                          <FormDescription>当资金费率差值小于此阈值时平仓</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* 预计收益 */}
-            <div className="space-y-2">
-              <h3 className="font-medium">预计收益</h3>
-              <div className="space-y-3 rounded-lg border p-4">
+            <div className="space-y-4">
+              <h3 className="text-base font-medium">预计收益</h3>
+
+              <div className="rounded-md border bg-muted/20 p-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">预计开仓手续费</div>
-                    <div className="text-lg font-semibold">{openingFees.toFixed(2)} USDT</div>
+                    <div className="text-lg font-medium">{openingFees.toFixed(2)} USDT</div>
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm text-muted-foreground">当前资金费率预计4小时收益</div>
-                    <div className={`text-xl font-bold ${profit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    <div className={`text-lg font-medium ${profit >= 0 ? "text-green-600" : "text-red-600"}`}>
                       {profit.toFixed(2)} USDT
                     </div>
                   </div>
                 </div>
-                {/* <div className="pt-2 border-t">
-                  <div className="space-y-1">
-                    <div className="text-sm text-muted-foreground">当前资金费率预计4小时收益</div>
-                    <div className={`text-xl font-bold ${projectedProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
-                      {projectedProfit.toFixed(2)} USDT
-                    </div>
-                  </div>
-                </div> */}
               </div>
             </div>
 
             <Button type="submit" className="w-full" disabled={isCreatePending}>
-              {isCreatePending && (
-                <Icons.spinner
-                  className="mr-2 size-4 animate-spin"
-                  aria-hidden="true"
-                />
-              )} 
+              {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
               启动套利策略
             </Button>
           </form>
