@@ -197,7 +197,7 @@ export async function limitClose(id: string) {
     }
 
     // Send the POST request
-    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/limit-close`, {
+    const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/limit-close`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ export async function limitClose(id: string) {
     }
   }
 }
-// TODO:
+
 export async function cancelArbitrage(id: string) {
   // noStore()
   try {
@@ -275,7 +275,7 @@ export async function cancelArbitrage(id: string) {
         status: 'ended',
       },
     });
-    revalidatePath('/arbitrage/manage');
+    // revalidatePath('/arbitrage/manage');
     return responseData
   } catch (err) {
     console.log("cancelArbitrage error:", err)

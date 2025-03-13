@@ -258,7 +258,8 @@ export default function ArbitrageManagementPage() {
             throw new Error(result?.error);
           }
           toast.success("套利已取消")
-
+          const configs = await getArbitrageConfig(session?.user.id!)
+          setArbitrageConfigs(configs)
         } catch (error) {
           toast.error("取消套利失败", {
             description: error.message,
