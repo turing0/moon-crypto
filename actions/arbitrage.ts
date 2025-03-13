@@ -275,7 +275,7 @@ export async function cancelArbitrage(id: string) {
         status: 'ended',
       },
     });
-    // revalidatePath('/arbitrage/manage');
+    revalidatePath('/arbitrage/manage');
     return responseData
   } catch (err) {
     console.log("cancelArbitrage error:", err)
