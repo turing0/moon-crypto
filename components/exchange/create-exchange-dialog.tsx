@@ -44,12 +44,11 @@ const exchangesRequiringPassphrase = ["OKX", "Bitget"];
 
 // Define the IP addresses for each exchange
 const exchangeIPs = {
-  Binance: ["108.61.182.99"],
-  Bitget: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
-  Bybit: ["108.61.182.99"],
-  OKX: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
-  // Bitfinex: ["108.61.182.99", "148.135.103.68", "107.172.83.193"],
-  // Add more exchanges and their IP addresses as needed
+  Binance: ["167.99.69.151"],
+  Bitget: ["167.99.69.151", "148.135.103.68", "107.172.83.193"],
+  Bybit: ["167.99.69.151"],
+  OKX: ["167.99.69.151", "148.135.103.68", "107.172.83.193"],
+  // Bitfinex: ["167.99.69.151", "148.135.103.68", "107.172.83.193"],
 };
 
 export function CreateExchangeDialog({userid, ipdata}) {

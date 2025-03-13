@@ -241,7 +241,7 @@ export async function cancelArbitrage(id: string) {
     }
 
     // Send the POST request
-    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/cancel`, {
+    const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/cancel`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -257,7 +257,6 @@ export async function cancelArbitrage(id: string) {
       const errorMessage = await response.text();
       console.error(`Failed to cancelArbitrage: ${errorMessage}`);
       return {
-        fundingRate: null,
         error: errorMessage
       }
     }
