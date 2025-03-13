@@ -35,9 +35,9 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
         'Pragma': 'no-cache',
         'Authorization': apiAuthorization!,
       },
-      body: JSON.stringify({ ...data, ...input }),
+      body: JSON.stringify({ ...data, ...input, symbol: symbol+'USDT' }),
     });
-    // console.log('validate data:', { ...data, ...input })
+    // console.log('validate data:', { ...data, ...input, symbol: symbol+'USDT' })
     if (!response.ok) {
       const errorMessage = await response.text();
       console.error(`Failed to validate ArbitrageConfig: ${errorMessage}`);
@@ -46,7 +46,7 @@ export async function createArbitrageConfig(symbol, initialFundingRate, input: a
       }
     }
     const validatedData = await response.json();
-    console.log('validate result:', validatedData)
+    // console.log('validate result:', validatedData)
     if (validatedData?.validated) {
       // 创建
       const config = await prisma.arbitrageConfig.create({
