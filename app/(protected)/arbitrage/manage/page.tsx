@@ -145,7 +145,7 @@ const PositionStatus = ({
   // Active position (opened but not closed)
   if (orderId && !closeOrderId) {
     return (
-      <div className="flex flex-col space-y-2 rounded-md border border-blue-200 bg-blue-50 p-3">
+      <div className="flex flex-col space-y-2 rounded-md border p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon}
@@ -164,7 +164,7 @@ const PositionStatus = ({
 
   // Pending state
   return (
-    <div className="flex flex-col space-y-2 rounded-md border border-yellow-200 bg-yellow-50 p-3">
+    <div className="flex flex-col space-y-2 rounded-md border p-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {icon}
@@ -253,12 +253,16 @@ export default function ArbitrageManagementPage() {
       isOpen: true,
       action: async () => {
         try {
-          await cancelArbitrage(id)
+          const result = await cancelArbitrage(id)
+          if (result?.error) {
+            throw new Error(result?.error);
+          }
           toast.success("套利已取消")
-          const updatedConfigs = await getArbitrageConfig(session?.user.id!)
-          setArbitrageConfigs(updatedConfigs)
+
         } catch (error) {
-          toast.error("取消套利失败")
+          toast.error("取消套利失败", {
+            description: error.message,
+          })
         }
       },
       title: "确认取消套利",
@@ -353,7 +357,7 @@ export default function ArbitrageManagementPage() {
             <p className="text-sm text-muted-foreground">平仓条件</p>
             <p className="text-sm font-medium">
               {config.closeCondition}
-              {config.closeOnRate && ` (${(config.closeOnRate * 100).toFixed(4)}%)`}
+              {/* {config.closeOnRate && ` (${(config.closeOnRate * 100).toFixed(4)}%)`} */}
             </p>
           </div>
 
@@ -370,7 +374,7 @@ export default function ArbitrageManagementPage() {
 
         {config.status.toLowerCase() === "active" && (
           <CardFooter className="flex justify-end gap-2 bg-muted/10 p-3 pt-2">
-            {config.longOrderId && config.shortOrderId ? (
+            {config.longOrderId || config.shortOrderId ? (
               <>
                 <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
                   市价全平
@@ -392,7 +396,7 @@ export default function ArbitrageManagementPage() {
 
   return (
     <>
-      <DashboardHeader heading="套利管理" text="管理您的套利配置和交易状态" />
+      <DashboardHeader heading="套利管理" />
 
       <Tabs defaultValue="active" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="mb-6 grid w-full max-w-md grid-cols-2">

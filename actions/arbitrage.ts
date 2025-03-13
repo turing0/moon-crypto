@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 
 const apiAuthorization = process.env.API_Authorization;
 
@@ -261,11 +262,21 @@ export async function cancelArbitrage(id: string) {
       }
     }
     const responseData = await response.json();
-
-    return {
-      fundingRate: responseData,
-      status: "success",
+    // console.log(responseData)
+    if (responseData?.error) {
+      return responseData
     }
+
+    await prisma.arbitrageConfig.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: 'ended',
+      },
+    });
+    // revalidatePath('/arbitrage/manage');
+    return responseData
   } catch (err) {
     console.log("cancelArbitrage error:", err)
     return {
