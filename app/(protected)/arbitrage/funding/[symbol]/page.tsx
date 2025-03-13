@@ -33,14 +33,15 @@ const formatCountdown = (timestamp: number) => {
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
+  const symbol = params.symbol.toUpperCase()
 
   useEffect(() => {
     async function getRate() {
       try {
-        const { fundingRate, error } = await getFundingRate(params.symbol)
+        const { fundingRate, error } = await getFundingRate(symbol)
         console.log('fundingRate', fundingRate)
         if (error) {
-          toast.error("资金费率获取失败", {
+          toast.error("Failed to getFundingRate", {
             description:error,
           });
           console.error("Failed to getFundingRate:", error)
@@ -168,7 +169,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         </Table>
       </div>
 
-      <ArbitrageConfigForm symbol={params.symbol} fundingRates={fundingRates} />
+      <ArbitrageConfigForm symbol={symbol} fundingRates={fundingRates} />
       
 
       <div>
