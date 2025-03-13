@@ -121,7 +121,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
             className="flex-1"
           />
           <Button type="submit" size="sm">
-            <Search className="mr-2 h-4 w-4" />
+            <Search className="mr-2 size-4" />
             Search
           </Button>
         </form>

@@ -9,8 +9,7 @@ import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { cancelArbitrage, getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
-import { PackageSearch, AlertCircle } from "lucide-react"
-import { Icons } from "@/components/shared/icons"
+import { PackageSearch, ArrowUpRight, ArrowDownRight, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +21,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Link from "next/link"
+import { Separator } from "@/components/ui/separator"
 
 interface ArbitrageConfig {
   id: string
@@ -55,30 +55,127 @@ const getStatusColor = (status: string) => {
   }
 }
 
-const OrderStatus = ({ type, orderId }: { type: "long" | "short"; orderId: string | null }) => {
+const PositionStatus = ({
+  type,
+  orderId,
+  closeOrderId,
+}: {
+  type: "long" | "short"
+  orderId: string | null
+  closeOrderId?: string | null
+}) => {
+  const isLong = type === "long"
+  const positionLabel = isLong ? "做多" : "做空"
+  const icon = isLong ? (
+    <ArrowUpRight className="size-4 text-green-600" />
+  ) : (
+    <ArrowDownRight className="size-4 text-red-600" />
+  )
+
+  // Opening position error state
   if (orderId?.startsWith("error")) {
     return (
-      <div className="rounded-md bg-destructive/10 p-3">
-        <div className="flex items-start space-x-2">
-          <AlertCircle className="mt-0.5 size-5 text-destructive" />
-          <div className="flex-1">
-            <p className="text-sm font-medium text-destructive">{type === "long" ? "做多" : "做空"}订单出错</p>
-            <p className="text-sm text-destructive/90">{orderId}</p>
+      <div className="flex flex-col space-y-2 rounded-md border border-destructive/20 bg-destructive/5 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {icon}
+            <span className="font-medium">{positionLabel}仓位</span>
+          </div>
+          <Badge variant="destructive">开仓失败</Badge>
+        </div>
+        <p className="text-sm text-destructive">{orderId.replace("error:", "")}</p>
+      </div>
+    )
+  }
+
+  // Closing position error state
+  if (closeOrderId?.startsWith("error")) {
+    return (
+      <div className="flex flex-col space-y-2 rounded-md border border-amber-200 bg-amber-50 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {icon}
+            <span className="font-medium">{positionLabel}仓位</span>
+          </div>
+          <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge>
+        </div>
+        <div className="flex flex-col space-y-1">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <CheckCircle className="size-3.5" />
+            <span>开仓成功:</span>
+            <code className="text-xs">{orderId}</code>
+          </div>
+          <div className="flex items-center gap-1 text-sm text-destructive">
+            <XCircle className="size-3.5" />
+            <span>平仓失败:</span>
+            <code className="text-xs">{closeOrderId?.replace("error:", "")}</code>
           </div>
         </div>
       </div>
     )
   }
 
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center space-x-2">
-        <p className="text-sm text-muted-foreground">{type === "long" ? "做多" : "做空"}仓位</p>
-        <Badge variant="outline" className={orderId ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"}>
-          {orderId ? "已下单" : "待下单"}
-        </Badge>
+  // Success state with close order
+  if (orderId && closeOrderId && !closeOrderId.startsWith("error")) {
+    return (
+      <div className="flex flex-col space-y-2 rounded-md border border-green-200 bg-green-50 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {icon}
+            <span className="font-medium">{positionLabel}仓位</span>
+          </div>
+          <Badge className="bg-green-100 text-green-800">已平仓</Badge>
+        </div>
+        <div className="flex flex-col space-y-1">
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <CheckCircle className="size-3.5" />
+            <span>开仓:</span>
+            <code className="text-xs">{orderId}</code>
+          </div>
+          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <CheckCircle className="size-3.5" />
+            <span>平仓:</span>
+            <code className="text-xs">{closeOrderId}</code>
+          </div>
+        </div>
       </div>
-      {orderId && <p className="truncate font-mono text-sm text-muted-foreground">订单ID: {orderId}</p>}
+    )
+  }
+
+  // Active position (opened but not closed)
+  if (orderId && !closeOrderId) {
+    return (
+      <div className="flex flex-col space-y-2 rounded-md border border-blue-200 bg-blue-50 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {icon}
+            <span className="font-medium">{positionLabel}仓位</span>
+          </div>
+          <Badge className="bg-blue-100 text-blue-800">已开仓</Badge>
+        </div>
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <CheckCircle className="size-3.5" />
+          <span>订单ID:</span>
+          <code className="text-xs">{orderId}</code>
+        </div>
+      </div>
+    )
+  }
+
+  // Pending state
+  return (
+    <div className="flex flex-col space-y-2 rounded-md border border-yellow-200 bg-yellow-50 p-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {icon}
+          <span className="font-medium">{positionLabel}仓位</span>
+        </div>
+        <Badge className="bg-yellow-100 text-yellow-800">待下单</Badge>
+      </div>
+      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        <Clock className="size-3.5" />
+        <span>等待执行...</span>
+      </div>
     </div>
   )
 }
@@ -87,6 +184,7 @@ export default function ArbitrageManagementPage() {
   const { data: session } = useSession()
   const [arbitrageConfigs, setArbitrageConfigs] = useState<ArbitrageConfig[] | undefined>(undefined)
   const [activeTab, setActiveTab] = useState("active")
+  const [isLoading, setIsLoading] = useState(true)
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean
     action: () => Promise<void>
@@ -103,8 +201,16 @@ export default function ArbitrageManagementPage() {
     if (!session) return
 
     async function fetchArbitrageConfigs() {
-      const configs = await getArbitrageConfig(session?.user.id!)
-      setArbitrageConfigs(configs)
+      setIsLoading(true)
+      try {
+        const configs = await getArbitrageConfig(session?.user.id!)
+        setArbitrageConfigs(configs)
+      } catch (error) {
+        toast.error("获取套利配置失败")
+        console.error(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchArbitrageConfigs()
@@ -171,15 +277,18 @@ export default function ArbitrageManagementPage() {
   })
 
   const renderConfigCards = (configs: ArbitrageConfig[] | undefined) => {
-    if (configs === undefined) {
+    if (isLoading) {
       return (
         <div className="col-span-full flex h-40 items-center justify-center">
-          <Icons.spinner className="size-8 animate-spin text-gray-500" />
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="size-8 animate-spin text-primary" />
+            <p className="text-sm text-muted-foreground">加载套利配置中...</p>
+          </div>
         </div>
       )
     }
 
-    if (configs.length === 0) {
+    if (!configs || configs.length === 0) {
       return (
         <Card className="col-span-full">
           <div className="flex flex-col items-center justify-center p-8 text-center">
@@ -194,87 +303,96 @@ export default function ArbitrageManagementPage() {
                 ? "当前没有任何活跃的套利配置。您可以创建新的套利配置来开始交易。"
                 : "当前没有任何已结束的套利配置。"}
             </p>
+            {activeTab === "active" && (
+              <Button className="mt-4">
+                <Link href="/arbitrage">创建套利</Link>
+              </Button>
+            )}
           </div>
         </Card>
       )
     }
 
     return configs.map((config) => (
-      <Card key={config.id} className="transition-shadow duration-200 hover:shadow-lg">
-        <CardHeader>
-          <div className="flex flex-col space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Link href={`/arbitrage/funding/${config.symbol}`}>
-                  <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
-                </Link>
-                <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
-                  {config.leverage}x
-                </Badge>
-              </div>
-              <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
+      <Card key={config.id} className="overflow-hidden transition-shadow duration-200 hover:shadow-md">
+        <CardHeader className="bg-muted/30 pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Link href={`/arbitrage/funding/${config.symbol}`} className="hover:underline">
+                <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+              </Link>
+              <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                {config.leverage}x
+              </Badge>
             </div>
+            <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">做多类型</p>
-                <p className="font-medium">{config.longType}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">做空类型</p>
-                <p className="font-medium">{config.shortType}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">单边投资金额</p>
-                <p className="font-medium">{config.amount} USDT</p>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">平仓条件</p>
-              <p className="font-medium">{config.closeCondition}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">创建时间</p>
-              <p className="font-medium">{new Date(config.createdAt).toLocaleString()}</p>
-            </div>
 
-            {/* Order Status Section */}
-            <div className="space-y-3 rounded-lg bg-muted/50 p-3">
-              <OrderStatus type="long" orderId={config.longOrderId} />
-              <OrderStatus type="short" orderId={config.shortOrderId} />
+        <CardContent className="p-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+            <div>
+              <p className="text-muted-foreground">做多类型</p>
+              <p className="font-medium">{config.longType}</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">做空类型</p>
+              <p className="font-medium">{config.shortType}</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">单边金额</p>
+              <p className="font-medium">{config.amount} USDT</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">初始资金费率</p>
+              <p className="font-medium">{(config.initialFundingRate * 100).toFixed(4)}%</p>
             </div>
           </div>
+
+          <div className="mt-2">
+            <p className="text-sm text-muted-foreground">平仓条件</p>
+            <p className="text-sm font-medium">
+              {config.closeCondition}
+              {config.closeOnRate && ` (${(config.closeOnRate * 100).toFixed(4)}%)`}
+            </p>
+          </div>
+
+          <Separator className="my-3" />
+
+          <div className="mb-3 text-xs text-muted-foreground">创建于 {new Date(config.createdAt).toLocaleString()}</div>
+
+          {/* Position Status Section */}
+          <div className="space-y-2">
+            <PositionStatus type="long" orderId={config.longOrderId} closeOrderId={config.closeLongOrderId} />
+            <PositionStatus type="short" orderId={config.shortOrderId} closeOrderId={config.closeShortOrderId} />
+          </div>
         </CardContent>
-        <CardFooter className="flex justify-end space-x-2">
-          {config.status.toLowerCase() === "active" && (
-            <>
-              {config.longOrderId && config.shortOrderId ? (
-                <>
-                  <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
-                    市价全平
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
-                    限价全平
-                  </Button>
-                </>
-              ) : (
-                <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
-                  取消套利
+
+        {config.status.toLowerCase() === "active" && (
+          <CardFooter className="flex justify-end gap-2 bg-muted/10 p-3 pt-2">
+            {config.longOrderId && config.shortOrderId ? (
+              <>
+                <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
+                  市价全平
                 </Button>
-              )}
-            </>
-          )}
-        </CardFooter>
+                <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
+                  限价全平
+                </Button>
+              </>
+            ) : (
+              <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
+                取消套利
+              </Button>
+            )}
+          </CardFooter>
+        )}
       </Card>
     ))
   }
 
   return (
     <>
-      <DashboardHeader heading="套利管理" />
+      <DashboardHeader heading="套利管理" text="管理您的套利配置和交易状态" />
 
       <Tabs defaultValue="active" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="mb-6 grid w-full max-w-md grid-cols-2">
@@ -283,13 +401,13 @@ export default function ArbitrageManagementPage() {
         </TabsList>
 
         <TabsContent value="active" className="mt-0">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {renderConfigCards(filteredConfigs)}
           </div>
         </TabsContent>
 
         <TabsContent value="ended" className="mt-0">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {renderConfigCards(filteredConfigs)}
           </div>
         </TabsContent>
