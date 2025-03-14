@@ -225,8 +225,9 @@ export default function ArbitrageManagementPage() {
         const configs = await getArbitrageConfig(session?.user.id!)
         setArbitrageConfigs(configs)
       } catch (error) {
-        toast.error("获取套利配置失败")
-        console.error(error)
+        toast.error("获取套利配置失败", {
+          description: error.message,
+        })
       } finally {
         setIsLoading(false)
       }
@@ -235,35 +236,51 @@ export default function ArbitrageManagementPage() {
     fetchArbitrageConfigs()
   }, [session])
 
-  const handleLimitClose = async (id: string) => {
-    setConfirmDialog({
-      isOpen: true,
-      action: async () => {
-        try {
-          await limitClose(id)
-          toast.success("限价平仓指令已发送")
-        } catch (error) {
-          toast.error("限价平仓失败")
-        }
-      },
-      title: "确认限价全平",
-      description: "您确定要执行限价全平操作吗？这将关闭所有的仓位（读取orderbook的价格）。",
-    })
-  }
-
   const handleMarketClose = async (id: string) => {
     setConfirmDialog({
       isOpen: true,
       action: async () => {
         try {
-          await marketClose(id)
           toast.success("市价平仓指令已发送")
+          const result = await marketClose(id)
+          if (result?.error) {
+            throw new Error(result?.error)
+          }
+          const configs = await getArbitrageConfig(session?.user.id!)
+          setArbitrageConfigs(configs)
         } catch (error) {
-          toast.error("市价平仓失败")
+          console.error(error)
+          toast.error("市价平仓失败", {
+            description: error.message,
+          })
         }
       },
       title: "确认市价全平",
       description: "您确定要执行市价全平操作吗？这将立即以市价关闭所有的仓位。",
+    })
+  }
+
+  const handleLimitClose = async (id: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      action: async () => {
+        try {
+          toast.success("限价平仓指令已发送")
+          const result = await limitClose(id)
+          if (result?.error) {
+            throw new Error(result?.error)
+          }
+          const configs = await getArbitrageConfig(session?.user.id!)
+          setArbitrageConfigs(configs)
+        } catch (error) {
+          console.error(error)
+          toast.error("限价平仓失败", {
+            description: error.message,
+          })
+        }
+      },
+      title: "确认限价全平",
+      description: "您确定要执行限价全平操作吗？这将立即以最优限价关闭所有的仓位。",
     })
   }
 
