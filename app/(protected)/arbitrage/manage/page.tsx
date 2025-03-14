@@ -66,17 +66,18 @@ const getStatusColor = (status: string) => {
   }
 }
 
-// Update the PositionStatus component to show the account ID next to the position label
 const PositionStatus = ({
   type,
   orderId,
   closeOrderId,
   apiAccountId,
+  category,
 }: {
   type: "long" | "short"
   orderId: string | null
   closeOrderId?: string | null
-  apiAccountId?: string | null
+  apiAccountId: string
+  category: string
 }) => {
   const isLong = type === "long"
   const positionLabel = isLong ? "做多" : "做空"
@@ -94,7 +95,8 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
+            {/* {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>} */}
+            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
           </div>
           <Badge variant="destructive">开仓失败</Badge>
         </div>
@@ -111,7 +113,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
+            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
           </div>
           <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge>
         </div>
@@ -139,7 +141,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
+            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
           </div>
           <Badge className="bg-green-100 text-green-800">{orderId!=closeOrderId ? "已平仓":"已取消"}</Badge>
         </div>
@@ -167,7 +169,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
+            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
           </div>
           <Badge className="bg-blue-100 text-blue-800">已开仓</Badge>
         </div>
@@ -187,7 +189,7 @@ const PositionStatus = ({
         <div className="flex items-center gap-2">
           {icon}
           <span className="font-medium">{positionLabel}仓位</span>
-          {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
+          <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
         </div>
         <Badge className="bg-yellow-100 text-yellow-800">待下单</Badge>
       </div>
@@ -323,7 +325,7 @@ export default function ArbitrageManagementPage() {
         <div className="col-span-full flex h-40 items-center justify-center">
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="size-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">加载套利配置中...</p>
+            <p className="text-sm text-muted-foreground">Loading...</p>
           </div>
         </div>
       )
@@ -377,14 +379,14 @@ export default function ArbitrageManagementPage() {
 
         <CardContent className="p-4">
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-            <div>
+            {/* <div>
               <p className="text-muted-foreground">做多类型</p>
               <p className="font-medium">{config.longType}</p>
             </div>
             <div>
               <p className="text-muted-foreground">做空类型</p>
               <p className="font-medium">{config.shortType}</p>
-            </div>
+            </div> */}
             <div>
               <p className="text-muted-foreground">单边金额</p>
               <p className="font-medium">{config.amount} USDT</p>
@@ -412,12 +414,14 @@ export default function ArbitrageManagementPage() {
               orderId={config.longOrderId}
               closeOrderId={config.closeLongOrderId}
               apiAccountId={config.longApiAccountId}
+              category={config.longType}
             />
             <PositionStatus
               type="short"
               orderId={config.shortOrderId}
               closeOrderId={config.closeShortOrderId}
               apiAccountId={config.shortApiAccountId}
+              category={config.shortType}
             />
           </div>
         </CardContent>
@@ -459,8 +463,8 @@ export default function ArbitrageManagementPage() {
 
       <Tabs defaultValue="active" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="mb-6 grid w-full max-w-md grid-cols-2">
-          <TabsTrigger value="active">活跃套利</TabsTrigger>
-          <TabsTrigger value="ended">已结束套利</TabsTrigger>
+          <TabsTrigger value="active">Active</TabsTrigger>
+          <TabsTrigger value="ended">Ended</TabsTrigger>
         </TabsList>
 
         <TabsContent value="active" className="mt-0">
