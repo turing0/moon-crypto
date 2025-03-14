@@ -141,7 +141,7 @@ const PositionStatus = ({
             <span className="font-medium">{positionLabel}仓位</span>
             {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
           </div>
-          <Badge className="bg-green-100 text-green-800">已平仓</Badge>
+          <Badge className="bg-green-100 text-green-800">{orderId!=closeOrderId ? "已平仓":"已取消"}</Badge>
         </div>
         <div className="flex flex-col space-y-1">
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -286,7 +286,7 @@ export default function ArbitrageManagementPage() {
         }
       },
       title: "确认取消套利",
-      description: "您确定要取消此套利吗？已成交订单将会市价平仓，未成交订单将会立即取消。",
+      description: "您确定要取消此套利吗？已成交订单将会最优限价平仓，未成交订单将会立即取消。",
     })
   }
 
