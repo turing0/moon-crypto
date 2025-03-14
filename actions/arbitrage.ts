@@ -219,6 +219,8 @@ export async function limitClose(id: string) {
     }
     const responseData = await response.json();
 
+    // TODO: 更新订单status
+
     return {
       fundingRate: responseData,
       status: "success",

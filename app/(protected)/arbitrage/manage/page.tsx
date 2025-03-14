@@ -9,7 +9,16 @@ import { toast } from "sonner"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { cancelArbitrage, getArbitrageConfig, limitClose, marketClose } from "@/actions/arbitrage"
 import { useSession } from "next-auth/react"
-import { PackageSearch, ArrowUpRight, ArrowDownRight, Clock, CheckCircle, XCircle, Loader2 } from "lucide-react"
+import {
+  PackageSearch,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Loader2,
+  Calendar,
+} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +35,8 @@ import { Separator } from "@/components/ui/separator"
 interface ArbitrageConfig {
   id: string
   symbol: string
+  longApiAccountId: string
+  shortApiAccountId: string
   longType: string
   shortType: string
   amount: number
@@ -55,14 +66,17 @@ const getStatusColor = (status: string) => {
   }
 }
 
+// Update the PositionStatus component to show the account ID next to the position label
 const PositionStatus = ({
   type,
   orderId,
   closeOrderId,
+  apiAccountId,
 }: {
   type: "long" | "short"
   orderId: string | null
   closeOrderId?: string | null
+  apiAccountId?: string | null
 }) => {
   const isLong = type === "long"
   const positionLabel = isLong ? "做多" : "做空"
@@ -80,6 +94,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
+            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
           </div>
           <Badge variant="destructive">开仓失败</Badge>
         </div>
@@ -96,6 +111,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
+            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
           </div>
           <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge>
         </div>
@@ -123,6 +139,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
+            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
           </div>
           <Badge className="bg-green-100 text-green-800">已平仓</Badge>
         </div>
@@ -150,6 +167,7 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
+            {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
           </div>
           <Badge className="bg-blue-100 text-blue-800">已开仓</Badge>
         </div>
@@ -169,6 +187,7 @@ const PositionStatus = ({
         <div className="flex items-center gap-2">
           {icon}
           <span className="font-medium">{positionLabel}仓位</span>
+          {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]}</span>}
         </div>
         <Badge className="bg-yellow-100 text-yellow-800">待下单</Badge>
       </div>
@@ -255,7 +274,7 @@ export default function ArbitrageManagementPage() {
         try {
           const result = await cancelArbitrage(id)
           if (result?.error) {
-            throw new Error(result?.error);
+            throw new Error(result?.error)
           }
           toast.success("套利已取消")
           const configs = await getArbitrageConfig(session?.user.id!)
@@ -320,15 +339,20 @@ export default function ArbitrageManagementPage() {
 
     return configs.map((config) => (
       <Card key={config.id} className="overflow-hidden transition-shadow duration-200 hover:shadow-md">
-        <CardHeader className="bg-muted/30 pb-3">
+        <CardHeader className="bg-muted/30 pb-1">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Link href={`/arbitrage/funding/${config.symbol}`} className="hover:underline">
-                <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
-              </Link>
-              <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
-                {config.leverage}x
-              </Badge>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <Link href={`/arbitrage/funding/${config.symbol}`} className="hover:underline">
+                  <CardTitle className="text-xl font-bold">{config.symbol}</CardTitle>
+                </Link>
+                <Badge variant="secondary" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                  {config.leverage}x
+                </Badge>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="font-medium">ID:</span> {config.id}
+              </div>
             </div>
             <Badge className={`${getStatusColor(config.status)}`}>{config.status}</Badge>
           </div>
@@ -364,33 +388,50 @@ export default function ArbitrageManagementPage() {
 
           <Separator className="my-3" />
 
-          <div className="mb-3 text-xs text-muted-foreground">创建于 {new Date(config.createdAt).toLocaleString()}</div>
-
           {/* Position Status Section */}
           <div className="space-y-2">
-            <PositionStatus type="long" orderId={config.longOrderId} closeOrderId={config.closeLongOrderId} />
-            <PositionStatus type="short" orderId={config.shortOrderId} closeOrderId={config.closeShortOrderId} />
+            <PositionStatus
+              type="long"
+              orderId={config.longOrderId}
+              closeOrderId={config.closeLongOrderId}
+              apiAccountId={config.longApiAccountId}
+            />
+            <PositionStatus
+              type="short"
+              orderId={config.shortOrderId}
+              closeOrderId={config.closeShortOrderId}
+              apiAccountId={config.shortApiAccountId}
+            />
           </div>
         </CardContent>
 
-        {config.status.toLowerCase() === "active" && (
-          <CardFooter className="flex justify-end gap-2 bg-muted/10 p-3 pt-2">
-            {config.longOrderId || config.shortOrderId ? (
-              <>
-                <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
-                  市价全平
+        <CardFooter
+          className={`flex ${config.status.toLowerCase() === "active" ? "justify-between" : "justify-end"} items-center bg-muted/10 p-3 pt-2`}
+        >
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Calendar className="size-3.5" />
+            <span>{new Date(config.createdAt).toLocaleString()}</span>
+          </div>
+
+          {config.status.toLowerCase() === "active" && (
+            <div className="flex gap-2">
+              {config.longOrderId || config.shortOrderId ? (
+                <>
+                  <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
+                    市价全平
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
+                    限价全平
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
+                  取消套利
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
-                  限价全平
-                </Button>
-              </>
-            ) : (
-              <Button variant="outline" size="sm" onClick={() => handleCancelArbitrage(config.id)}>
-                取消套利
-              </Button>
-            )}
-          </CardFooter>
-        )}
+              )}
+            </div>
+          )}
+        </CardFooter>
       </Card>
     ))
   }
