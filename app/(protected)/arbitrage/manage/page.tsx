@@ -106,7 +106,7 @@ const PositionStatus = ({
   // Closing position error state
   if (closeOrderId?.startsWith("error")) {
     return (
-      <div className="flex flex-col space-y-2 rounded-md border border-amber-200 bg-amber-50 p-3">
+      <div className="flex flex-col space-y-2 rounded-md border border-amber-200 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon}
@@ -134,7 +134,7 @@ const PositionStatus = ({
   // Success state with close order
   if (orderId && closeOrderId && !closeOrderId.startsWith("error")) {
     return (
-      <div className="flex flex-col space-y-2 rounded-md border border-green-200 bg-green-50 p-3">
+      <div className="flex flex-col space-y-2 rounded-md border border-green-200 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon}
