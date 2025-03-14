@@ -171,25 +171,22 @@ export async function marketClose(id: string) {
       const errorMessage = await response.text();
       console.error(`Failed to marketClose: ${errorMessage}`);
       return {
-        fundingRate: null,
+        data: null,
         error: errorMessage
       }
     }
     const responseData = await response.json();
 
-    return {
-      fundingRate: responseData,
-      status: "success",
-    }
+    return responseData
   } catch (err) {
     console.log("marketClose error:", err)
     return {
-      fundingRate: null,
+      data: null,
       error: (err),
     }
   }
 }
-// TODO:
+
 export async function limitClose(id: string) {
   // noStore()
   try {
@@ -216,7 +213,7 @@ export async function limitClose(id: string) {
       const errorMessage = await response.text();
       console.error(`Failed to limitClose: ${errorMessage}`);
       return {
-        fundingRate: null,
+        data: null,
         error: errorMessage
       }
     }
@@ -224,14 +221,11 @@ export async function limitClose(id: string) {
 
     // TODO: 更新订单status
 
-    return {
-      fundingRate: responseData,
-      status: "success",
-    }
+    return responseData
   } catch (err) {
     console.log("limitClose error:", err)
     return {
-      fundingRate: null,
+      data: null,
       error: (err),
     }
   }
@@ -247,7 +241,8 @@ export async function cancelArbitrage(id: string) {
     }
 
     // Send the POST request
-    const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/cancel`, {
+    // const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/cancel`, {
+    const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/limit-close`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -272,20 +267,20 @@ export async function cancelArbitrage(id: string) {
       return responseData
     }
 
-    await prisma.arbitrageConfig.update({
-      where: {
-        id: id,
-      },
-      data: {
-        status: 'ended',
-      },
-    });
+    // await prisma.arbitrageConfig.update({
+    //   where: {
+    //     id: id,
+    //   },
+    //   data: {
+    //     status: 'ended',
+    //   },
+    // });
     // revalidatePath('/arbitrage/manage');
     return responseData
   } catch (err) {
     console.log("cancelArbitrage error:", err)
     return {
-      fundingRate: null,
+      data: null,
       error: (err),
     }
   }
