@@ -86,6 +86,9 @@ export async function getArbitrageConfig(userId: string) {
       where: {
         userId: userId
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
     return configs
