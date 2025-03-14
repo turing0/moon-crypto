@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
+import { Icons } from "@/components/shared/icons"
 
 interface ArbitrageConfig {
   id: string
@@ -96,7 +97,9 @@ const PositionStatus = ({
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
             {/* {apiAccountId && <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>} */}
-            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
+            <span className="ml-1 text-xs text-muted-foreground">
+              {apiAccountId.split("-")[0]} • {category}
+            </span>
           </div>
           <Badge variant="destructive">开仓失败</Badge>
         </div>
@@ -113,7 +116,9 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
+            <span className="ml-1 text-xs text-muted-foreground">
+              {apiAccountId.split("-")[0]} • {category}
+            </span>
           </div>
           <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge>
         </div>
@@ -141,9 +146,11 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
+            <span className="ml-1 text-xs text-muted-foreground">
+              {apiAccountId.split("-")[0]} • {category}
+            </span>
           </div>
-          <Badge className="bg-green-100 text-green-800">{orderId!=closeOrderId ? "已平仓":"已取消"}</Badge>
+          <Badge className="bg-green-100 text-green-800">{orderId != closeOrderId ? "已平仓" : "已取消"}</Badge>
         </div>
         <div className="flex flex-col space-y-1">
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -169,7 +176,9 @@ const PositionStatus = ({
           <div className="flex items-center gap-2">
             {icon}
             <span className="font-medium">{positionLabel}仓位</span>
-            <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
+            <span className="ml-1 text-xs text-muted-foreground">
+              {apiAccountId.split("-")[0]} • {category}
+            </span>
           </div>
           <Badge className="bg-blue-100 text-blue-800">已开仓</Badge>
         </div>
@@ -189,7 +198,9 @@ const PositionStatus = ({
         <div className="flex items-center gap-2">
           {icon}
           <span className="font-medium">{positionLabel}仓位</span>
-          <span className="ml-1 text-xs text-muted-foreground">{apiAccountId.split('-')[0]} • {category}</span>
+          <span className="ml-1 text-xs text-muted-foreground">
+            {apiAccountId.split("-")[0]} • {category}
+          </span>
         </div>
         <Badge className="bg-yellow-100 text-yellow-800">待下单</Badge>
       </div>
@@ -218,6 +229,9 @@ export default function ArbitrageManagementPage() {
     description: "",
   })
 
+  const [loadingMarketClose, setLoadingMarketClose] = useState<string | null>(null)
+  const [loadingLimitClose, setLoadingLimitClose] = useState<string | null>(null)
+
   useEffect(() => {
     if (!session) return
 
@@ -243,6 +257,7 @@ export default function ArbitrageManagementPage() {
       isOpen: true,
       action: async () => {
         try {
+          setLoadingMarketClose(id)
           toast.success("市价平仓指令已发送")
           const result = await marketClose(id)
           if (result?.error) {
@@ -255,6 +270,8 @@ export default function ArbitrageManagementPage() {
           toast.error("市价平仓失败", {
             description: error.message,
           })
+        } finally {
+          setLoadingMarketClose(null)
         }
       },
       title: "确认市价全平",
@@ -267,6 +284,7 @@ export default function ArbitrageManagementPage() {
       isOpen: true,
       action: async () => {
         try {
+          setLoadingLimitClose(id)
           toast.success("限价平仓指令已发送")
           const result = await limitClose(id)
           if (result?.error) {
@@ -279,6 +297,8 @@ export default function ArbitrageManagementPage() {
           toast.error("限价平仓失败", {
             description: error.message,
           })
+        } finally {
+          setLoadingLimitClose(null)
         }
       },
       title: "确认限价全平",
@@ -438,10 +458,26 @@ export default function ArbitrageManagementPage() {
             <div className="flex gap-2">
               {config.longOrderId || config.shortOrderId ? (
                 <>
-                  <Button variant="outline" size="sm" onClick={() => handleMarketClose(config.id)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleMarketClose(config.id)}
+                    disabled={loadingMarketClose === config.id || loadingLimitClose === config.id}
+                  >
+                    {loadingMarketClose === config.id && (
+                      <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />
+                    )}
                     市价全平
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleLimitClose(config.id)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleLimitClose(config.id)}
+                    disabled={loadingLimitClose === config.id || loadingMarketClose === config.id}
+                  >
+                    {loadingLimitClose === config.id && (
+                      <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />
+                    )}
                     限价全平
                   </Button>
                 </>
