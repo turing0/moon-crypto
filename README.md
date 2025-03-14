@@ -1,12 +1,12 @@
 <a href="https://mooncrpy.to">
-  <img alt="Moon Crypto" src="public/_static/og.png">
+  <img alt="MoonCrypto" src="public/_static/og.png">
 
-  <h1 align="center">Moon Crypto</h1>
+  <h1 align="center">MoonCrypto</h1>
 
 </a>
 
 <p align="center">
-  Start at full speed with Moon Crypto !
+  Start at full speed with MoonCrypto !
 </p>
 
 <p align="center">

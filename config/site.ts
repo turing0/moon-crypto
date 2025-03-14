@@ -4,9 +4,9 @@ import { env } from "@/env.mjs";
 const site_url = env.NEXT_PUBLIC_APP_URL;
 
 export const siteConfig: SiteConfig = {
-  name: "Moon Crypto",
+  name: "MoonCrypto",
   description:
-    "Moon Crypto is a top crypto copy trading platform, enabling users to follow expert traders and grow their assets effortlessly. Join us and watch your investments soar!",
+    "MoonCrypto is a top crypto copy trading platform, enabling users to follow expert traders and grow their assets effortlessly. Join us and watch your investments soar!",
   url: site_url,
   ogImage: `${site_url}/_static/og.png`,
   links: {

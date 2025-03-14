@@ -6,7 +6,7 @@ export default function WaitlistPage() {
     <section className="grid min-h-screen w-full grid-cols-1 gap-6 md:grid-cols-2">
       <div className="relative flex flex-col items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-500 px-6 py-12 text-white md:h-full">
         <Link href="/" className="absolute left-4 top-4 text-lg font-bold">
-          Moon Crypto
+          MoonCrypto
         </Link>
         <h2 className="mb-6 mt-8 text-center text-3xl font-bold md:text-4xl">Revolutionize Your Crypto Trading</h2>
         <ul className="space-y-4 text-lg">

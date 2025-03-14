@@ -56,7 +56,7 @@ export async function GET(req: Request) {
               color: 'transparent'
             }}
           >
-            Moon Crypto
+            MoonCrypto
           </div>
 
           <div tw="flex flex-col flex-1 py-16">
