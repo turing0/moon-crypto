@@ -54,7 +54,7 @@ type ArbitrageConfig = z.infer<typeof formSchema>
 
 interface ArbitrageConfigFormProps {
   symbol: string
-  fundingRates: {}
+  fundingRates: Record<string, any>
 }
 
 export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageConfigFormProps) {
@@ -271,7 +271,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border-green-200 focus:ring-green-500/20">
-                              <SelectValue placeholder="选择API账号" />
+                              <SelectValue placeholder="Select API" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -345,7 +345,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border-red-200 focus:ring-red-500/20">
-                              <SelectValue placeholder="选择API账号" />
+                              <SelectValue placeholder="Select API" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
