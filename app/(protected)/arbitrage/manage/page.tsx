@@ -103,7 +103,8 @@ const PositionStatus = ({
           </div>
           <Badge variant="destructive">开仓失败</Badge>
         </div>
-        <p className="text-sm text-destructive">{orderId.replace("error:", "")}</p>
+        {/* <p className="text-sm text-destructive">{orderId.replace("error:", "")}</p> */}
+        <code className="text-xs text-destructive">{orderId?.replace("error:", "")}</code>
       </div>
     )
   }
@@ -111,7 +112,7 @@ const PositionStatus = ({
   // Closing position error state
   if (closeOrderId?.startsWith("error")) {
     return (
-      <div className="flex flex-col space-y-2 rounded-md border border-amber-200 p-3">
+      <div className="flex flex-col space-y-2 rounded-md border border-destructive/20 bg-destructive/5 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon}
@@ -120,7 +121,8 @@ const PositionStatus = ({
               {apiAccountId.split("-")[0]} • {category}
             </span>
           </div>
-          <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge>
+          {/* <Badge className="bg-amber-100 text-amber-800">平仓失败</Badge> */}
+          <Badge variant="destructive">平仓失败</Badge>
         </div>
         <div className="flex flex-col space-y-1">
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
