@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -54,7 +54,7 @@ type ArbitrageConfig = z.infer<typeof formSchema>
 
 interface ArbitrageConfigFormProps {
   symbol: string
-  fundingRates: any
+  fundingRates: {}
 }
 
 export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageConfigFormProps) {
@@ -65,6 +65,9 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
 
   useEffect(() => {
     if (!session?.user?.id) {
+      return
+    }
+    if (Object.keys(userApi).length>0) {
       return
     }
     async function fetchUserApiData() {
@@ -100,7 +103,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
   const form = useForm<ArbitrageConfig>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      longType: "spot",
+      longType: "futures",
       shortType: "futures",
       amount: "10000",
       leverage: "1",
@@ -160,6 +163,39 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
       setProfit(projectedProfit)
     }
   }, [amount, leverage, longType, shortType, longApiAccountId, shortApiAccountId, fundingRates, userApi])
+
+  useEffect(() => {
+    // Only run this logic when we have both user API accounts and funding rates
+    if (Object.keys(userApi).length > 0 && Object.keys(fundingRates).length > 0) {
+      console.log("calucting")
+      // Filter exchanges that the user has accounts for
+      const userExchanges = Object.keys(userApi)
+      const availableExchanges = userExchanges.filter(
+        (exchange) => fundingRates[exchange] && !fundingRates[exchange]?.disabled,
+      )
+
+      if (availableExchanges.length >= 2) {
+        // Sort exchanges by funding rate
+        const sortedExchanges = [...availableExchanges].sort(
+          (a, b) => fundingRates[a].fundingRate - fundingRates[b].fundingRate,
+        )
+
+        // Get exchange with lowest funding rate for long position
+        const longExchange = sortedExchanges[0]
+        // Get exchange with highest funding rate for short position
+        const shortExchange = sortedExchanges[sortedExchanges.length - 1]
+
+        // Set the first available API account from each exchange
+        if (userApi[longExchange]?.length > 0) {
+          form.setValue("longApiAccountId", userApi[longExchange][0].id)
+        }
+
+        if (userApi[shortExchange]?.length > 0) {
+          form.setValue("shortApiAccountId", userApi[shortExchange][0].id)
+        }
+      }
+    }
+  }, [userApi, fundingRates, form])
 
   const onSubmit = (data: ArbitrageConfig) => {
     startCreateTransition(async () => {
@@ -232,7 +268,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>做多API账号</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border-green-200 focus:ring-green-500/20">
                               <SelectValue placeholder="选择API账号" />
@@ -306,7 +342,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>做空API账号</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border-red-200 focus:ring-red-500/20">
                               <SelectValue placeholder="选择API账号" />
