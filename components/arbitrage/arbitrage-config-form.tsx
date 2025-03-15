@@ -167,7 +167,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
   useEffect(() => {
     // Only run this logic when we have both user API accounts and funding rates
     if (Object.keys(userApi).length > 0 && Object.keys(fundingRates).length > 0) {
-      console.log("calucting")
       // Filter exchanges that the user has accounts for
       const userExchanges = Object.keys(userApi)
       const availableExchanges = userExchanges.filter(
@@ -276,12 +275,26 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                           </FormControl>
                           <SelectContent>
                             {Object.keys(userApi).length === 0 ? (
-                              <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
-                                尚未添加API账号。请前往{" "}
-                                <Link href="/exchanges" className="text-amber-500 underline">
-                                  Exchanges 页面
-                                </Link>{" "}
-                                添加。
+                              <div className="flex flex-col items-center gap-3 p-4 text-center">
+                                <div className="rounded-full bg-amber-100 p-2.5 dark:bg-amber-900">
+                                  <Icons.warning className="size-5 text-amber-600 dark:text-amber-400" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-amber-800 dark:text-amber-300">No available API</p>
+                                  <p className="mt-1 text-sm text-muted-foreground">
+                                    Please add an exchange API account.
+                                  </p>
+                                </div>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="mt-1 border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950"
+                                >
+                                  <Link href="/exchanges" className="flex items-center gap-1.5">
+                                    <span>Go to add API account</span>
+                                    <Icons.arrowRight className="size-3.5" />
+                                  </Link>
+                                </Button>
                               </div>
                             ) : (
                               Object.entries(userApi).map(([exchangeName, apis]) => (
@@ -350,12 +363,26 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                           </FormControl>
                           <SelectContent>
                             {Object.keys(userApi).length === 0 ? (
-                              <div className="rounded-md px-4 py-2 text-center font-semibold text-amber-500">
-                                尚未添加API账号。请前往{" "}
-                                <Link href="/exchanges" className="text-amber-500 underline">
-                                  Exchanges 页面
-                                </Link>{" "}
-                                添加。
+                              <div className="flex flex-col items-center gap-3 p-4 text-center">
+                                <div className="rounded-full bg-amber-100 p-2.5 dark:bg-amber-900">
+                                  <Icons.warning className="size-5 text-amber-600 dark:text-amber-400" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-amber-800 dark:text-amber-300">No available API</p>
+                                  <p className="mt-1 text-sm text-muted-foreground">
+                                    Please add an exchange API account.
+                                  </p>
+                                </div>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="mt-1 border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950"
+                                >
+                                  <Link href="/exchanges" className="flex items-center gap-1.5">
+                                    <span>Go to add API account</span>
+                                    <Icons.arrowRight className="size-3.5" />
+                                  </Link>
+                                </Button>
                               </div>
                             ) : (
                               Object.entries(userApi).map(([exchangeName, apis]) => (
