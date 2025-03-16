@@ -454,6 +454,9 @@ export default function ArbitrageManagementPage() {
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="size-3.5" />
             <span>{new Date(config.createdAt).toLocaleString()}</span>
+            {config.status === "ended" && (
+              <span>- {new Date(config.updatedAt).toLocaleString()}</span>
+            )}
           </div>
 
           {config.status.toLowerCase() === "active" && (
