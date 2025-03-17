@@ -2,7 +2,6 @@
 
 import { prisma } from "@/lib/db";
 import { auth } from "@/auth";
-import { revalidatePath } from "next/cache";
 
 const apiAuthorization = process.env.API_Authorization;
 
@@ -218,8 +217,6 @@ export async function limitClose(id: string) {
       }
     }
     const responseData = await response.json();
-
-    // TODO: 更新订单status
 
     return responseData
   } catch (err) {
