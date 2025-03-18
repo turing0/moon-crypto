@@ -591,6 +591,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                       form.handleSubmit(onSubmit)()
                       setDialogOpen(false)
                     }}
+                    variant={profit>0? 'default':'destructive'}
                     disabled={isCreatePending}
                   >
                     {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
