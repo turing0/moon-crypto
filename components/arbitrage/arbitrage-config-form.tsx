@@ -24,6 +24,15 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { ArrowUpRight, ArrowDownRight } from "lucide-react"
 import { Icons } from "../shared/icons"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 interface ApiAccount {
   id: string
@@ -62,12 +71,13 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
   const router = useRouter()
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
   const [isCreatePending, startCreateTransition] = useTransition()
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     if (!session?.user?.id) {
       return
     }
-    if (Object.keys(userApi).length>0) {
+    if (Object.keys(userApi).length > 0) {
       return
     }
     async function fetchUserApiData() {
@@ -542,10 +552,54 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isCreatePending}>
-              {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
-              启动套利策略
-            </Button>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button type="button" className="w-full" disabled={isCreatePending}>
+                  {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
+                  启动套利策略
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>确认启动套利策略</DialogTitle>
+                  <DialogDescription>您即将启动 {symbol} 的资金费率套利策略，请确认配置无误。</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">单边投资金额</p>
+                      <p className="text-sm">{amount} USDT</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">杠杆倍数</p>
+                      <p className="text-sm">{leverage}x</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">预计4小时收益</p>
+                    <p className={`text-sm ${profit >= 0 ? "text-green-600" : "text-red-600"}`}>
+                      {profit.toFixed(2)} USDT
+                    </p>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                    取消
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      form.handleSubmit(onSubmit)()
+                      setDialogOpen(false)
+                    }}
+                    variant={profit > 0 ? 'default':'destructive'}
+                    disabled={isCreatePending}
+                  >
+                    {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
+                    确认启动
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </form>
         </Form>
       </CardContent>

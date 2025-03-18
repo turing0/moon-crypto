@@ -154,7 +154,7 @@ export async function marketClose(id: string) {
     }
 
     // Send the POST request
-    const response = await fetch(`https://api.mooncryp.to/api/arbitrage/${id}/market-close`, {
+    const response = await fetch(`https://api.mooncryp.to/arbitrage/${id}/market-close`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

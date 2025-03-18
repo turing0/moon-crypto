@@ -258,19 +258,21 @@ export default function ArbitrageManagementPage() {
     setConfirmDialog({
       isOpen: true,
       action: async () => {
+        const toastId = toast.loading("市价平仓指令处理中...")
         try {
           setLoadingMarketClose(id)
-          toast.success("市价平仓指令已发送")
           const result = await marketClose(id)
           if (result?.error) {
             throw new Error(result?.error)
           }
+          toast.success("市价平仓成功", { id: toastId })
           const configs = await getArbitrageConfig(session?.user.id!)
           setArbitrageConfigs(configs)
         } catch (error) {
           console.error(error)
           toast.error("市价平仓失败", {
             description: error.message,
+            id: toastId
           })
         } finally {
           setLoadingMarketClose(null)
@@ -285,19 +287,21 @@ export default function ArbitrageManagementPage() {
     setConfirmDialog({
       isOpen: true,
       action: async () => {
+        const toastId = toast.loading("限价平仓指令处理中...")
         try {
           setLoadingLimitClose(id)
-          toast.success("限价平仓指令已发送")
           const result = await limitClose(id)
           if (result?.error) {
             throw new Error(result?.error)
           }
+          toast.success("限价平仓成功", { id: toastId })
           const configs = await getArbitrageConfig(session?.user.id!)
           setArbitrageConfigs(configs)
         } catch (error) {
           console.error(error)
           toast.error("限价平仓失败", {
             description: error.message,
+            id: toastId
           })
         } finally {
           setLoadingLimitClose(null)
