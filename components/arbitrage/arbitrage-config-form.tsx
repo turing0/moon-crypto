@@ -582,7 +582,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                     </p>
                   </div>
                 </div>
-                <DialogFooter>
+                <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row">
                   <Button variant="outline" onClick={() => setDialogOpen(false)}>
                     取消
                   </Button>
@@ -591,7 +591,6 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                       form.handleSubmit(onSubmit)()
                       setDialogOpen(false)
                     }}
-                    variant={profit > 0 ? 'default':'destructive'}
                     disabled={isCreatePending}
                   >
                     {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
