@@ -39,6 +39,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const symbol = params.symbol.toUpperCase()
   const router = useRouter()
   async function getRate() {
+    const startTime = performance.now(); // Get the start time
     try {
       const { fundingRate, error } = await getFundingRate(symbol)
       console.log("fundingRate", fundingRate)
@@ -52,6 +53,10 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       }
     } catch (error) {
       console.error("Failed to getFundingRate:", error)
+    } finally {
+      const endTime = performance.now(); // Get the end time
+      const duration = endTime - startTime; // Calculate the duration
+      console.log(`getRate executed in ${duration}ms`);
     }
   }
   useEffect(() => {
