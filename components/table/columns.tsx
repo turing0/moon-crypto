@@ -27,6 +27,7 @@ import { UpdateCopyTradingSheet } from "../exchange/update-copytrading-sheet"
 import { format } from "date-fns"
 import { BitGetCurrentOrder, BitGetHistoryOrder, OkxHistoryOrder } from "@/app/(protected)/analysis/page"
 import PNLDisplay from "../shared/common"
+import { toast } from "sonner"
 
 // export const orderColumns: ColumnDef<datarow>[] = [
 export const orderColumns: ColumnDef<BitGetHistoryOrder>[] = [
@@ -794,7 +795,12 @@ export const exchangeApiInfoColumns: ColumnDef<ExchangeApiInfo>[] = [
       const refreshBalance = async () => {
         setIsRefreshing(true);
         try {
-          await refreshAPIBalance(datarow.id);
+          const {error} = await refreshAPIBalance(datarow.id);
+          if (error) {
+            toast.error("Error", {
+              description: error,
+            })
+          }
         } finally {
           setIsRefreshing(false);
         }

@@ -248,23 +248,28 @@ export async function refreshAPIBalance(id: string) {
     }
     // api verify
     const {verified, balance, msg} = await exchangeApiVerify(oringinApi.exchangeName, oringinApi.apiKey, oringinApi.secretKey, oringinApi.passphrase?oringinApi.passphrase:undefined);
+    if (verified) {
+      await prisma.exchangeAccount
+      .update({
+        where: {
+          id: id,
+        },
+        data: {
+          balance: balance
+        },
+      })
+      revalidatePath("/exchanges")
 
-    await prisma.exchangeAccount
-    .update({
-      where: {
-        id: id,
-      },
-      data: {
-        balance: balance
-      },
-    })
-
-    revalidatePath("/exchanges")
-
+      return {
+        data: null,
+        error: null,
+      }
+    }
     return {
       data: null,
-      error: null,
+      error: msg,
     }
+
   } catch (err) {
     console.log(err)
     return {
