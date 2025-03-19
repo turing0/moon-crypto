@@ -24,15 +24,41 @@ export default function Home() {
     const fetchFundingRates = async () => {
       const startTime = performance.now(); // Start timer before fetching data
 
-      for (const exchangeId in exchanges) {
-        try {
-          const fundingRate = await exchanges[exchangeId].fetchFundingRate('OM/USDT:USDT');
-          setFundingRates(fundingRates => ({ ...fundingRates, [exchangeId]: fundingRate }));
-        } catch (e) {
-          console.log(e)
-          setError(exchangeId + ': ' + JSON.stringify(e) + '\n')
-        }
-      };
+      // for (const exchangeId in exchanges) {
+      //   try {
+      //     const fundingRate = await exchanges[exchangeId].fetchFundingRate('OM/USDT:USDT');
+      //     setFundingRates(fundingRates => ({ ...fundingRates, [exchangeId]: fundingRate }));
+      //   } catch (e) {
+      //     console.log(e)
+      //     setError(exchangeId + ': ' + JSON.stringify(e) + '\n')
+      //   }
+      // };
+      try {
+        const fetchPromises = exchangeIds.map(async (exchangeId) => {
+          try {
+            const fundingRate = await exchanges[exchangeId].fetchFundingRate('OM/USDT:USDT');
+            return { exchangeId, fundingRate }; // Return funding rate with the exchangeId
+          } catch (e) {
+            console.log(e);
+            setError((prevError) => prevError + `${exchangeId}: ${JSON.stringify(e)}\n`);
+            return { exchangeId, fundingRate: null }; // Return null if there's an error
+          }
+        });
+
+        const results = await Promise.all(fetchPromises); // Run all promises concurrently
+
+        const newFundingRates: Record<string, any> = {};
+        results.forEach(({ exchangeId, fundingRate }) => {
+          if (fundingRate) {
+            newFundingRates[exchangeId] = fundingRate;
+          }
+        });
+
+        setFundingRates(newFundingRates);
+
+      } catch (e) {
+        setError('Error in fetching funding rates: ' + JSON.stringify(e));
+      }
 
       const endTime = performance.now(); // End timer after fetching all rates
       const duration = endTime - startTime; // Calculate the time difference
