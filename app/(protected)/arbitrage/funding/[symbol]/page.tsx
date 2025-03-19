@@ -38,28 +38,53 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const [searchSymbol, setSearchSymbol] = useState("")
   const symbol = params.symbol.toUpperCase()
   const router = useRouter()
-
-  useEffect(() => {
-    async function getRate() {
-      try {
-        const { fundingRate, error } = await getFundingRate(symbol)
-        console.log("fundingRate", fundingRate)
-        if (error) {
-          toast.error("Failed to getFundingRate", {
-            description: error,
-          })
-          console.error("Failed to getFundingRate:", error)
-        } else {
-          setFundingRates(fundingRate)
-        }
-      } catch (error) {
+  async function getRate() {
+    try {
+      const { fundingRate, error } = await getFundingRate(symbol)
+      console.log("fundingRate", fundingRate)
+      if (error) {
+        toast.error("Failed to getFundingRate", {
+          description: error,
+        })
         console.error("Failed to getFundingRate:", error)
+      } else {
+        setFundingRates(fundingRate)
       }
+    } catch (error) {
+      console.error("Failed to getFundingRate:", error)
     }
-
+  }
+  useEffect(() => {
     document.title = `${symbol}`;
     getRate()
-  }, [params.symbol])
+
+    // Set the interval to fetch the rate every 2 seconds
+    // const rateInterval = setInterval(() => {
+    //   getRate()
+    // }, 2000)
+    // // Cleanup interval on component unmount
+    // return () => clearInterval(rateInterval)
+  }, [symbol])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        // console.log("User has left the page");
+        // Handle user leaving the page (e.g., pause a video, stop a timer, etc.)
+      } else {
+        // console.log("User has returned to the page");
+        getRate()
+      }
+    };
+
+    // Attach the visibility change listener
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Clean up the listener when the component unmounts
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const getRateColor = (rate: number | string) => {
     if (typeof rate === "number") {
