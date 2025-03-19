@@ -11,6 +11,7 @@ import { getFundingRate } from "@/actions/arbitrage"
 import { toast } from "sonner"
 import { Icons } from "@/components/shared/icons"
 import { Search } from "lucide-react"
+import ccxt, { Exchange } from 'ccxt'
 
 interface FundingRates {
   [exchangeName: string]: {
@@ -33,11 +34,24 @@ const formatCountdown = (timestamp: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 }
 
+const exchangeIds = ['binance', 'bitget', 'bybit', 'okx']
+
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
   const [searchSymbol, setSearchSymbol] = useState("")
   const symbol = params.symbol.toUpperCase()
   const router = useRouter()
+  const [exchanges, setExchanges] = useState<Record<string, Exchange>>({});
+
+  useEffect(() => {
+    console.log('starting exchanges...');
+    const newExchanges: Record<string, Exchange> = exchangeIds.reduce((acc: any, exchangeId) => {
+      acc[exchangeId] = new (ccxt.pro as any)[exchangeId];
+      return acc;
+    }, {});
+    setExchanges(newExchanges);
+  }, []);
+
   async function getRate() {
     const startTime = performance.now(); // Get the start time
     try {
@@ -59,8 +73,79 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       console.log(`getRate executed in ${duration}ms`);
     }
   }
+
   useEffect(() => {
     document.title = `${symbol}`;
+    const fetchFundingRates = async () => {
+      const startTime = performance.now(); // Start timer before fetching data
+
+      // Check if exchanges are available before proceeding
+      if (Object.keys(exchanges).length === 0) {
+        console.log('Exchanges are not yet initialized');
+        return; // Exit early if exchanges are not yet initialized
+      }
+
+      try {
+        const fetchPromises = exchangeIds.map(async (exchangeId) => {
+          // Check if the exchange is available
+          const exchange = exchanges[exchangeId];
+          if (!exchange) {
+            console.log(`Exchange ${exchangeId} is not available`);
+            return {
+              exchangeId,
+              fundingRate: {
+                fundingRate: 'N/A', 
+                fundingTimestamp: Date.now(),
+                interval: null,
+                disabled: true,
+              },
+            };
+          }
+
+          try {
+            const fundingRate = await exchange.fetchFundingRate(`${symbol}/USDT:USDT`); // Use symbol from state
+            return {
+              exchangeId,
+              fundingRate: {
+                fundingRate: fundingRate.fundingRate ?? 0,
+                fundingTimestamp: fundingRate.timestamp ?? Date.now(),
+                interval: fundingRate.interval ?? null,
+                disabled: false,
+              },
+            };
+          } catch (e) {
+            console.log(e);
+            // setError((prevError) => prevError + `${exchangeId}: ${JSON.stringify(e)}\n`);
+            return {
+              exchangeId,
+              fundingRate: {
+                fundingRate: 'N/A', // String 'N/A' in case of error
+                fundingTimestamp: Date.now(), // Default to current time
+                interval: null, // Default to null
+                disabled: true, // Flag as disabled if error occurs
+              },
+            };
+          }
+        });
+
+        const results = await Promise.all(fetchPromises); // Run all promises concurrently
+
+        const newFundingRates: FundingRates = {};
+        results.forEach(({ exchangeId, fundingRate }) => {
+          newFundingRates[exchangeId] = fundingRate; // Store results in the required format
+        });
+        console.log('newFundingRates', newFundingRates)
+        setFundingRates(newFundingRates);
+
+      } catch (e) {
+        console.log('Error in fetching funding rates: ' + JSON.stringify(e));
+      }
+
+      const endTime = performance.now();
+      console.log(endTime - startTime);
+    };
+
+    fetchFundingRates()
     getRate()
 
     // Set the interval to fetch the rate every 2 seconds
@@ -69,7 +154,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     // }, 2000)
     // // Cleanup interval on component unmount
     // return () => clearInterval(rateInterval)
-  }, [symbol])
+  }, [exchanges, symbol])
 
   useEffect(() => {
     const handleVisibilityChange = () => {
