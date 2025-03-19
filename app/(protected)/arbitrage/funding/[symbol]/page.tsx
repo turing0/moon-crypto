@@ -3,7 +3,6 @@
 import { useState, useEffect, type FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import ArbitrageConfigForm from "@/components/arbitrage/arbitrage-config-form"
@@ -39,8 +38,6 @@ const exchangeIds = ["binance", "bitget", "bybit", "okx"]
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
   const [searchSymbol, setSearchSymbol] = useState("")
-  const symbol = params.symbol.toUpperCase()
-  const router = useRouter()
   const [exchanges, setExchanges] = useState<Record<string, Exchange>>({})
   const [currentSymbol, setCurrentSymbol] = useState(params.symbol.toUpperCase())
 
@@ -81,7 +78,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       const startTime = performance.now()
 
       if (Object.keys(exchanges).length === 0) {
-        console.log("Exchanges are not yet initialized")
+        // console.log("Exchanges are not yet initialized")
         return
       }
 
@@ -139,7 +136,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       }
 
       const endTime = performance.now()
-      console.log(endTime - startTime)
+      console.log(endTime - startTime, 'ms')
     }
 
     // Set the interval to fetch the rate every 2 seconds
@@ -209,11 +206,8 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     if (searchSymbol.trim()) {
-      // Update URL without full navigation
       window.history.pushState({}, "", `/arbitrage/funding/${searchSymbol.trim().toUpperCase()}`)
-      // Update the symbol state directly
       setCurrentSymbol(searchSymbol.trim().toUpperCase())
-      // Update document title
       document.title = searchSymbol.trim().toUpperCase()
     }
   }
