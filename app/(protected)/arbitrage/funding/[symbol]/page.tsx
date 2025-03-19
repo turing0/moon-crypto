@@ -11,7 +11,7 @@ import { getFundingRate } from "@/actions/arbitrage"
 import { toast } from "sonner"
 import { Icons } from "@/components/shared/icons"
 import { Search } from "lucide-react"
-import ccxt, { Exchange } from 'ccxt'
+import ccxt, { type Exchange } from "ccxt"
 
 interface FundingRates {
   [exchangeName: string]: {
@@ -34,28 +34,29 @@ const formatCountdown = (timestamp: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 }
 
-const exchangeIds = ['binance', 'bitget', 'bybit', 'okx']
+const exchangeIds = ["binance", "bitget", "bybit", "okx"]
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
   const [searchSymbol, setSearchSymbol] = useState("")
   const symbol = params.symbol.toUpperCase()
   const router = useRouter()
-  const [exchanges, setExchanges] = useState<Record<string, Exchange>>({});
+  const [exchanges, setExchanges] = useState<Record<string, Exchange>>({})
+  const [currentSymbol, setCurrentSymbol] = useState(params.symbol.toUpperCase())
 
   useEffect(() => {
-    console.log('starting exchanges...');
+    console.log("starting exchanges...")
     const newExchanges: Record<string, Exchange> = exchangeIds.reduce((acc: any, exchangeId) => {
-      acc[exchangeId] = new (ccxt.pro as any)[exchangeId];
-      return acc;
-    }, {});
-    setExchanges(newExchanges);
-  }, []);
+      acc[exchangeId] = new (ccxt.pro as any)[exchangeId]()
+      return acc
+    }, {})
+    setExchanges(newExchanges)
+  }, [])
 
   async function getRate() {
-    const startTime = performance.now(); // Get the start time
+    const startTime = performance.now()
     try {
-      const { fundingRate, error } = await getFundingRate(symbol)
+      const { fundingRate, error } = await getFundingRate(currentSymbol)
       console.log("fundingRate", fundingRate)
       if (error) {
         toast.error("Failed to getFundingRate", {
@@ -68,42 +69,40 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     } catch (error) {
       console.error("Failed to getFundingRate:", error)
     } finally {
-      const endTime = performance.now(); // Get the end time
-      const duration = endTime - startTime; // Calculate the duration
-      console.log(`getRate executed in ${duration}ms`);
+      const endTime = performance.now()
+      const duration = endTime - startTime
+      console.log(`getRate executed in ${duration}ms`)
     }
   }
 
   useEffect(() => {
-    document.title = `${symbol}`;
+    document.title = `${currentSymbol}`
     const fetchFundingRates = async () => {
-      const startTime = performance.now(); // Start timer before fetching data
+      const startTime = performance.now()
 
-      // Check if exchanges are available before proceeding
       if (Object.keys(exchanges).length === 0) {
-        console.log('Exchanges are not yet initialized');
-        return; // Exit early if exchanges are not yet initialized
+        console.log("Exchanges are not yet initialized")
+        return
       }
 
       try {
         const fetchPromises = exchangeIds.map(async (exchangeId) => {
-          // Check if the exchange is available
-          const exchange = exchanges[exchangeId];
+          const exchange = exchanges[exchangeId]
           if (!exchange) {
-            console.log(`Exchange ${exchangeId} is not available`);
+            console.log(`Exchange ${exchangeId} is not available`)
             return {
               exchangeId,
               fundingRate: {
-                fundingRate: 'N/A', 
+                fundingRate: "N/A",
                 fundingTimestamp: Date.now(),
                 interval: null,
                 disabled: true,
               },
-            };
+            }
           }
 
           try {
-            const fundingRate = await exchange.fetchFundingRate(`${symbol}/USDT:USDT`); // Use symbol from state
+            const fundingRate = await exchange.fetchFundingRate(`${currentSymbol}/USDT:USDT`) // Use currentSymbol instead
             return {
               exchangeId,
               fundingRate: {
@@ -112,41 +111,36 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
                 interval: fundingRate.interval ?? null,
                 disabled: false,
               },
-            };
+            }
           } catch (e) {
-            console.log(e);
-            // setError((prevError) => prevError + `${exchangeId}: ${JSON.stringify(e)}\n`);
+            console.log(e)
             return {
               exchangeId,
               fundingRate: {
-                fundingRate: 'N/A', // String 'N/A' in case of error
-                fundingTimestamp: Date.now(), // Default to current time
-                interval: null, // Default to null
-                disabled: true, // Flag as disabled if error occurs
+                fundingRate: "N/A",
+                fundingTimestamp: Date.now(),
+                interval: null,
+                disabled: true,
               },
-            };
+            }
           }
-        });
+        })
 
-        const results = await Promise.all(fetchPromises); // Run all promises concurrently
+        const results = await Promise.all(fetchPromises)
 
-        const newFundingRates: FundingRates = {};
+        const newFundingRates: FundingRates = {}
         results.forEach(({ exchangeId, fundingRate }) => {
-          newFundingRates[exchangeId] = fundingRate; // Store results in the required format
-        });
-        console.log('newFundingRates', newFundingRates)
-        setFundingRates(newFundingRates);
-
+          newFundingRates[exchangeId] = fundingRate
+        })
+        console.log("newFundingRates", newFundingRates)
+        setFundingRates(newFundingRates)
       } catch (e) {
-        console.log('Error in fetching funding rates: ' + JSON.stringify(e));
+        console.log("Error in fetching funding rates: " + JSON.stringify(e))
       }
 
-      const endTime = performance.now();
-      console.log(endTime - startTime);
-    };
-
-    fetchFundingRates()
-    getRate()
+      const endTime = performance.now()
+      console.log(endTime - startTime)
+    }
 
     // Set the interval to fetch the rate every 2 seconds
     // const rateInterval = setInterval(() => {
@@ -154,7 +148,10 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     // }, 2000)
     // // Cleanup interval on component unmount
     // return () => clearInterval(rateInterval)
-  }, [exchanges, symbol])
+
+    fetchFundingRates()
+    getRate()
+  }, [exchanges, currentSymbol])
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -165,16 +162,16 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         // console.log("User has returned to the page");
         getRate()
       }
-    };
+    }
 
     // Attach the visibility change listener
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange)
 
     // Clean up the listener when the component unmounts
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
+  }, [])
 
   const getRateColor = (rate: number | string) => {
     if (typeof rate === "number") {
@@ -212,7 +209,12 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     if (searchSymbol.trim()) {
-      router.push(`/arbitrage/funding/${searchSymbol.trim().toUpperCase()}`)
+      // Update URL without full navigation
+      window.history.pushState({}, "", `/arbitrage/funding/${searchSymbol.trim().toUpperCase()}`)
+      // Update the symbol state directly
+      setCurrentSymbol(searchSymbol.trim().toUpperCase())
+      // Update document title
+      document.title = searchSymbol.trim().toUpperCase()
     }
   }
 
@@ -257,7 +259,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
           <TableBody>
             <TableRow>
               <TableCell className="font-medium">
-                <div className="flex items-center gap-2">{params.symbol}</div>
+                <div className="flex items-center gap-2">{currentSymbol}</div>
               </TableCell>
               {Object.entries(fundingRates).map(([exchange, rate]) => (
                 <TableCell key={exchange}>
@@ -289,11 +291,9 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         </Table>
       </div>
 
-      <ArbitrageConfigForm symbol={symbol} fundingRates={fundingRates} />
+      <ArbitrageConfigForm symbol={currentSymbol} fundingRates={fundingRates} />
 
-      <div>
-      </div>
-
+      <div></div>
     </div>
   )
 }
