@@ -255,7 +255,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
   return (
     <Card className="w-full">
       <CardHeader className="border-b pb-4">
-        <CardTitle className="text-xl">{symbol} 资金费率套利配置</CardTitle>
+        <CardTitle className="text-xl">{symbol} Arbitrage Configuration</CardTitle>
       </CardHeader>
       <CardContent className="pt-5">
         <Form {...form}>
@@ -269,7 +269,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                 <div className="space-y-3 rounded-md border-l-4 border-green-500 py-3 pl-3 pr-1">
                   <div className="flex items-center gap-2">
                     <ArrowUpRight className="size-4 text-green-500" />
-                    <h4 className="text-sm font-medium text-green-700 dark:text-green-400">做多配置</h4>
+                    <h4 className="text-sm font-medium text-green-700 dark:text-green-400">Long</h4>
                   </div>
                   <FormField
                     control={form.control}
@@ -357,7 +357,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                 <div className="space-y-3 rounded-md border-l-4 border-red-500 py-3 pl-3 pr-1">
                   <div className="flex items-center gap-2">
                     <ArrowDownRight className="size-4 text-red-500" />
-                    <h4 className="text-sm font-medium text-red-700 dark:text-red-400">做空配置</h4>
+                    <h4 className="text-sm font-medium text-red-700 dark:text-red-400">Short</h4>
                   </div>
                   <FormField
                     control={form.control}
@@ -556,7 +556,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
               <DialogTrigger asChild>
                 <Button type="button" className="w-full" disabled={isCreatePending}>
                   {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
-                  启动套利策略
+                  Start Arbitrage Strategy
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -584,7 +584,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                 </div>
                 <DialogFooter className="flex justify-between gap-2 sm:justify-end">
                   <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                    取消
+                    Cancel
                   </Button>
                   <Button
                     onClick={() => {
@@ -595,7 +595,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                     disabled={isCreatePending}
                   >
                     {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}
-                    确认启动
+                    Confirm Start
                   </Button>
                 </DialogFooter>
               </DialogContent>

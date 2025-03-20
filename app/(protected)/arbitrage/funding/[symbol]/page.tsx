@@ -43,14 +43,14 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const [exchanges, setExchanges] = useState<Record<string, Exchange>>({})
   const [currentSymbol, setCurrentSymbol] = useState(params.symbol.toUpperCase())
 
-  useEffect(() => {
-    console.log("starting exchanges...")
-    const newExchanges: Record<string, Exchange> = exchangeIds.reduce((acc: any, exchangeId) => {
-      acc[exchangeId] = new (ccxt.pro as any)[exchangeId.toLowerCase()]()
-      return acc
-    }, {})
-    setExchanges(newExchanges)
-  }, [])
+  // useEffect(() => {
+  //   console.log("starting exchanges...")
+  //   const newExchanges: Record<string, Exchange> = exchangeIds.reduce((acc: any, exchangeId) => {
+  //     acc[exchangeId] = new (ccxt.pro as any)[exchangeId.toLowerCase()]()
+  //     return acc
+  //   }, {})
+  //   setExchanges(newExchanges)
+  // }, [])
 
   async function getRate() {
     const startTime = performance.now()
