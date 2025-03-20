@@ -13,12 +13,13 @@ import { Search } from "lucide-react"
 import ccxt, { type Exchange } from "ccxt"
 
 interface FundingRates {
-  [exchangeName: string]: {
-    fundingRate: number | string
-    fundingTimestamp: number | null
-    interval: string | null
-    disabled: boolean
-  }
+  // [exchangeName: string]: {
+  //   fundingRate: number | string
+  //   fundingTimestamp: number | null
+  //   interval: string | null
+  //   disabled: boolean
+  // }
+  [exchangeName: string]: any
 }
 
 const formatCountdown = (timestamp: number) => {
@@ -33,7 +34,8 @@ const formatCountdown = (timestamp: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 }
 
-const exchangeIds = ["binance", "bybit" , "bitget", "okx", "gate", "hyperliquid"]
+// const exchangeIds = ["binance", "bybit" , "bitget", "okx", "gate", "hyperliquid"]
+const exchangeIds = ["binance", "bybit" , "bitget", "okx", "hyperliquid"]
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
@@ -99,30 +101,63 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
           }
 
           try {
-            let symbol = `${currentSymbol}/USDT:USDT`
-            if (exchangeId==='hyperliquid') {
-              symbol = `${currentSymbol}`
+            // const fundingRate = await exchange.fetchFundingRate(`${symbol}`)
+            let fundingRate
+            switch (exchangeId) {
+              case 'hyperliquid':
+                // const h = new ccxt.hyperliquid()
+                // h.publicPostInfo()
+                let result = await (exchange as any).publicPostInfo({
+                    type: 'predictedFundings',
+                })
+                result = result.find(data => data[0]===currentSymbol)
+                if (result) {
+                  result = result[1].find(data => data[0]==='HlPerp')[1]
+                  // console.log(result)
+                  // fundingRate = {fundingRate: result.fundingRate, fundingTimestamp:result.nextFundingTime}
+                  fundingRate = {fundingRate: result.fundingRate}
+                }
+                break;
+              default:
+                fundingRate = await exchange.fetchFundingRate(`${currentSymbol}/USDT:USDT`)
             }
-            const fundingRate = await exchange.fetchFundingRate(`${symbol}`)
+            let fundingTimestamp = fundingRate.fundingTimestamp ?? null
+            let interval = fundingRate.interval ?? null
+
+            if (exchangeId==='bitget') {
+              const res = await exchange.fetchFundingInterval(`${currentSymbol}/USDT:USDT`)
+              fundingTimestamp = res.fundingTimestamp ?? null
+              interval = res.interval ?? null
+            } else if (exchangeId==='okx') {
+              const hours = (fundingRate.nextFundingTimestamp!-fundingRate.fundingTimestamp!)/1000/3600
+              interval = hours.toString()+'h'
+            }
             // console.log(exchangeId, fundingRate)
             return {
               exchangeId,
               fundingRate: {
                 fundingRate: fundingRate.fundingRate ?? 0,
-                fundingTimestamp: fundingRate.fundingTimestamp ?? null,
-                interval: fundingRate.interval ?? null,
+                fundingTimestamp: fundingTimestamp,
+                interval: interval,
                 disabled: false,
               },
             }
           } catch (e) {
-            console.log(e)
+            if (e instanceof ccxt.BadSymbol) {
+              return {
+                exchangeId,
+                fundingRate: {
+                  error: e.message,
+                  disabled: true,
+                },
+              }
+            }
+
+            console.error(e)
             return {
               exchangeId,
               fundingRate: {
-                fundingRate: "N/A",
-                fundingTimestamp: null,
-                interval: null,
-                disabled: true,
+                error: e.message,
               },
             }
           }
@@ -141,7 +176,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       }
 
       const endTime = performance.now()
-      console.log(endTime - startTime, 'ms')
+      console.log('fetchFundingRates:', endTime - startTime, 'ms')
     }
 
     // Set the interval to fetch the rate every 2 seconds
@@ -151,8 +186,8 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     // // Cleanup interval on component unmount
     // return () => clearInterval(rateInterval)
 
-    fetchFundingRates()
-    // getRate()
+    // fetchFundingRates()
+    getRate()
   }, [exchanges, currentSymbol])
 
   useEffect(() => {
@@ -162,7 +197,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         // Handle user leaving the page (e.g., pause a video, stop a timer, etc.)
       } else {
         // console.log("User has returned to the page");
-        // getRate()
+        getRate()
       }
     }
 
