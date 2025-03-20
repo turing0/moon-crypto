@@ -33,7 +33,7 @@ const formatCountdown = (timestamp: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
 }
 
-const exchangeIds = ["binance", "bitget", "bybit", "okx"]
+const exchangeIds = ["binance", "bybit" , "bitget", "okx", "gate", "hyperliquid"]
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})
@@ -44,7 +44,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   useEffect(() => {
     console.log("starting exchanges...")
     const newExchanges: Record<string, Exchange> = exchangeIds.reduce((acc: any, exchangeId) => {
-      acc[exchangeId] = new (ccxt.pro as any)[exchangeId]()
+      acc[exchangeId] = new (ccxt.pro as any)[exchangeId.toLowerCase()]()
       return acc
     }, {})
     setExchanges(newExchanges)

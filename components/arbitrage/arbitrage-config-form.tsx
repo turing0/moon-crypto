@@ -582,7 +582,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                     </p>
                   </div>
                 </div>
-                <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row">
+                <DialogFooter className="flex justify-between gap-2 sm:justify-end">
                   <Button variant="outline" onClick={() => setDialogOpen(false)}>
                     取消
                   </Button>
