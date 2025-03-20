@@ -15,7 +15,7 @@ import ccxt, { type Exchange } from "ccxt"
 interface FundingRates {
   [exchangeName: string]: {
     fundingRate: number | string
-    fundingTimestamp: number
+    fundingTimestamp: number | null
     interval: string | null
     disabled: boolean
   }
@@ -91,7 +91,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
               exchangeId,
               fundingRate: {
                 fundingRate: "N/A",
-                fundingTimestamp: Date.now(),
+                fundingTimestamp: null,
                 interval: null,
                 disabled: true,
               },
@@ -99,12 +99,17 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
           }
 
           try {
-            const fundingRate = await exchange.fetchFundingRate(`${currentSymbol}/USDT:USDT`) // Use currentSymbol instead
+            let symbol = `${currentSymbol}/USDT:USDT`
+            if (exchangeId==='hyperliquid') {
+              symbol = `${currentSymbol}`
+            }
+            const fundingRate = await exchange.fetchFundingRate(`${symbol}`)
+            // console.log(exchangeId, fundingRate)
             return {
               exchangeId,
               fundingRate: {
                 fundingRate: fundingRate.fundingRate ?? 0,
-                fundingTimestamp: fundingRate.timestamp ?? Date.now(),
+                fundingTimestamp: fundingRate.fundingTimestamp ?? null,
                 interval: fundingRate.interval ?? null,
                 disabled: false,
               },
@@ -115,7 +120,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
               exchangeId,
               fundingRate: {
                 fundingRate: "N/A",
-                fundingTimestamp: Date.now(),
+                fundingTimestamp: null,
                 interval: null,
                 disabled: true,
               },
@@ -147,7 +152,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     // return () => clearInterval(rateInterval)
 
     fetchFundingRates()
-    getRate()
+    // getRate()
   }, [exchanges, currentSymbol])
 
   useEffect(() => {
@@ -157,7 +162,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
         // Handle user leaving the page (e.g., pause a video, stop a timer, etc.)
       } else {
         // console.log("User has returned to the page");
-        getRate()
+        // getRate()
       }
     }
 
