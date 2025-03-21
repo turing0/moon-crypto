@@ -250,7 +250,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
         scroll: false,
       })
     }
-  }, [bitgetTraderId, pathname]);
+  }, [bitgetTraderId, pathname, router]);
   useEffect(() => {
     if (okxTraderId) {
       getOkxHistoryOrder(okxTraderId).then(data => {
@@ -260,7 +260,7 @@ export default function AnalysisPage({ searchParams }: AnalysisPageProps) {
         scroll: false,
       });
     }
-  }, [okxTraderId]);
+  }, [okxTraderId, pathname, router]);
 
   const getBitgetHistoryData = async () => {
     if (bitgetHistoryOrder) {

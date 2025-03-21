@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { Icons } from "@/components/shared/icons"
 import { Search } from "lucide-react"
 import ccxt, { type Exchange } from "ccxt"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface FundingRates {
   // [exchangeName: string]: {
@@ -42,6 +43,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   const [searchSymbol, setSearchSymbol] = useState("")
   const [exchanges, setExchanges] = useState<Record<string, Exchange>>({})
   const [currentSymbol, setCurrentSymbol] = useState(params.symbol.toUpperCase())
+  const [isLoading, setIsLoading] = useState(true)
 
   // useEffect(() => {
   //   console.log("starting exchanges...")
@@ -53,6 +55,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   // }, [])
 
   async function getRate() {
+    setIsLoading(true)
     const startTime = performance.now()
     try {
       const { fundingRate, error } = await getFundingRate(currentSymbol)
@@ -71,6 +74,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
       const endTime = performance.now()
       const duration = endTime - startTime
       console.log(`getRate executed in ${duration}ms`)
+      setIsLoading(false)
     }
   }
 
@@ -283,11 +287,17 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
           <TableHeader>
             <TableRow className="bg-muted/50">
               <TableHead className="min-w-[100px]">Symbol</TableHead>
-              {Object.keys(fundingRates)?.map((exchange) => (
-                <TableHead key={exchange} className="min-w-[120px]">
-                  <div className="flex items-center gap-2">{exchange}</div>
-                </TableHead>
-              ))}
+              {isLoading
+                ? exchangeIds.map((exchange) => (
+                    <TableHead key={exchange} className="min-w-[120px]">
+                      <div className="flex items-center gap-2">{exchange}</div>
+                    </TableHead>
+                  ))
+                : Object.keys(fundingRates).map((exchange) => (
+                    <TableHead key={exchange} className="min-w-[120px]">
+                      <div className="flex items-center gap-2">{exchange}</div>
+                    </TableHead>
+                  ))}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -295,31 +305,44 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
               <TableCell className="font-medium">
                 <div className="flex items-center gap-2">{currentSymbol}</div>
               </TableCell>
-              {Object.entries(fundingRates).map(([exchange, rate]) => (
-                <TableCell key={exchange}>
-                  <div className={getRateColor(rate?.fundingRate)}>
-                    {rate?.disabled ? (
-                      "/"
-                    ) : (
-                      <>
-                        {rate?.fundingRate &&
-                          (typeof rate?.fundingRate === "string"
-                            ? (Number.parseFloat(rate?.fundingRate) * 100).toFixed(4)
-                            : (rate?.fundingRate * 100).toFixed(4))}
-                        {rate?.fundingRate ? "%" : ""}
-                      </>
-                    )}
-                  </div>
-                  {!rate?.disabled && (
-                    <>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Next: {countdown[exchange] || "Loading..."}
+
+              {isLoading
+                ? // Loading state with skeletons
+                  exchangeIds.map((exchange) => (
+                    <TableCell key={exchange}>
+                      <div className="space-y-2">
+                        <Skeleton className="h-5 w-16" />
+                        <Skeleton className="h-3 w-24" />
+                        <Skeleton className="h-3 w-20" />
                       </div>
-                      <div className="text-xs text-muted-foreground">Interval: {rate.interval}</div>
-                    </>
-                  )}
-                </TableCell>
-              ))}
+                    </TableCell>
+                  ))
+                : // Loaded data
+                  Object.entries(fundingRates).map(([exchange, rate]) => (
+                    <TableCell key={exchange}>
+                      <div className={getRateColor(rate?.fundingRate)}>
+                        {rate?.disabled ? (
+                          "/"
+                        ) : (
+                          <>
+                            {rate?.fundingRate &&
+                              (typeof rate?.fundingRate === "string"
+                                ? (Number.parseFloat(rate?.fundingRate) * 100).toFixed(4)
+                                : (rate?.fundingRate * 100).toFixed(4))}
+                            {rate?.fundingRate ? "%" : ""}
+                          </>
+                        )}
+                      </div>
+                      {!rate?.disabled && (
+                        <>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            Next: {countdown[exchange] || "Loading..."}
+                          </div>
+                          <div className="text-xs text-muted-foreground">Interval: {rate.interval}</div>
+                        </>
+                      )}
+                    </TableCell>
+                  ))}
             </TableRow>
           </TableBody>
         </Table>
