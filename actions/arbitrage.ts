@@ -102,9 +102,9 @@ export async function getFundingRate(symbol) {
   try {
     const session = await auth()
     
-    if (!session?.user) {
-      throw new Error("Unauthorized");
-    }
+    // if (!session?.user) {
+    //   throw new Error("Unauthorized");
+    // }
 
     // Send the POST request
     const response = await fetch("https://api.mooncryp.to/funding-rate", {
@@ -116,7 +116,7 @@ export async function getFundingRate(symbol) {
         'Authorization': apiAuthorization!,
       },
       body: JSON.stringify({
-        uid: session?.user.id,
+        uid: session?.user.id ?? '',
         symbol: symbol+'USDT'
       }),
     });

@@ -1,4 +1,5 @@
 "use client"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -22,7 +23,7 @@ import Link from "next/link"
 import { createArbitrageConfig } from "@/actions/arbitrage"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { ArrowUpRight, ArrowDownRight, LogIn } from "lucide-react"
 import { Icons } from "../shared/icons"
 import {
   Dialog,
@@ -67,19 +68,24 @@ interface ArbitrageConfigFormProps {
 }
 
 export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageConfigFormProps) {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
   const [userApi, setUserApi] = useState<GroupedApiAccounts>({})
   const [isCreatePending, startCreateTransition] = useTransition()
   const [dialogOpen, setDialogOpen] = useState(false)
 
+  const isLoading = status === "loading"
+  const isAuthenticated = status === "authenticated"
+
   useEffect(() => {
-    if (!session?.user?.id) {
+    if (!isAuthenticated || !session?.user?.id) {
       return
     }
+
     if (Object.keys(userApi).length > 0) {
       return
     }
+
     async function fetchUserApiData() {
       try {
         const response = await fetch("/api/userApi", {
@@ -108,7 +114,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
     }
 
     fetchUserApiData()
-  }, [session])
+  }, [session, isAuthenticated])
 
   const form = useForm<ArbitrageConfig>({
     resolver: zodResolver(formSchema),
@@ -252,6 +258,84 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
     console.log("配置提交:", data)
   }
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Card className="w-full">
+        <CardHeader className="border-b pb-4">
+          <CardTitle className="text-xl">{symbol} Arbitrage Configuration</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center py-12">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="size-12 animate-spin rounded-full border-b-2 border-primary"></div>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Show login prompt if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <Card className="w-full">
+        <CardHeader className="border-b pb-4">
+          <CardTitle className="text-xl">{symbol} Arbitrage Configuration</CardTitle>
+        </CardHeader>
+        <CardContent className="py-12">
+          <div className="flex flex-col items-center space-y-6 text-center">
+            <div className="rounded-full bg-amber-100 p-4 dark:bg-amber-900">
+              <LogIn className="size-10 text-amber-600 dark:text-amber-400" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold">Login Required</h3>
+              <p className="max-w-md text-muted-foreground">
+                You need to be logged in to configure and start arbitrage strategies. Please sign in to continue.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button >
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button variant="outline" >
+                <Link href="/register">Create Account</Link>
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // No API accounts configured
+  // if (isAuthenticated && Object.keys(userApi).length === 0) {
+  //   return (
+  //     <Card className="w-full">
+  //       <CardHeader className="border-b pb-4">
+  //         <CardTitle className="text-xl">{symbol} Arbitrage Configuration</CardTitle>
+  //       </CardHeader>
+  //       <CardContent className="py-12">
+  //         <div className="flex flex-col items-center space-y-6 text-center">
+  //           <div className="rounded-full bg-amber-100 p-4 dark:bg-amber-900">
+  //             <AlertTriangle className="h-10 w-10 text-amber-600 dark:text-amber-400" />
+  //           </div>
+  //           <div className="space-y-2">
+  //             <h3 className="text-xl font-semibold">No API Accounts</h3>
+  //             <p className="max-w-md text-muted-foreground">
+  //               You need to add at least two exchange API accounts to start arbitrage trading. Please add your API keys
+  //               to continue.
+  //             </p>
+  //           </div>
+  //           <Button >
+  //             <Link href="/exchanges">Add Exchange API</Link>
+  //           </Button>
+  //         </div>
+  //       </CardContent>
+  //     </Card>
+  //   )
+  // }
+
+  // Main form when authenticated and has API accounts
   return (
     <Card className="w-full">
       <CardHeader className="border-b pb-4">
@@ -308,20 +392,20 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                               </div>
                             ) : (
                               Object.entries(userApi).map(([exchangeName, apis]) => (
-                                <SelectGroup key={exchangeName}>
-                                  <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
-                                    {exchangeName}
-                                  </SelectLabel>
-                                  {apis.map((api) => (
-                                    <SelectItem
-                                      key={api.id}
-                                      value={api.id}
-                                      disabled={fundingRates[exchangeName]?.disabled}
-                                    >
-                                      {api.accountName}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
+                              <SelectGroup key={exchangeName}>
+                                <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                  {exchangeName}
+                                </SelectLabel>
+                                {apis.map((api) => (
+                                  <SelectItem
+                                    key={api.id}
+                                    value={api.id}
+                                    disabled={fundingRates[exchangeName]?.disabled}
+                                  >
+                                    {api.accountName}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
                               ))
                             )}
                           </SelectContent>
@@ -396,20 +480,20 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                               </div>
                             ) : (
                               Object.entries(userApi).map(([exchangeName, apis]) => (
-                                <SelectGroup key={exchangeName}>
-                                  <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
-                                    {exchangeName}
-                                  </SelectLabel>
-                                  {apis.map((api) => (
-                                    <SelectItem
-                                      key={api.id}
-                                      value={api.id}
-                                      disabled={fundingRates[exchangeName]?.disabled}
-                                    >
-                                      {api.accountName}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
+                              <SelectGroup key={exchangeName}>
+                                <SelectLabel className="px-2 py-1.5 text-sm font-bold text-primary">
+                                  {exchangeName}
+                                </SelectLabel>
+                                {apis.map((api) => (
+                                  <SelectItem
+                                    key={api.id}
+                                    value={api.id}
+                                    disabled={fundingRates[exchangeName]?.disabled}
+                                  >
+                                    {api.accountName}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
                               ))
                             )}
                           </SelectContent>
@@ -591,7 +675,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
                       form.handleSubmit(onSubmit)()
                       setDialogOpen(false)
                     }}
-                    variant={profit>0? 'default':'destructive'}
+                    variant={profit > 0 ? "default" : "destructive"}
                     disabled={isCreatePending}
                   >
                     {isCreatePending && <Icons.spinner className="mr-2 size-4 animate-spin" aria-hidden="true" />}

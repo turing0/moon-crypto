@@ -10,8 +10,8 @@ import { Icons } from "../shared/icons";
 export function SiteFooter({ className, showLinks = false }: React.HTMLAttributes<HTMLElement >& { showLinks?: boolean }) {
   return (
     <footer className={cn("border-t", className)}>
-      {/* {showLinks && (<div className="container grid max-w-6xl grid-cols-1 gap-6 py-14 sm:grid-cols-2 md:grid-cols-5"> */}
-      <div className="container grid max-w-6xl grid-cols-2 gap-6 py-14 md:grid-cols-3">
+      {showLinks && (<div className="container grid max-w-6xl grid-cols-2 gap-6 py-14 sm:grid-cols-2 md:grid-cols-3">
+      {/* <div className="container grid max-w-6xl grid-cols-2 gap-6 py-14 md:grid-cols-3"> */}
         {footerLinks.map((section) => (
           <div key={section.title}>
             <span className="text-sm font-medium text-foreground">
@@ -34,7 +34,8 @@ export function SiteFooter({ className, showLinks = false }: React.HTMLAttribute
         {/* <div className="col-span-full flex flex-col items-end sm:col-span-1 md:col-span-2">
           <NewsletterForm />
         </div> */}
-      </div>
+      {/* </div> */}
+      </div>)}
       {/* <div className="container max-w-6xl py-14">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           {footerLinks.map((section) => (
