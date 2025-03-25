@@ -55,7 +55,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
   // }, [])
 
   async function getRate() {
-    setIsLoading(true)
+    // setIsLoading(true)
     const startTime = performance.now()
     try {
       const { fundingRate, error } = await getFundingRate(currentSymbol)
@@ -191,6 +191,7 @@ export default function FundingPage({ params }: { params: { symbol: string } }) 
     // return () => clearInterval(rateInterval)
 
     // fetchFundingRates()
+    setIsLoading(true)
     getRate()
   }, [exchanges, currentSymbol])
 
