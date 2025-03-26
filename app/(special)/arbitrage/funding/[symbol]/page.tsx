@@ -36,7 +36,7 @@ const formatCountdown = (timestamp: number) => {
 }
 
 // const exchangeIds = ["binance", "bybit" , "bitget", "okx", "gate", "hyperliquid"]
-const exchangeIds = ["binance", "bybit" , "bitget", "okx", "hyperliquid"]
+const exchangeIds = ["Binance", "Bybit" , "Bitget", "OKX", "Hyperliquid"]
 
 export default function FundingPage({ params }: { params: { symbol: string } }) {
   const [fundingRates, setFundingRates] = useState<FundingRates>({})

@@ -38,12 +38,6 @@ export default function ArbitragePage() {
         {/* <DashboardHeader
           heading="套利交易"
         /> */}
-        {/* <Link href="/arbitrage/manage">
-          <Button variant="outline">
-            <Icons.settings className="mr-2 size-4" />
-            管理现有套利
-          </Button>
-        </Link> */}
       </div>
       <div className="container mx-auto">
 
