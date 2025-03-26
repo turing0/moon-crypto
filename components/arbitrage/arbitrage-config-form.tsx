@@ -114,7 +114,7 @@ export default function ArbitrageConfigForm({ symbol, fundingRates }: ArbitrageC
     }
 
     fetchUserApiData()
-  }, [session, isAuthenticated])
+  }, [session, isAuthenticated, userApi])
 
   const form = useForm<ArbitrageConfig>({
     resolver: zodResolver(formSchema),
