@@ -40,7 +40,7 @@ async function exchangeApiVerify(exchangeName: string, apiKey: string, secretKey
     return {"verified": false, "msg": data["msg"]}
   } catch (error) {
     console.error("API verify failed:", error);
-    return {"verified": false, "msg": error};
+    return {"verified": false, "msg": error.message};
   }
 }
 
@@ -117,7 +117,7 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
     console.log(err)
     return {
       data: null,
-      error: (err),
+      error: err.message,
     }
   }
 }
@@ -274,7 +274,7 @@ export async function refreshAPIBalance(id: string) {
     console.log(err)
     return {
       data: null,
-      error: (err),
+      error: err.message,
     }
   }
 }
