@@ -72,7 +72,7 @@ export default async function PostPage({
       )) ||
     [];
 
-  const toc = await getTableOfContents(post.body);
+  const toc = await getTableOfContents(post.content);
 
   const [thumbnailBlurhash, images] = await Promise.all([
     getBlurDataURL(post.image),
