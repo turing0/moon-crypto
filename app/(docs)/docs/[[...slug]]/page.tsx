@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allDocs } from "contentlayer/generated";
+import { allDocs } from "@/.content-collections/generated";
 
 import { getTableOfContents } from "@/lib/toc";
 import { Mdx } from "@/components/content/mdx-components";
@@ -58,10 +58,11 @@ export default async function DocPage({ params }: DocPageProps) {
     notFound();
   }
 
-  const toc = await getTableOfContents(doc.body.raw);
+  const toc = await getTableOfContents(doc.body);
 
   const images = await Promise.all(
     doc.images.map(async (src: string) => ({
+      alt: "",
       src,
       blurDataURL: await getBlurDataURL(src),
     })),
@@ -72,7 +73,7 @@ export default async function DocPage({ params }: DocPageProps) {
       <div className="mx-auto w-full min-w-0">
         <DocsPageHeader heading={doc.title} text={doc.description} />
         <div className="pb-4 pt-11">
-          <Mdx code={doc.body.code} images={images} />
+          <Mdx code={doc.body} images={images} />
         </div>
         <hr className="my-4 md:my-6" />
         <DocsPager doc={doc} />

@@ -1,5 +1,4 @@
-import { Post } from "@/.contentlayer/generated";
-
+import { Post } from "@/.content-collections/generated";
 import { BlogCard } from "./blog-card";
 
 export function BlogPosts({

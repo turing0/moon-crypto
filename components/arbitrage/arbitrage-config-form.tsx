@@ -48,11 +48,11 @@ interface GroupedApiAccounts {
 const formSchema = z.object({
   longApiAccountId: z.string().min(1, "请选择做多API账号"),
   shortApiAccountId: z.string().min(1, "请选择做空API账号"),
-  longType: z.enum(["spot", "futures"], {
-    required_error: "请选择做多类型",
+  longType: z.enum(["spot", "futures"] as const, {
+    message: "请选择做多类型",
   }),
-  shortType: z.enum(["spot", "futures"], {
-    required_error: "请选择做空类型",
+  shortType: z.enum(["spot", "futures"] as const, {
+    message: "请选择做空类型",
   }),
   amount: z.string().min(1, "请输入单边投资金额"),
   leverage: z.string().min(1, "请输入杠杆倍数"),

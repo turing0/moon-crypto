@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "@/.content-collections/generated";
 
 import { Mdx } from "@/components/content/mdx-components";
 
@@ -72,12 +72,13 @@ export default async function PostPage({
       )) ||
     [];
 
-  const toc = await getTableOfContents(post.body.raw);
+  const toc = await getTableOfContents(post.body);
 
   const [thumbnailBlurhash, images] = await Promise.all([
     getBlurDataURL(post.image),
     await Promise.all(
       post.images.map(async (src: string) => ({
+        alt: "",
         src,
         blurDataURL: await getBlurDataURL(src),
       })),
@@ -140,7 +141,7 @@ export default async function PostPage({
               sizes="(max-width: 768px) 770px, 1000px"
             />
             <div className="px-[.8rem] pb-10 md:px-8">
-              <Mdx code={post.body.code} images={images} />
+              <Mdx code={post.body} images={images} />
             </div>
           </div>
 
