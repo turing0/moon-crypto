@@ -168,30 +168,53 @@ export const getBlurDataURL = async (url: string | null) => {
   }
 };
 
-export function generateUserId(email: string, length: number=10, numericOnly: boolean = false, randomLength: number=4): string {
-  const randomNumber = Math.floor(Math.random() * (10 ** randomLength));
-  const combined = email + randomNumber.toString().padStart(randomLength, '0');
-  // console.log("combined to hash", combined);
-  const hash = crypto.createHash('sha256').update(combined).digest('hex');
-  // const bigIntHash = BigInt('0x' + hash);
+export const placeholderBlurhash =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAoJJREFUWEfFl4lu4zAMRO3cx/9/au6reMaOdkxTTl0grQFCRoqaT+SQotq2bV9N8rRt28xms87m83l553eZ/9vr9Wpkz+ezkT0ej+6dv1X81AFw7M4FBACPVn2c1Z3zLgDeJwHgeLFYdAARYioAEAKJEG2WAjl3gCwNYymQQ9b7/V4spmIAwO6Wy2VnAMikBWlDURBELf8CuN1uHQSrPwMAHK5WqwFELQ01AIXdAa7XawfAb3p6AOwK5+v1ugAoEq4FRSFLgavfQ49jAGQpAE5wjgGCeRrGdBArwHOPcwFcLpcGU1X0IsBuN5tNgYhaiFFwHTiAwq8I+O5xfj6fOz38K+X/fYAdb7fbAgFAjIJ6Aav3AYlQ6nfnDoDz0+lUxNiLALvf7XaDNGQ6GANQBKR85V27B4D3QQRw7hGIYlQKWGM79hSweyCUe1blXhEAogfABwHAXAcqSYkxCtHLUK3XBajSc4Dj8dilAeiSAgD2+30BAEKV4GKcAuDqB4TdYwBgPQByCgApUBoE4EJUGvxUjF3Q69/zLw3g/HA45ABKgdIQu+JPIyDnisCfAxAFNFM0EFNQ64gfS0EUoQP8ighrZSjn3oziZEQpauyKbfjbZchHUL/3AS/Dd30gAkxuRACgfO+EWQW8qwI1o+wseNuKcQiESjALvwNoMI0TcRzD4lFcPYwIM+JTF5x6HOs8yI7jeB5oKhpMRFH9UwaSCDB2Jmg4rc6E2TT0biIaG0rQhNqyhpHBcayTTSXH6vcDL7/sdqRK8LkwTsU499E8vRcAojHcZ4AxABdilgrp4lsXk8oVqgwh7+6H3phqd8J0Kk4vbx/+sZqCD/vNLya/5dT9fAH8g1WdNGgwbQAAAABJRU5ErkJggg==";
+
+export function generateUserId(
+  length: number = 10,
+  numericOnly: boolean = false,
+): string {
+  const salt = Date.now().toString() + Math.random().toString();
+  const hash = crypto.createHash('sha256').update(salt).digest('hex');
   // let uid = bigIntHash.toString();
   let uid: string;
+
   if (numericOnly) {
-    const bigIntHash = BigInt('0x' + hash);
-    uid = bigIntHash.toString();
+    // uid = BigInt('0x' + hash).toString();
+    uid = BigInt('0x' + hash.substring(1, 32)).toString();
   } else {
     uid = hash;
   }
 
+  // 截取逻辑优化: 从第 2 位开始截取，分布最均匀
   if (uid.length > length) {
-    uid = uid.substring(0, length);
+    const start = Math.min(2, uid.length - length);
+    uid = uid.substring(start, start + length);
   } else {
-    uid = uid.padStart(length, numericOnly ? '0' : 'a');
+    uid = uid.padStart(length, numericOnly ? '1' : 'a');
+  }
+
+  // 处理首位为 0 的情况
+  if (numericOnly && uid.startsWith('0')) {
+    const firstDigit = (Math.floor(Math.random() * 9) + 1).toString();
+    uid = firstDigit + uid.substring(1);
   }
 
   // console.log('uid', uid)
   return uid;
 }
 
-export const placeholderBlurhash =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAoJJREFUWEfFl4lu4zAMRO3cx/9/au6reMaOdkxTTl0grQFCRoqaT+SQotq2bV9N8rRt28xms87m83l553eZ/9vr9Wpkz+ezkT0ej+6dv1X81AFw7M4FBACPVn2c1Z3zLgDeJwHgeLFYdAARYioAEAKJEG2WAjl3gCwNYymQQ9b7/V4spmIAwO6Wy2VnAMikBWlDURBELf8CuN1uHQSrPwMAHK5WqwFELQ01AIXdAa7XawfAb3p6AOwK5+v1ugAoEq4FRSFLgavfQ49jAGQpAE5wjgGCeRrGdBArwHOPcwFcLpcGU1X0IsBuN5tNgYhaiFFwHTiAwq8I+O5xfj6fOz38K+X/fYAdb7fbAgFAjIJ6Aav3AYlQ6nfnDoDz0+lUxNiLALvf7XaDNGQ6GANQBKR85V27B4D3QQRw7hGIYlQKWGM79hSweyCUe1blXhEAogfABwHAXAcqSYkxCtHLUK3XBajSc4Dj8dilAeiSAgD2+30BAEKV4GKcAuDqB4TdYwBgPQByCgApUBoE4EJUGvxUjF3Q69/zLw3g/HA45ABKgdIQu+JPIyDnisCfAxAFNFM0EFNQ64gfS0EUoQP8ighrZSjn3oziZEQpauyKbfjbZchHUL/3AS/Dd30gAkxuRACgfO+EWQW8qwI1o+wseNuKcQiESjALvwNoMI0TcRzD4lFcPYwIM+JTF5x6HOs8yI7jeB5oKhpMRFH9UwaSCDB2Jmg4rc6E2TT0biIaG0rQhNqyhpHBcayTTSXH6vcDL7/sdqRK8LkwTsU499E8vRcAojHcZ4AxABdilgrp4lsXk8oVqgwh7+6H3phqd8J0Kk4vbx/+sZqCD/vNLya/5dT9fAH8g1WdNGgwbQAAAABJRU5ErkJggg==";
+// export function generateNumericUserId(
+//   length: number = 10,
+// ): string {
+//   let uid = '';
+  
+//   // 循环生成直到达到长度
+//   while (uid.length < length) {
+//     uid += randomInt(100000000, 999999999).toString();
+//   }
+
+//   // 截取所需长度
+//   return uid.substring(0, length);
+// }

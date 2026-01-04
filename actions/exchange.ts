@@ -67,7 +67,7 @@ export async function createExchangeAPI(userId: string, input: CreateExchangeApi
     const maxAttempts = 3;
     while (!result && attempts < maxAttempts) {
       try {
-        const unique_id = generateUserId(input.api, 8, false)
+        const unique_id = generateUserId(8, false)
         result = await prisma.exchangeAccount.create({
           data: {
             id: input.exchange + '-' + unique_id,
