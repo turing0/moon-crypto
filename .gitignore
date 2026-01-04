@@ -44,5 +44,7 @@ next-env.d.ts
 .contentlayer
 .content-collections
 
+/prisma/generated/prisma
+
 public/robots.txt
 public/sitemap*

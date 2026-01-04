@@ -1,5 +1,4 @@
-import { UserRole } from "@prisma/client";
-
+import { UserRole } from "@/prisma/generated/prisma/enums";
 import { SidebarNavItem } from "types";
 
 export const sidebarLinks: SidebarNavItem[] = [
