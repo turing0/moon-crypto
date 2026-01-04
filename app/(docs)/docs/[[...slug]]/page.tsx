@@ -58,7 +58,7 @@ export default async function DocPage({ params }: DocPageProps) {
     notFound();
   }
 
-  const toc = await getTableOfContents(doc.body);
+  const toc = await getTableOfContents(doc.content);
 
   const images = await Promise.all(
     doc.images.map(async (src: string) => ({

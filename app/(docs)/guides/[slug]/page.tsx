@@ -53,7 +53,7 @@ export default async function GuidePage({
     notFound();
   }
 
-  const toc = await getTableOfContents(guide.body);
+  const toc = await getTableOfContents(guide.content);
 
   return (
     <MaxWidthWrapper>
